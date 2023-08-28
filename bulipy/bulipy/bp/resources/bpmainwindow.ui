@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1102</width>
+    <height>612</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="wMain">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="WBPDocuments" name="msDocuments">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="mbMenu">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1102</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>F&amp;ile</string>
+    </property>
+    <widget class="QMenu" name="menuFileRecent">
+     <property name="statusTip">
+      <string>Re-open last opened documents</string>
+     </property>
+     <property name="title">
+      <string>&amp;Recent</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+       <normaloff>:/pktk/images/normal/folder_open_recent</normaloff>
+       <disabledoff>:/pktk/images/disabled/folder_open_recent</disabledoff>
+       <disabledon>:/pktk/images/disabled/folder_open_recent</disabledon>:/pktk/images/normal/folder_open_recent</iconset>
+     </property>
+     <addaction name="actionFileRecent_None"/>
+    </widget>
+    <addaction name="actionFileNew"/>
+    <addaction name="actionFileOpen"/>
+    <addaction name="menuFileRecent"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileReload"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileSave"/>
+    <addaction name="actionFileSaveAs"/>
+    <addaction name="actionFileSaveAll"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileClose"/>
+    <addaction name="actionFileCloseAll"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>E&amp;dit</string>
+    </property>
+    <widget class="QMenu" name="menuEditCode">
+     <property name="title">
+      <string>Code</string>
+     </property>
+     <addaction name="actionEditCodeComment"/>
+     <addaction name="actionEditCodeUncomment"/>
+     <addaction name="separator"/>
+     <addaction name="actionEditCodeIndent"/>
+     <addaction name="actionEditCodeDedent"/>
+    </widget>
+    <addaction name="actionEditUndo"/>
+    <addaction name="actionEditRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditCut"/>
+    <addaction name="actionEditCopy"/>
+    <addaction name="actionEditPaste"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditSelectAll"/>
+    <addaction name="separator"/>
+    <addaction name="menuEditCode"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditSearchReplace"/>
+   </widget>
+   <widget class="QMenu" name="menuScript">
+    <property name="title">
+     <string>Script</string>
+    </property>
+    <addaction name="actionScriptExecute"/>
+    <addaction name="actionScriptBreakPause"/>
+    <addaction name="actionScriptStop"/>
+    <addaction name="separator"/>
+    <addaction name="actionScriptOutputConsole"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Setti&amp;ngs</string>
+    </property>
+    <addaction name="actionSettingsPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettingsSaveSessionOnExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>He&amp;lp</string>
+    </property>
+    <addaction name="actionHelpAboutBP"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionToolsColorPicker"/>
+    <addaction name="actionToolsIconsSelector"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuScript"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="sbInfo">
+   <property name="font">
+    <font>
+     <family>DejaVu Sans Mono, Consolas, Courier New</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </widget>
+  <action name="actionHelpAboutBP">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/info</normaloff>:/pktk/images/normal/info</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About BuliPy...</string>
+   </property>
+   <property name="statusTip">
+    <string>Who is Buli? Why? How?</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F1</string>
+   </property>
+  </action>
+  <action name="actionFileNew">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_new</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_new</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_new</disabledon>:/pktk/images/normal/file_new</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New...</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a new document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionFileOpen">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/folder_open</normaloff>
+     <disabledoff>:/pktk/images/normal/folder_open</disabledoff>
+     <disabledon>:/pktk/images/disabled/folder_open</disabledon>:/pktk/images/normal/folder_open</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open...</string>
+   </property>
+   <property name="statusTip">
+    <string>Open a document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFileSave">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_save</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_save</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_save</disabledon>:/pktk/images/normal/file_save</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="statusTip">
+    <string>Save current document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionFileSaveAs">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_save_as</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_save_as</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_save_as</disabledon>:/pktk/images/normal/file_save_as</iconset>
+   </property>
+   <property name="text">
+    <string>Sa&amp;ve as...</string>
+   </property>
+   <property name="statusTip">
+    <string>Save current document to another location</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionFileSaveAll">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_save_all</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_save_all</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_save_all</disabledon>:/pktk/images/normal/file_save_all</iconset>
+   </property>
+   <property name="text">
+    <string>Save a&amp;ll</string>
+   </property>
+   <property name="statusTip">
+    <string>Save all documents</string>
+   </property>
+  </action>
+  <action name="actionScriptExecute">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/play</normaloff>
+     <disabledoff>:/pktk/images/disabled/play</disabledoff>
+     <disabledon>:/pktk/images/disabled/play</disabledon>:/pktk/images/normal/play</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Execute</string>
+   </property>
+   <property name="statusTip">
+    <string>Execute current script</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionFileQuit">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/application_exit</normaloff>:/pktk/images/normal/application_exit</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="statusTip">
+    <string>Quit BuliScript</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionFileClose">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_close</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_close</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_close</disabledon>:/pktk/images/normal/file_close</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="statusTip">
+    <string>Close current document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionFileRecent_None">
+   <property name="text">
+    <string>(&amp;no recent scripts)</string>
+   </property>
+  </action>
+  <action name="actionEditCut">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/cut</normaloff>
+     <disabledoff>:/pktk/images/disabled/cut</disabledoff>
+     <disabledon>:/pktk/images/disabled/cut</disabledon>:/pktk/images/normal/cut</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Cut</string>
+   </property>
+   <property name="statusTip">
+    <string>Cut selection to clipboard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionEditCopy">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/copy</normaloff>
+     <disabledoff>:/pktk/images/disabled/copy</disabledoff>
+     <disabledon>:/pktk/images/disabled/copy</disabledon>:/pktk/images/normal/copy</iconset>
+   </property>
+   <property name="text">
+    <string>C&amp;opy</string>
+   </property>
+   <property name="statusTip">
+    <string>Copy selection from clipboard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionEditPaste">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/paste</normaloff>
+     <disabledoff>:/pktk/images/disabled/paste</disabledoff>
+     <disabledon>:/pktk/images/disabled/paste</disabledon>:/pktk/images/normal/paste</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+   <property name="statusTip">
+    <string>Paste clipboard content</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionEditSelectAll">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/select_all</normaloff>
+     <disabledoff>:/pktk/images/disabled/select_all</disabledoff>
+     <disabledon>:/pktk/images/disabled/select_all</disabledon>:/pktk/images/normal/select_all</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Select all</string>
+   </property>
+   <property name="statusTip">
+    <string>Select all content</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionEditUndo">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_undo</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_undo</disabledoff>
+     <disabledon>:/pktk/images/disabled/edit_undo</disabledon>:/pktk/images/normal/edit_undo</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="statusTip">
+    <string>Undo last action</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionEditRedo">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_redo</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_redo</disabledoff>
+     <disabledon>:/pktk/images/disabled/edit_redo</disabledon>:/pktk/images/normal/edit_redo</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="statusTip">
+    <string>Redo previous action</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionSettingsPreferences">
+   <property name="icon">
+    <iconset theme="settings-configure">
+     <normaloff>../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../.designer/backup</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Preferences...</string>
+   </property>
+   <property name="statusTip">
+    <string>Define BuliScript preferences settings</string>
+   </property>
+  </action>
+  <action name="actionSettingsSaveSessionOnExit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Save session on exit</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+  </action>
+  <action name="actionFileCloseAll">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_close_all</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_close_all</disabledoff>
+     <disabledon>:/pktk/images/disabled/file_close_all</disabledon>:/pktk/images/normal/file_close_all</iconset>
+   </property>
+   <property name="text">
+    <string>Clos&amp;e all</string>
+   </property>
+   <property name="statusTip">
+    <string>Close all documents</string>
+   </property>
+  </action>
+  <action name="actionFileReload">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/cache_refresh</normaloff>
+     <disabledoff>:/pktk/images/disabled/cache_refresh</disabledoff>
+     <disabledon>:/pktk/images/disabled/cache_refresh</disabledon>:/pktk/images/normal/cache_refresh</iconset>
+   </property>
+   <property name="text">
+    <string>Reloa&amp;d</string>
+   </property>
+   <property name="statusTip">
+    <string>Reload current document</string>
+   </property>
+  </action>
+  <action name="actionScriptBreakPause">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/pause</normaloff>
+     <disabledoff>:/pktk/images/disabled/pause</disabledoff>
+     <disabledon>:/pktk/images/disabled/pause</disabledon>:/pktk/images/normal/pause</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Break/Pause</string>
+   </property>
+  </action>
+  <action name="actionScriptStop">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/stop</normaloff>
+     <disabledoff>:/pktk/images/disabled/stop</disabledoff>
+     <disabledon>:/pktk/images/disabled/stop</disabledon>:/pktk/images/normal/stop</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Stop</string>
+   </property>
+  </action>
+  <action name="actionScriptOutputConsole">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Script output</string>
+   </property>
+  </action>
+  <action name="actionEditSearchReplace">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/search</normaloff>
+     <disabledoff>:/pktk/images/disabled/search</disabledoff>:/pktk/images/normal/search</iconset>
+   </property>
+   <property name="text">
+    <string>Search &amp;&amp; Replace</string>
+   </property>
+   <property name="toolTip">
+    <string>Search &amp; Replace tool</string>
+   </property>
+   <property name="statusTip">
+    <string>Search &amp; Replace tool</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionToolsColorPicker">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/color</normaloff>
+     <disabledoff>:/pktk/images/disabled/color</disabledoff>:/pktk/images/normal/color</iconset>
+   </property>
+   <property name="text">
+    <string>Color picker</string>
+   </property>
+   <property name="toolTip">
+    <string>Color picker</string>
+   </property>
+  </action>
+  <action name="actionToolsIconsSelector">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/image</normaloff>
+     <disabledoff>:/pktk/images/disabled/image</disabledoff>:/pktk/images/normal/image</iconset>
+   </property>
+   <property name="text">
+    <string>Icons selector</string>
+   </property>
+  </action>
+  <action name="actionEditCodeComment">
+   <property name="text">
+    <string>Comment</string>
+   </property>
+  </action>
+  <action name="actionEditCodeUncomment">
+   <property name="text">
+    <string>Uncomment</string>
+   </property>
+  </action>
+  <action name="actionEditCodeIndent">
+   <property name="text">
+    <string>Indent</string>
+   </property>
+  </action>
+  <action name="actionEditCodeDedent">
+   <property name="text">
+    <string>Dedent</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>WBPDocuments</class>
+   <extends>QTabWidget</extends>
+   <header>bulipy.bp.bpdocument</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../pktk/resources/svg/dark_icons.qrc"/>
+  <include location="../../pktk/resources/svg/light_icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

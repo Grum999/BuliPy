@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=bulipy
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=BuliPy
+Comment=A plugin to write and execute scripts
