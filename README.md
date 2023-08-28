@@ -6,9 +6,10 @@ A plugin for [Krita](https://krita.org).
 ## What is BuliPy?
 *BuliPy* is a Python plugin made for [Krita](https://krita.org) (free professional and open-source painting program).
 
-The *BuliPy* plugin is replacement for *Scripter* plugin which provided by default with [Krita](https://krita.org).
+The *BuliPy* plugin is an alternative to *Scripter* plugin which is provided by default with [Krita](https://krita.org).
 
-It provides a better user interface and some additional functionnalities.
+Because everything is relative, it try provides a better user interface and some additional functionnalities.
+> This plugin is not an IDE that you should use to write Krita plugin, it's not the goal: see it more like a comfy workspace to tests things
 
 
 ## Screenshots
