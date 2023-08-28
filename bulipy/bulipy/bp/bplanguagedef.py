@@ -410,3 +410,36 @@ class BPLanguageDefPython(LanguageDef):
     def extensions(self):
         """Return language file extension as list"""
         return ['.py']
+
+
+class BPLanguageDefText(LanguageDef):
+    # Empty language definition
+
+    def __init__(self):
+        """Initialise language & styles"""
+        super(BPLanguageDefText, self).__init__([])
+
+    def name(self):
+        """Return language name"""
+        return "Text"
+
+    def extensions(self):
+        """Return language file extension as list"""
+        return ['.txt']
+
+
+class BPLanguageDefUnmanaged(LanguageDef):
+    # Empty language definition
+
+    def __init__(self):
+        """Initialise language & styles"""
+        super(BPLanguageDefUnmanaged, self).__init__([])
+
+    def name(self):
+        """Return language name"""
+        return "Unmanaged"
+
+    def extensions(self):
+        """Return language file extension as list"""
+        return []
+

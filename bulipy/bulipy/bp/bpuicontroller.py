@@ -47,7 +47,11 @@ from .bpdwsearchreplace import BPDockWidgetSearchReplace
 from .bppyrunner import (BPPyRunner, BPLogger)
 from .bpdocument import (WBPDocument, BPDocuments)
 from .bphistory import BPHistory
-from .bplanguagedef import BPLanguageDefPython
+from .bplanguagedef import (
+        BPLanguageDefPython,
+        BPLanguageDefText,
+        BPLanguageDefUnmanaged
+    )
 from .bpmainwindow import BPMainWindow
 from .bpsettings import (
         BPSettings,
@@ -94,6 +98,8 @@ class BPUIController(QObject):
         self.__languageDefPython = BPLanguageDefPython()
         self.__languageDefXml = LanguageDefXML()
         self.__languageDefJson = LanguageDefJSON()
+        self.__languageDefText = BPLanguageDefText()
+        self.__languageDefUnmanaged = BPLanguageDefUnmanaged()
 
         BPSettings.load()
 
@@ -462,7 +468,17 @@ class BPUIController(QObject):
     def __updateStatusUiLanguageDef(self, document):
         """Update UI to take in account language definition of document"""
         if document == self.__currentDocument:
-            self.__window.setStatusBarText(self.__window.STATUSBAR_LANGUAGEDEF, self.__currentDocument.languageDefinition().name())
+            languageDef = self.__currentDocument.languageDefinition()
+
+            textNfo = languageDef.name()
+
+            if textNfo == 'Unmanaged':
+                if fileExtension := re.search(r"\.([^\.]*)$", document.fileName()):
+                    textNfo = f"{i18n('Unmanaged')} (.{fileExtension.groups()[0]})"
+                else:
+                    textNfo = i18n('Unmanaged')
+
+            self.__window.setStatusBarText(self.__window.STATUSBAR_LANGUAGEDEF, textNfo)
 
     def __updateStatusUiReadOnly(self, document):
         """Update UI to take in account R/W status of document"""
@@ -580,9 +596,10 @@ class BPUIController(QObject):
             return self.__languageDefXml
         elif extension in self.__languageDefJson.extensions():
             return self.__languageDefJson
-
-        # no other extension managed for now
-        return None
+        elif extension in self.__languageDefText.extensions():
+            return self.__languageDefText
+        else:
+            return self.__languageDefUnmanaged
 
     def cachePath(self, subDirectory=None):
         """Return BuliPy cache directory
@@ -704,7 +721,11 @@ class BPUIController(QObject):
             fileNames, dummy = QFileDialog.getOpenFileNames(self.__window,
                                                             i18n("Open a document"),
                                                             self.__lastDocumentDirectoryOpen,
-                                                            f"{i18n('Python files')} (*.py);;{i18n('All Files')} (*.*)")
+                                                            f"{i18n('Python files')} (*.py);;"
+                                                            f"{i18n('Text files')} (*.txt);;"
+                                                            f"{i18n('JSON files')} (*.json);;"
+                                                            f"{i18n('XML files')} (*.xml);;"
+                                                            f"{i18n('All Files')} (*.*)")
 
             if len(fileNames) > 0:
                 for fileName in fileNames:
@@ -715,9 +736,7 @@ class BPUIController(QObject):
                     raise EInvalidStatus("Unable to open file")
 
                 self.__lastDocumentDirectoryOpen = os.path.dirname(file)
-
                 self.__historyFiles.remove(file)
-
             except Exception as e:
                 Debug.print('[BPUIController.commandFileOpen] unable to open file {0}: {1}', file, str(e))
                 return False
