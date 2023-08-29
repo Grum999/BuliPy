@@ -514,7 +514,7 @@ class WBPDocument(WBPDocumentBase):
         dataWrite.writeUInt2(self.__newDocNumber)
 
         if cursor.selectionStart() == cursor.selectionEnd():
-            dataWrite.writeUInt4(cursor.position())
+            dataWrite.writeUInt4(max(0, cursor.position()))
             dataWrite.writeUInt4(0)
         else:
             dataWrite.writeUInt4(cursor.selectionStart())
@@ -827,7 +827,7 @@ class BPDocuments(QObject):
             documentId = documentId.cacheUuid()
         elif isinstance(documentId, int):
             # an index, get id at index
-            if documentId > 0 and documentId < len(self.__documents):
+            if documentId >= 0 and documentId < len(self.__documents):
                 documentId = self.__documents[documentId].cacheUuid()
             else:
                 return None
