@@ -14,6 +14,7 @@ from pathlib import Path
 
 import sys
 import re
+import html
 import base64
 import traceback
 import platform
@@ -35,10 +36,7 @@ from PyQt5.QtCore import (
         PYQT_VERSION_STR
     )
 
-from PyQt5.QtWidgets import (
-        QMessageBox,
-        QWidget
-    )
+from PyQt5.QtWidgets import QWidget
 
 from .bpdwconsole import BPDockWidgetConsoleOutput
 from .bpdwcolorpicker import BPDockWidgetColorPicker
@@ -72,6 +70,10 @@ from ..pktk.modules.utils import (
 from ..pktk.modules.imgutils import buildIcon
 from ..pktk.widgets.wabout import WAboutWindow
 from ..pktk.widgets.wconsole import WConsoleType
+from ..pktk.widgets.wiodialog import (
+        WDialogBooleanInput,
+        WDialogRadioButtonChoiceInput
+    )
 
 from ..pktk.pktk import *
 
@@ -861,10 +863,9 @@ class BPUIController(QObject):
 
         if document.modified() and askIfNotSaved:
             # message box to confirm to close document
-            if QMessageBox.question(self.__window,
-                                    i18n("Close document"),
-                                    i18n("Document has been modified without being saved.\n\nClose without saving?"),
-                                    QMessageBox.Yes | QMessageBox.No) == QMessageBox.No:
+            if WDialogBooleanInput.display(i18n("Close document"),
+                                           f'<p>{i18n("Document has been modified without being saved.")}</p>'
+                                           f'<p><b>{i18n("Close without saving?")}</b></p>') is False:
                 return False
 
         if not document.fileName() is None:
@@ -894,10 +895,9 @@ class BPUIController(QObject):
 
         if document.modified() and askIfNotSaved:
             # message box to confirm to close document
-            if QMessageBox.question(self.__window,
-                                    i18n("Reload document"),
-                                    i18n("Document has been modified and not saved.\n\nReload document?"),
-                                    QMessageBox.Yes | QMessageBox.No) == QMessageBox.No:
+            if WDialogBooleanInput.display(i18n("Reload document"),
+                                           f'<p>{i18n("Document has been modified without being saved.")}</p>'
+                                           f'<p><b>{i18n("Reload document?")}</b></p>') is False:
                 return False
 
         return self.__documents.reloadDocument(document)
@@ -918,22 +918,32 @@ class BPUIController(QObject):
                         # activate tab
                         self.__window.msDocuments.setActive(document)
 
-                        choice = QMessageBox.question(self.__window,
-                                                      i18n("Close document"),
-                                                      i18n("Document has been modified without being saved.\n\nClose without saving?"),
-                                                      QMessageBox.Yes | QMessageBox.YesToAll | QMessageBox.No | QMessageBox.NoToAll | QMessageBox.Cancel)
-                    else:
-                        choice = defaultChoice
-
-                    if choice == QMessageBox.Cancel:
-                        # cancel action
-                        return
-                    elif choice == QMessageBox.No:
+                        documentName = f"<i><span style='font-family: consolas, monospace;'>{html.escape(document.tabName(False))}</span></i>"
+                        choice = WDialogRadioButtonChoiceInput.display(i18n("Close document"),
+                                                                       f'<p>{i18n(f"Document {documentName} has been modified without being saved.")}</p>'
+                                                                       f'<p><b>{i18n("Close without saving?")}</b></p>',
+                                                                       choicesValue=[i18n('Yes'),
+                                                                                     i18n('Yes to all'),
+                                                                                     i18n('No'),
+                                                                                     i18n('No to all')
+                                                                                     ],
+                                                                       defaultIndex=2,
+                                                                       minSize=QSize(450, 250))
+                        if choice is None:
+                            # Cancel
+                            return
+                        elif choice == 1:
+                            # yes to all
+                            defaultChoice = 1
+                        elif choice == 2:
+                            # No
+                            closeDocument = False
+                        elif choice == 3:
+                            defaultChoice = 3
+                            closeDocument = False
+                    elif defaultChoice == 3:
+                        # No to all
                         closeDocument = False
-                    elif choice == QMessageBox.NoToAll:
-                        defaultChoice = QMessageBox.No
-                    elif choice == QMessageBox.YesToAll:
-                        defaultChoice = QMessageBox.Yes
 
                 if closeDocument:
                     # save in history when closed as, when opened/save, documents are in
@@ -1181,3 +1191,6 @@ class BPUIController(QObject):
     def commandAboutBp(self):
         """Display 'About BuliPy' dialog box"""
         WAboutWindow(self.__bpName, self.__bpVersion, os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'), None, ':BuliPy')
+
+
+Debug.setEnabled(True)
