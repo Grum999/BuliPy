@@ -1277,6 +1277,16 @@ class WCodeEditor(QPlainTextEdit):
         if isinstance(value, bool) and value != self.__optionWheelSetFontSize:
             self.__optionWheelSetFontSize = value
 
+    def optionFontSize(self):
+        """Return current console font size (in point)"""
+        return self.font().pointSize()
+
+    def setOptionFontSize(self, value):
+        """Set current console font size (in point)"""
+        font = self.font()
+        font.setPointSize(value)
+        self.setFont(font)
+
     def setHeight(self, numberOfRows=None):
         """Set height according to given number of rows"""
 
