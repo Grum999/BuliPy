@@ -19,10 +19,6 @@ from PyQt5.QtCore import (
         QSettings,
         QStandardPaths
     )
-from PyQt5.QtWidgets import (
-        QDialog,
-        QMessageBox
-    )
 
 from os.path import (join, getsize)
 import json
