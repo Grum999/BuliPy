@@ -43,6 +43,7 @@ from PyQt5.QtWidgets import (
 from .bpdwconsole import BPDockWidgetConsoleOutput
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
+from .bpwopensavedialog import BPWOpenSave
 
 from .bppyrunner import (BPPyRunner, BPLogger)
 from .bpdocument import (WBPDocument, BPDocuments)
@@ -718,17 +719,17 @@ class BPUIController(QObject):
         """Open file"""
         if file is None or isinstance(file, bool):
             # if bool = >triggered from menu
-            fileNames, dummy = QFileDialog.getOpenFileNames(self.__window,
-                                                            i18n("Open a document"),
-                                                            self.__lastDocumentDirectoryOpen,
-                                                            f"{i18n('Python files')} (*.py);;"
-                                                            f"{i18n('Text files')} (*.txt);;"
-                                                            f"{i18n('JSON files')} (*.json);;"
-                                                            f"{i18n('XML files')} (*.xml);;"
-                                                            f"{i18n('All Files')} (*.*)")
+            result = BPWOpenSave.openFiles(i18n("Open a document"),
+                                           self.__lastDocumentDirectoryOpen,
+                                           f"{i18n('Python files')} (*.py);;"
+                                           f"{i18n('Text files')} (*.txt);;"
+                                           f"{i18n('JSON files')} (*.json);;"
+                                           f"{i18n('XML files')} (*.xml);;"
+                                           f"{i18n('All Files')} (*.*)",
+                                           self)
 
-            if len(fileNames) > 0:
-                for fileName in fileNames:
+            if isinstance(result, dict):
+                for fileName in result['files']:
                     self.commandFileOpen(fileName)
         elif isinstance(file, str):
             try:
@@ -806,14 +807,19 @@ class BPUIController(QObject):
         self.__window.msDocuments.setActive(document)
 
         if newFileName is None:
-            fileName, dummy = QFileDialog.getSaveFileName(self.__window,
-                                                          i18n("Save BuliPy document"),
-                                                          fileName,
-                                                          f"{i18n('Python files')} (*.py);;"
-                                                          f"{i18n('Text files')} (*.txt);;"
-                                                          f"{i18n('JSON files')} (*.json);;"
-                                                          f"{i18n('XML files')} (*.xml);;"
-                                                          f"{i18n('All Files')} (*.*)")
+            result = BPWOpenSave.saveFile(i18n("Save BuliPy document"),
+                                          fileName,
+                                          f"{i18n('Python files')} (*.py);;"
+                                          f"{i18n('Text files')} (*.txt);;"
+                                          f"{i18n('JSON files')} (*.json);;"
+                                          f"{i18n('XML files')} (*.xml);;"
+                                          f"{i18n('All Files')} (*.*)",
+                                          self)
+            if result is None:
+                return False
+            else:
+                fileName = result['file']
+
         if fileName != '':
             try:
                 if not self.__documents.saveDocument(document, fileName):

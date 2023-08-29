@@ -161,7 +161,7 @@ class LanguageDefXML(LanguageDef):
 
     def extensions(self):
         """Return language file extension as list"""
-        return ['.xml']
+        return ['.xml', '.svg']
 
 
 class LanguageDefJSON(LanguageDef):
