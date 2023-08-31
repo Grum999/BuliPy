@@ -188,14 +188,13 @@ class BPMainWindow(QMainWindow):
         self.actionScriptExecute.triggered.connect(self.__uiController.commandScriptExecute)
         self.actionScriptBreakPause.triggered.connect(self.__uiController.commandScriptBreakPause)
         self.actionScriptStop.triggered.connect(self.__uiController.commandScriptStop)
-        self.actionScriptOutputConsole.triggered.connect(self.__uiController.commandViewDockConsoleOutputVisible)
+        self.actionScriptDockOutputConsole.triggered.connect(lambda: self.__uiController.commandScriptDockOutputConsoleVisible(True))
 
         self.menuScript.aboutToShow.connect(self.__menuAboutToShow)
 
         # Menu TOOLS
         # ----------------------------------------------------------------------
         self.actionToolsColorPicker.triggered.connect(self.__uiController.commandViewDockColorPickerVisible)
-        # self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandViewDockConsoleOutputVisible)
 
         # Menu SETTINGS
         # ----------------------------------------------------------------------

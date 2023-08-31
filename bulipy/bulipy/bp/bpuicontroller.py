@@ -228,7 +228,7 @@ class BPUIController(QObject):
         self.__window.activateWindow()
 
         # after window is visible to let switch automatically to the tab
-        self.commandViewDockConsoleOutputVisible(True)
+        self.commandScriptDockOutputConsoleVisible(True)
 
     def __initSettings(self):
         """There's some visual settings that need to have the window visible
@@ -1015,7 +1015,7 @@ class BPUIController(QObject):
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""
         if forceDisplayConsole:
-            self.commandViewDockConsoleOutputVisible(True)
+            self.commandScriptDockOutputConsoleVisible(True)
 
         bpVersion = f"{self.__bpName} v{self.__bpVersion}"
         bpVersionSep = "=" * len(bpVersion)
@@ -1118,16 +1118,15 @@ class BPUIController(QObject):
 
         return [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()]
 
-    def commandViewDockConsoleOutputVisible(self, visible=None):
+    def commandScriptDockOutputConsoleVisible(self, visible=True):
         """Display/Hide Console output docker"""
-        if visible is None:
-            visible = self.__dwConsoleOutputAction.isChecked()
-        elif not isinstance(visible, bool):
+        if not isinstance(visible, bool):
             raise EInvalidValue('Given `visible` must be a <bool>')
 
         if self.__dwConsoleOutput:
             if visible:
                 self.__dwConsoleOutput.show()
+                self.__dwConsoleOutput.setActive()
             else:
                 self.__dwConsoleOutput.hide()
 
