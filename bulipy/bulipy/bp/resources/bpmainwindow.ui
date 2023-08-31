@@ -108,8 +108,15 @@
     <addaction name="separator"/>
     <addaction name="actionEditSelectAll"/>
     <addaction name="separator"/>
+    <addaction name="actionEditDeleteLine"/>
+    <addaction name="actionEditDuplicateLine"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditOverwriteMode"/>
+    <addaction name="actionEditReadOnlyMode"/>
+    <addaction name="separator"/>
     <addaction name="menuEditCode"/>
     <addaction name="separator"/>
+    <addaction name="actionEditGoToLine"/>
     <addaction name="actionEditSearchReplace"/>
    </widget>
    <widget class="QMenu" name="menuScript">
@@ -120,7 +127,7 @@
     <addaction name="actionScriptBreakPause"/>
     <addaction name="actionScriptStop"/>
     <addaction name="separator"/>
-    <addaction name="actionScriptOutputConsole"/>
+    <addaction name="actionScriptDockOutputConsole"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -140,12 +147,55 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <widget class="QMenu" name="menuToolsCopyToClipboard">
+     <property name="title">
+      <string>Copy to clipboard</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+       <normaloff>:/pktk/images/normal/clipboard_pushback</normaloff>:/pktk/images/normal/clipboard_pushback</iconset>
+     </property>
+     <addaction name="actionToolsCopyFullPathFileName"/>
+     <addaction name="actionToolsPathName"/>
+     <addaction name="actionToolsFileName"/>
+    </widget>
+    <widget class="QMenu" name="menuToolsManipulateDoc">
+     <property name="title">
+      <string>Manipulate document</string>
+     </property>
+     <addaction name="actionToolsMDocSortAscending"/>
+     <addaction name="actionToolsMDocSortDescending"/>
+     <addaction name="separator"/>
+     <addaction name="actionToolsMDocRemoveDuplicateLines"/>
+     <addaction name="actionToolsMDocRemoveEmptyLines"/>
+     <addaction name="separator"/>
+     <addaction name="actionToolsMDocTrimSpaces"/>
+     <addaction name="actionToolsMDocTrimLeadingSpaces"/>
+     <addaction name="actionToolsMDocTrimTrailingSpaces"/>
+     <addaction name="separator"/>
+     <addaction name="actionToolsMDocPrettify"/>
+    </widget>
     <addaction name="separator"/>
     <addaction name="actionToolsColorPicker"/>
     <addaction name="actionToolsIconsSelector"/>
+    <addaction name="actionToolsDocuments"/>
+    <addaction name="separator"/>
+    <addaction name="menuToolsCopyToClipboard"/>
+    <addaction name="menuToolsManipulateDoc"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionViewWrapLines"/>
+    <addaction name="actionViewShowLineNumber"/>
+    <addaction name="actionViewShowSpaces"/>
+    <addaction name="actionViewShowIndent"/>
+    <addaction name="actionViewHighlightClassesFunctionDeclaration"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
    <addaction name="menuScript"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
@@ -162,7 +212,8 @@
   <action name="actionHelpAboutBP">
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-     <normaloff>:/pktk/images/normal/info</normaloff>:/pktk/images/normal/info</iconset>
+     <normaloff>:/pktk/images/normal/symbol_info</normaloff>
+     <disabledoff>:/pktk/images/disabled/symbol_info</disabledoff>:/pktk/images/normal/symbol_info</iconset>
    </property>
    <property name="text">
     <string>&amp;About BuliPy...</string>
@@ -414,8 +465,10 @@
   </action>
   <action name="actionSettingsPreferences">
    <property name="icon">
-    <iconset theme="settings-configure">
-     <normaloff>../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../.designer/backup</iconset>
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/tune</normaloff>
+     <disabledoff>:/pktk/images/disabled/tune</disabledoff>
+     <disabledon>:/pktk/images/disabled/tune</disabledon>:/pktk/images/normal/tune</iconset>
    </property>
    <property name="text">
     <string>&amp;Preferences...</string>
@@ -488,12 +541,20 @@
     <string>&amp;Stop</string>
    </property>
   </action>
-  <action name="actionScriptOutputConsole">
+  <action name="actionScriptDockOutputConsole">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/process_output_info</normaloff>
+     <disabledoff>:/pktk/images/disabled/process_output_info</disabledoff>:/pktk/images/normal/process_output_info</iconset>
    </property>
    <property name="text">
     <string>Script output</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
    </property>
   </action>
   <action name="actionEditSearchReplace">
@@ -548,23 +609,247 @@
    </property>
   </action>
   <action name="actionEditCodeComment">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/text_hashtag</normaloff>
+     <disabledoff>:/pktk/images/disabled/text_hashtag</disabledoff>:/pktk/images/normal/text_hashtag</iconset>
+   </property>
    <property name="text">
     <string>Comment</string>
    </property>
   </action>
   <action name="actionEditCodeUncomment">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/text_hashtag_off</normaloff>
+     <disabledoff>:/pktk/images/disabled/text_hashtag_off</disabledoff>:/pktk/images/normal/text_hashtag_off</iconset>
+   </property>
    <property name="text">
     <string>Uncomment</string>
    </property>
   </action>
   <action name="actionEditCodeIndent">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/format_text_indent_inc</normaloff>
+     <disabledoff>:/pktk/images/disabled/format_text_indent_inc</disabledoff>:/pktk/images/normal/format_text_indent_inc</iconset>
+   </property>
    <property name="text">
     <string>Indent</string>
    </property>
   </action>
   <action name="actionEditCodeDedent">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/format_text_indent_dec</normaloff>
+     <disabledoff>:/pktk/images/disabled/format_text_indent_dec</disabledoff>:/pktk/images/normal/format_text_indent_dec</iconset>
+   </property>
    <property name="text">
     <string>Dedent</string>
+   </property>
+  </action>
+  <action name="actionEditGoToLine">
+   <property name="text">
+    <string>Go to line...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionEditReadOnlyMode">
+   <property name="text">
+    <string>Read-only mode</string>
+   </property>
+   <property name="whatsThis">
+    <string>Set document in read-only mode</string>
+   </property>
+  </action>
+  <action name="actionEditOverwriteMode">
+   <property name="text">
+    <string>Overwrite mode</string>
+   </property>
+   <property name="statusTip">
+    <string>Switch overwrite/insert edition mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ins</string>
+   </property>
+  </action>
+  <action name="actionEditDeleteLine">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_line_delete</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_line_delete</disabledoff>:/pktk/images/normal/edit_text_line_delete</iconset>
+   </property>
+   <property name="text">
+    <string>Delete line</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Del</string>
+   </property>
+  </action>
+  <action name="actionEditDuplicateLine">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_line_duplicate</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_line_duplicate</disabledoff>:/pktk/images/normal/edit_text_line_duplicate</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate line</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionViewWrapLines">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_linewrap</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_linewrap</disabledoff>:/pktk/images/normal/view_text_linewrap</iconset>
+   </property>
+   <property name="text">
+    <string>Wrap lines</string>
+   </property>
+  </action>
+  <action name="actionViewShowLineNumber">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_linenumber</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_linenumber</disabledoff>:/pktk/images/normal/view_text_linenumber</iconset>
+   </property>
+   <property name="text">
+    <string>Show lines number</string>
+   </property>
+  </action>
+  <action name="actionViewShowSpaces">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_spaces</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_spaces</disabledoff>:/pktk/images/normal/view_text_spaces</iconset>
+   </property>
+   <property name="text">
+    <string>Show spaces</string>
+   </property>
+   <property name="statusTip">
+    <string>View leading and trailing spaces</string>
+   </property>
+  </action>
+  <action name="actionViewShowIndent">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_indent</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_indent</disabledoff>:/pktk/images/normal/view_text_indent</iconset>
+   </property>
+   <property name="text">
+    <string>Show indent</string>
+   </property>
+  </action>
+  <action name="actionViewHighlightClassesFunctionDeclaration">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_highlight</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_highlight</disabledoff>:/pktk/images/normal/view_text_highlight</iconset>
+   </property>
+   <property name="text">
+    <string>Highlight classes and functions declaration</string>
+   </property>
+  </action>
+  <action name="actionToolsDocuments">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file_copy</normaloff>
+     <disabledoff>:/pktk/images/disabled/file_copy</disabledoff>:/pktk/images/normal/file_copy</iconset>
+   </property>
+   <property name="text">
+    <string>Documents</string>
+   </property>
+  </action>
+  <action name="actionFullPathFileName">
+   <property name="text">
+    <string>Full path/file name</string>
+   </property>
+  </action>
+  <action name="actionToolsCopyFullPathFileName">
+   <property name="text">
+    <string>Full path file name</string>
+   </property>
+  </action>
+  <action name="actionToolsPathName">
+   <property name="text">
+    <string>Path name</string>
+   </property>
+  </action>
+  <action name="actionToolsFileName">
+   <property name="text">
+    <string>File name</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocSortAscending">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/sort_ascending</normaloff>
+     <disabledoff>:/pktk/images/disabled/sort_ascending</disabledoff>:/pktk/images/normal/sort_ascending</iconset>
+   </property>
+   <property name="text">
+    <string>Sort ascending</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocSortDescending">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/sort_descending</normaloff>
+     <disabledoff>:/pktk/images/disabled/sort_descending</disabledoff>:/pktk/images/normal/sort_descending</iconset>
+   </property>
+   <property name="text">
+    <string>Sort descending</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocRemoveDuplicateLines">
+   <property name="text">
+    <string>Remove duplicate lines</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocRemoveEmptyLines">
+   <property name="text">
+    <string>Remove empty lines</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocTrimSpaces">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_trim</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_trim</disabledoff>:/pktk/images/normal/edit_text_trim</iconset>
+   </property>
+   <property name="text">
+    <string>Trim spaces</string>
+   </property>
+  </action>
+  <action name="actionToolsMDocTrimLeadingSpaces">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_trim_leading</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_trim_leading</disabledoff>:/pktk/images/normal/edit_text_trim_leading</iconset>
+   </property>
+   <property name="text">
+    <string>Trim leading spaces </string>
+   </property>
+  </action>
+  <action name="actionToolsMDocTrimTrailingSpaces">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_trim_trailing</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_trim_trailing</disabledoff>:/pktk/images/normal/edit_text_trim_trailing</iconset>
+   </property>
+   <property name="text">
+    <string>Trim trailing spaces </string>
+   </property>
+  </action>
+  <action name="actionToolsMDocPrettify">
+   <property name="text">
+    <string>Prettify</string>
    </property>
   </action>
  </widget>
