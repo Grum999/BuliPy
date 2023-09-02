@@ -238,6 +238,7 @@
     <file alias="view_text_indent">light/32dp/view_text_indent.svg</file>
     <file alias="view_text_linenumber">light/32dp/view_text_linenumber.svg</file>
     <file alias="view_text_linewrap">light/32dp/view_text_linewrap.svg</file>
+    <file alias="view_text_rightlimit">light/32dp/view_text_rightlimit.svg</file>
     <file alias="view_text_spaces">light/32dp/view_text_spaces.svg</file>
     <file alias="visibility_off">light/32dp/visibility_off.svg</file>
     <file alias="visibility_on">light/32dp/visibility_on.svg</file>
@@ -484,6 +485,7 @@
     <file alias="view_text_indent">light/32dp-disabled/view_text_indent.svg</file>
     <file alias="view_text_linenumber">light/32dp-disabled/view_text_linenumber.svg</file>
     <file alias="view_text_linewrap">light/32dp-disabled/view_text_linewrap.svg</file>
+    <file alias="view_text_rightlimit">light/32dp-disabled/view_text_rightlimit.svg</file>
     <file alias="view_text_spaces">light/32dp-disabled/view_text_spaces.svg</file>
     <file alias="visibility_off">light/32dp-disabled/visibility_off.svg</file>
     <file alias="visibility_on">light/32dp-disabled/visibility_on.svg</file>
