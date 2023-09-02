@@ -79,6 +79,7 @@ class WCodeEditor(QPlainTextEdit):
     overwriteModeChanged = Signal(bool)     # INS / OVR mode changed
     readOnlyModeChanged = Signal(bool)      # read-only mode changed
     autoCompletionChanged = Signal(str)     # auto completion item has changed
+    fontSizeChanged = Signal(int)           # Font size changed by user with ctrl+wheel (provided in point)
 
     KEY_INDENT = 'indent'
     KEY_DEDENT = 'dedent'
@@ -115,7 +116,6 @@ class WCodeEditor(QPlainTextEdit):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
 
         # ---- options ----
-        # > TODO: need to define setters/getters
 
         # allows text with multiple lines
         self.__optionMultiLine = True
@@ -187,6 +187,9 @@ class WCodeEditor(QPlainTextEdit):
         font.setFixedPitch(True)
         font.setPointSize(10)
         self.setFont(font)
+
+        self.__fHeight = self.fontMetrics().height()
+        self.__fWidth = self.fontMetrics().horizontalAdvance("W")
 
         palette = self.palette()
         palette.setColor(QPalette.Active, QPalette.Base, QColor('#282c34'))
@@ -476,7 +479,15 @@ class WCodeEditor(QPlainTextEdit):
         block = self.firstVisibleBlock()
         blockNumber = block.blockNumber()
         top = self.blockBoundingGeometry(block).translated(self.contentOffset()).top()
-        bottom = top + self.blockBoundingRect(block).height()
+        blockH = self.blockBoundingRect(block).height()
+        bottom = top + blockH
+
+        if self.lineWrapMode():
+            fHeight2 = self.__fHeight//2
+        else:
+            fHeight2 = -1
+
+        color = self.__optionGutterText.foreground().color()
 
         lineNumberAreaWidth = self.__lineNumberArea.width() - WCodeEditor.__LINENUMBER_PADDING * 2
 
@@ -488,22 +499,36 @@ class WCodeEditor(QPlainTextEdit):
             #   a block can, for example, be hidden by a window placed over the text edit
             if block.isVisible() and bottom >= event.rect().top():
                 number = f"{blockNumber + 1}"
-                painter.setPen(self.__optionGutterText.foreground().color())
-                painter.drawText(QRectF(WCodeEditor.__LINENUMBER_PADDING, top, lineNumberAreaWidth, self.fontMetrics().height()), Qt.AlignRight, number)
+                painter.setPen(color)
+                painter.drawText(QRectF(WCodeEditor.__LINENUMBER_PADDING, top, lineNumberAreaWidth, self.__fHeight), Qt.AlignRight, number)
+
+                continueYStart = int(top + self.__fHeight)
+                if fHeight2 > 0 and int(bottom - fHeight2) > continueYStart:
+                    pX = WCodeEditor.__LINENUMBER_PADDING + lineNumberAreaWidth - self.__fWidth//2
+                    pen = QPen(color)
+                    pen.setWidth(3)
+                    painter.setPen(pen)
+                    painter.drawLine(pX, continueYStart, pX, int(bottom - fHeight2))
 
             block = block.next()
             top = bottom
-            bottom = top + self.blockBoundingRect(block).height()
+            blockH = self.blockBoundingRect(block).height()
+            bottom = top + blockH
             blockNumber += 1
 
     def wheelEvent(self, event):
         """CTRL + wheel os used to zoom in/out font size"""
         if self.__optionWheelSetFontSize and event.modifiers() == Qt.ControlModifier:
             delta = event.angleDelta().y()
+            self.setUpdatesEnabled(False)
             if delta < 0:
                 self.zoomOut()
             elif delta > 0:
                 self.zoomIn()
+            self.__fHeight = self.fontMetrics().height()
+            self.__fWidth = self.fontMetrics().horizontalAdvance("W")
+            self.setUpdatesEnabled(True)
+            self.fontSizeChanged.emit(self.optionFontSize())
         else:
             super(WCodeEditor, self).wheelEvent(event)
 
@@ -562,7 +587,6 @@ class WCodeEditor(QPlainTextEdit):
         # initialise some metrics
         rect = event.rect()
         font = self.currentCharFormat().font()
-        charWidth = QFontMetricsF(font).averageCharWidth()
         leftOffset = self.contentOffset().x() + self.document().documentMargin()
 
         # initialise painter to editor's viewport
@@ -570,7 +594,7 @@ class WCodeEditor(QPlainTextEdit):
 
         if self.__optionRightLimitVisible:
             # draw right limit
-            position = round(charWidth * self.__optionRightLimitPosition + leftOffset)
+            position = round(self.__fWidth * self.__optionRightLimitPosition + leftOffset)
             painter.setPen(self.__optionRightLimitColor)
             painter.drawLine(position, rect.top(), position, rect.bottom())
 
@@ -602,13 +626,13 @@ class WCodeEditor(QPlainTextEdit):
                 if self.__optionShowSpaces:
                     # draw spaces
                     for i in range(nbSpacesLeft):
-                        painter.drawText(QRectF(left, top, charWidth, self.fontMetrics().height()), Qt.AlignLeft, '.')
-                        left += charWidth
+                        painter.drawText(QRectF(left, top, self.__fWidth, self.__fHeight), Qt.AlignLeft, '.')
+                        left += self.__fWidth
 
-                    left = leftOffset + charWidth * posSpacesRight
+                    left = leftOffset + self.__fWidth * posSpacesRight
                     for i in range(nbSpacesRight):
-                        painter.drawText(QRectF(left, top, charWidth, self.fontMetrics().height()), Qt.AlignLeft, '.')
-                        left += charWidth
+                        painter.drawText(QRectF(left, top, self.__fWidth, self.__fHeight), Qt.AlignLeft, '.')
+                        left += self.__fWidth
 
                 if self.__optionShowIndentLevel:
                     # draw level indent
@@ -636,10 +660,10 @@ class WCodeEditor(QPlainTextEdit):
                         else:
                             previousIndent = nbSpacesLeft
 
-                        left = leftOffset + round(charWidth*2/3, 0)
+                        left = leftOffset + round(self.__fWidth*2/3, 0)
                         nbChar = 0
                         while nbChar < nbSpacesLeft:
-                            position = round(charWidth * nbChar) + leftOffset
+                            position = round(self.__fWidth * nbChar) + leftOffset
                             painter.drawLine(QLineF(position, top, position, top + self.blockBoundingRect(block).height() - 1))
                             nbChar += self.__optionIndentWidth
                     elif len(block.text().strip()) > 0:
@@ -1158,12 +1182,7 @@ class WCodeEditor(QPlainTextEdit):
         """Set if line numbers are visible or not"""
         if isinstance(value, bool) and value != self.__optionShowLineNumber:
             self.__optionShowLineNumber = value
-            if value:
-                self.__lineNumberArea = WCELineNumberArea(self)
-            else:
-                self.__lineNumberArea.disconnect()
-                self.__lineNumberArea = None
-
+            self.__lineNumberArea.setVisible(value)
             self.__updateLineNumberAreaWidth()
             self.update()
 
@@ -1278,14 +1297,27 @@ class WCodeEditor(QPlainTextEdit):
             self.__optionWheelSetFontSize = value
 
     def optionFontSize(self):
-        """Return current console font size (in point)"""
+        """Return current font size (in point)"""
         return self.font().pointSize()
 
     def setOptionFontSize(self, value):
-        """Set current console font size (in point)"""
+        """Set current font size (in point)"""
         font = self.font()
         font.setPointSize(value)
         self.setFont(font)
+        self.__fHeight = self.fontMetrics().height()
+        self.__fWidth = self.fontMetrics().averageCharWidth()
+
+    def optionFont(self):
+        """Return current font"""
+        return self.font()
+
+    def setOptionFont(self, font):
+        """Set current font"""
+        if isinstance(font, QFont):
+            self.setFont(font)
+            self.__fHeight = self.fontMetrics().height()
+            self.__fWidth = self.fontMetrics().averageCharWidth()
 
     def setHeight(self, numberOfRows=None):
         """Set height according to given number of rows"""
