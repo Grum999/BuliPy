@@ -135,7 +135,6 @@
     </property>
     <addaction name="actionSettingsPreferences"/>
     <addaction name="separator"/>
-    <addaction name="actionSettingsSaveSessionOnExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -156,8 +155,8 @@
        <normaloff>:/pktk/images/normal/clipboard_pushback</normaloff>:/pktk/images/normal/clipboard_pushback</iconset>
      </property>
      <addaction name="actionToolsCopyFullPathFileName"/>
-     <addaction name="actionToolsPathName"/>
-     <addaction name="actionToolsFileName"/>
+     <addaction name="actionToolsCopyPathName"/>
+     <addaction name="actionToolsCopyFileName"/>
     </widget>
     <widget class="QMenu" name="menuToolsManipulateDoc">
      <property name="title">
@@ -188,6 +187,7 @@
      <string>View</string>
     </property>
     <addaction name="actionViewWrapLines"/>
+    <addaction name="actionViewShowRightLimit"/>
     <addaction name="actionViewShowLineNumber"/>
     <addaction name="actionViewShowSpaces"/>
     <addaction name="actionViewShowIndent"/>
@@ -702,6 +702,9 @@
    </property>
   </action>
   <action name="actionViewWrapLines">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
      <normaloff>:/pktk/images/normal/view_text_linewrap</normaloff>
@@ -712,6 +715,9 @@
    </property>
   </action>
   <action name="actionViewShowLineNumber">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
      <normaloff>:/pktk/images/normal/view_text_linenumber</normaloff>
@@ -722,6 +728,9 @@
    </property>
   </action>
   <action name="actionViewShowSpaces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
      <normaloff>:/pktk/images/normal/view_text_spaces</normaloff>
@@ -735,6 +744,9 @@
    </property>
   </action>
   <action name="actionViewShowIndent">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
      <normaloff>:/pktk/images/normal/view_text_indent</normaloff>
@@ -745,6 +757,9 @@
    </property>
   </action>
   <action name="actionViewHighlightClassesFunctionDeclaration">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
      <normaloff>:/pktk/images/normal/view_text_highlight</normaloff>
@@ -777,12 +792,12 @@
     <string>Full path file name</string>
    </property>
   </action>
-  <action name="actionToolsPathName">
+  <action name="actionToolsCopyPathName">
    <property name="text">
     <string>Path name</string>
    </property>
   </action>
-  <action name="actionToolsFileName">
+  <action name="actionToolsCopyFileName">
    <property name="text">
     <string>File name</string>
    </property>
@@ -850,6 +865,19 @@
   <action name="actionToolsMDocPrettify">
    <property name="text">
     <string>Prettify</string>
+   </property>
+  </action>
+  <action name="actionViewShowRightLimit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_text_rightlimit</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_text_rightlimit</disabledoff>:/pktk/images/normal/view_text_rightlimit</iconset>
+   </property>
+   <property name="text">
+    <string>Show right limit</string>
    </property>
   </action>
  </widget>
