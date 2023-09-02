@@ -42,21 +42,29 @@ from ..pktk.pktk import *
 
 
 class BPSettingsKey(SettingsKey):
+
+    # -- from settings dialogbox
+
     CONFIG_OPEN_ATSTARTUP =                                  'config.open.atStartup'
 
-    CONFIG_SESSION_SAVE =                                    'config.session.save'
     CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT =                 'config.session.documents.recents.count'
 
     CONFIG_EDITOR_FONT_NAME =                                'config.editor.font.name'
-    CONFIG_EDITOR_FONT_SIZE =                                'config.editor.font.size'
     CONFIG_EDITOR_INDENT_WIDTH =                             'config.editor.indent.width'
-    CONFIG_EDITOR_INDENT_VISIBLE =                           'config.editor.indent.visible'
-    CONFIG_EDITOR_SPACES_VISIBLE =                           'config.editor.spaces.visible'
+    CONFIG_EDITOR_SPACES_COLOR =                             'config.editor.spaces.color'
     CONFIG_EDITOR_RIGHTLIMIT_WIDTH =                         'config.editor.rightLimit.width'
-    CONFIG_EDITOR_RIGHTLIMIT_VISIBLE =                       'config.editor.rightLimit.visible'
-    CONFIG_EDITOR_AUTOCOMPLETION_ACTIVE =                    'config.editor.autoCompletion.active'
 
-    CONFIG_DOCKER_CONSOLE_BUFFERSIZE =                       'config.docker.console.bufferSize'
+    CONFIG_DOCKER_CONSOLE_BUFFERSIZE =                       'session.docker.console.bufferSize'
+
+    # -- session
+
+    SESSION_EDITOR_WRAPLINES_ACTIVE =                        'session.editor.wrapLines.active'
+    SESSION_EDITOR_INDENT_VISIBLE =                          'session.editor.indent.visible'
+    SESSION_EDITOR_SPACES_VISIBLE =                          'session.editor.spaces.visible'
+    SESSION_EDITOR_RIGHTLIMIT_VISIBLE =                      'session.editor.rightLimit.visible'
+    SESSION_EDITOR_LINE_NUMBER_VISIBLE =                     'session.editor.lineNumber.visible'
+    SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE =          'session.editor.highlightClassFctDecl.active'
+    SESSION_EDITOR_FONT_SIZE =                               'session.editor.font.size'
 
     SESSION_MAINWINDOW_WINDOW_GEOMETRY =                     'session.mainwindow.window.geometry'
     SESSION_MAINWINDOW_WINDOW_MAXIMIZED =                    'session.mainwindow.window.maximized'
@@ -115,23 +123,22 @@ class BPSettings(Settings):
             # [1..n]    = values types & accepted values
             SettingsRule(BPSettingsKey.CONFIG_OPEN_ATSTARTUP,                               False,                    SettingsFmt(bool)),
 
-            SettingsRule(BPSettingsKey.CONFIG_SESSION_SAVE,                                 True,                     SettingsFmt(bool)),
             SettingsRule(BPSettingsKey.CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT,              25,                       SettingsFmt(int, (1, 100))),
 
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_FONT_NAME,                             "DejaVu Sans Mono",       SettingsFmt(str)),
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_FONT_SIZE,                             9,                        SettingsFmt(int, (5, 96))),
-
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH,                          4,                        SettingsFmt(int, (1, 8))),
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_INDENT_VISIBLE,                        True,                     SettingsFmt(bool)),
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_SPACES_VISIBLE,                        True,                     SettingsFmt(bool)),
-
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH,                      120,                      SettingsFmt(int, (40, 240))),
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_VISIBLE,                    True,                     SettingsFmt(bool)),
-
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_AUTOCOMPLETION_ACTIVE,                 True,                     SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE,                    0,                        SettingsFmt(int)),
 
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_FONT_SIZE,                            9,                        SettingsFmt(int, (5, 96))),
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE,                       True,                     SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE,                       True,                     SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE,                   True,                     SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE,                  True,                     SettingsFmt(bool)),
+
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE,       True,                     SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE,                     True,                     SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_GEOMETRY,                  [-1, -1, -1, -1],         SettingsFmt(int), SettingsFmt(int), SettingsFmt(int), SettingsFmt(int)),
             SettingsRule(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_MAXIMIZED,                 False,                    SettingsFmt(bool)),

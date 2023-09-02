@@ -75,6 +75,7 @@ class WBPDocument(WBPDocumentBase):
     selectionChanged = Signal(WBPDocumentBase)
     copyAvailable = Signal(WBPDocumentBase)
     languageDefChanged = Signal(WBPDocumentBase)
+    fontSizeChanged = Signal(WBPDocumentBase)
 
     ALERT_FILE_DELETED =    0x01
     ALERT_FILE_MODIFIED =   0x02
@@ -109,6 +110,7 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.setOptionMultiLine(True)
         self.__codeEditor.setOptionShowLineNumber(True)
         self.__codeEditor.setOptionAllowWheelSetFontSize(True)
+        self.__codeEditor.setOptionAutoCompletion(False)
 
         self.__codeEditor.readOnlyModeChanged.connect(lambda: self.readOnlyModeChanged.emit(self))
         self.__codeEditor.overwriteModeChanged.connect(lambda: self.overwriteModeChanged.emit(self))
@@ -119,6 +121,7 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.undoAvailable.connect(lambda: self.undoAvailable.emit(self))
         self.__codeEditor.selectionChanged.connect(lambda: self.selectionChanged.emit(self))
         self.__codeEditor.copyAvailable.connect(lambda: self.copyAvailable.emit(self))
+        self.__codeEditor.fontSizeChanged.connect(lambda: self.fontSizeChanged.emit(self))
 
         # File watcher on document; allows to check if file is modified outside editor
         self.__fsWatcher = QFileSystemWatcher()
@@ -317,23 +320,36 @@ class WBPDocument(WBPDocumentBase):
 
     def applySettings(self):
         """Apply global BuliPy editor settings"""
+        self.__codeEditor.setUpdatesEnabled(False)
+
         font = QFont()
         font.setFamily(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
-        font.setPointSize(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_SIZE))
+        font.setPointSize(BPSettings.get(BPSettingsKey.SESSION_EDITOR_FONT_SIZE))
         font.setFixedPitch(True)
-        self.__codeEditor.setFont(font)
+        self.__codeEditor.setOptionFont(font)
 
         # TODO: implement color theme...
 
+        # must be same font than editor
+        # self.__codeEditor.setOptionGutterText(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
+
         self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
-        self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_VISIBLE))
-
-        self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_SPACES_VISIBLE))
-
-        self.__codeEditor.setOptionShowRightLimit(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_VISIBLE))
+        # self.__codeEditor.setOptionSpacesColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
         self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+        # self.__codeEditor.setOptionRightLimitColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
+        # self.__codeEditor.setOptionHighlightedLineColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
 
-        self.__codeEditor.setOptionAutoCompletion(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCOMPLETION_ACTIVE))
+        self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE))
+        self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE))
+        self.__codeEditor.setOptionShowLineNumber(BPSettings.get(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE))
+        self.__codeEditor.setOptionShowRightLimit(BPSettings.get(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE))
+
+        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE):
+            self.__codeEditor.setLineWrapMode(QPlainTextEdit.WidgetWidth)
+        else:
+            self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
+
+        self.__codeEditor.setUpdatesEnabled(True)
 
     def modified(self):
         """Return if document is modified or not"""
@@ -699,6 +715,7 @@ class BPDocuments(QObject):
     selectionChanged = Signal(WBPDocument)
     copyAvailable = Signal(WBPDocument)
     languageDefChanged = Signal(WBPDocument)
+    fontSizeChanged = Signal(WBPDocument)
 
     def __init__(self, uiController, parent=None):
         super(BPDocuments, self).__init__(parent)
@@ -753,6 +770,10 @@ class BPDocuments(QObject):
         """language definition document changed"""
         self.languageDefChanged.emit(document)
 
+    def __fontSizeChanged(self, document):
+        """font size of document changed"""
+        self.fontSizeChanged.emit(document)
+
     def __addDocument(self, document, counterNewDocument=0):
         """Add a new document"""
         # append new document to document list
@@ -774,6 +795,7 @@ class BPDocuments(QObject):
         document.selectionChanged.connect(self.__selectionChanged)
         document.copyAvailable.connect(self.__copyAvailable)
         document.languageDefChanged.connect(self.__languageDefChanged)
+        document.fontSizeChanged.connect(self.__fontSizeChanged)
 
         document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
 

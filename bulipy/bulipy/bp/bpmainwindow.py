@@ -179,9 +179,30 @@ class BPMainWindow(QMainWindow):
         self.actionEditCopy.triggered.connect(self.__uiController.commandEditCopy)
         self.actionEditPaste.triggered.connect(self.__uiController.commandEditPaste)
         self.actionEditSelectAll.triggered.connect(self.__uiController.commandEditSelectAll)
-        self.actionEditSearchReplace.triggered.connect(lambda: self.__uiController.commandViewDockSearchAndReplaceVisible(True))
+        self.actionEditSearchReplace.triggered.connect(lambda: self.__uiController.commandEditDockSearchAndReplaceVisible(True))
+
+        self.actionEditCodeComment.triggered.connect(self.__uiController.commandEditComment)
+        self.actionEditCodeUncomment.triggered.connect(self.__uiController.commandEditUncomment)
+        self.actionEditCodeIndent.triggered.connect(self.__uiController.commandEditIndent)
+        self.actionEditCodeDedent.triggered.connect(self.__uiController.commandEditDedent)
+        self.actionEditDeleteLine.triggered.connect(self.__uiController.commandEditDeleteLine)
+        self.actionEditDuplicateLine.triggered.connect(self.__uiController.commandEditDuplicateLine)
+        self.actionEditOverwriteMode.triggered.connect(self.__uiController.commandEditOverwriteMode)
+        self.actionEditReadOnlyMode.triggered.connect(self.__uiController.commandEditReadOnlyMode)
+        self.actionEditGoToLine.triggered.connect(self.__uiController.commandEditGoToLine)
 
         self.menuEdit.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu VIEW
+        # ----------------------------------------------------------------------
+        self.actionViewWrapLines.triggered.connect(self.__uiController.commandViewWrapLines)
+        self.actionViewShowRightLimit.triggered.connect(self.__uiController.commandViewShowRightLimit)
+        self.actionViewShowLineNumber.triggered.connect(self.__uiController.commandViewShowLineNumber)
+        self.actionViewShowSpaces.triggered.connect(self.__uiController.commandViewShowSpaces)
+        self.actionViewShowIndent.triggered.connect(self.__uiController.commandViewShowIndent)
+        self.actionViewHighlightClassesFunctionDeclaration.triggered.connect(self.__uiController.commandViewHighlightClassesFunctionDeclaration)
+
+        self.menuView.aboutToShow.connect(self.__menuAboutToShow)
 
         # Menu SCRIPT
         # ----------------------------------------------------------------------
@@ -194,11 +215,29 @@ class BPMainWindow(QMainWindow):
 
         # Menu TOOLS
         # ----------------------------------------------------------------------
-        self.actionToolsColorPicker.triggered.connect(self.__uiController.commandViewDockColorPickerVisible)
+        self.actionToolsColorPicker.triggered.connect(self.__uiController.commandToolsDockColorPickerVisible)
+        self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandToolsDockIconSelectorVisible)
+        self.actionToolsDocuments.triggered.connect(self.__uiController.commandToolsDockDocumentsVisible)
+
+        self.actionToolsCopyFullPathFileName.triggered.connect(self.__uiController.commandToolsCopyFullPathFileName)
+        self.actionToolsCopyPathName.triggered.connect(self.__uiController.commandToolsCopyPathName)
+        self.actionToolsCopyFileName.triggered.connect(self.__uiController.commandToolsCopyFileName)
+        self.actionToolsMDocSortAscending.triggered.connect(self.__uiController.commandToolsMDocSortAscending)
+        self.actionToolsMDocSortDescending.triggered.connect(self.__uiController.commandToolsMDocSortDescending)
+        self.actionToolsMDocRemoveDuplicateLines.triggered.connect(self.__uiController.commandToolsMDocRemoveDuplicateLines)
+        self.actionToolsMDocRemoveEmptyLines.triggered.connect(self.__uiController.commandToolsMDocRemoveEmptyLines)
+        self.actionToolsMDocTrimSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimSpaces)
+        self.actionToolsMDocTrimLeadingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimLeadingSpaces)
+        self.actionToolsMDocTrimTrailingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimTrailingSpaces)
+        self.actionToolsMDocPrettify.triggered.connect(self.__uiController.commandToolsMDocPrettify)
+
+        self.menuTools.aboutToShow.connect(self.__menuAboutToShow)
 
         # Menu SETTINGS
         # ----------------------------------------------------------------------
         self.actionSettingsPreferences.triggered.connect(self.__uiController.commandSettingsOpen)
+
+        self.menuSettings.aboutToShow.connect(self.__menuAboutToShow)
 
         # Menu HELP
         # ----------------------------------------------------------------------
