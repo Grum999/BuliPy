@@ -211,6 +211,8 @@ class BPPyRunner:
         self.__fullFileName = self.__document.tabName(True)
         self.__scriptPath = None
 
+        self.__isRunning = False
+
         self.__separator = f"================{'=' * (max(len(self.__fullFileName), 19))}"
 
         self.__startTime = None
@@ -329,6 +331,7 @@ class BPPyRunner:
 
             return (returnedMsg, returnedData)
 
+        self.__isRunning = True
         self.__console.setScriptIsRunning(True)
         if not self.__console.autoClear():
             self.__loggerAddSeparator()
@@ -351,6 +354,9 @@ class BPPyRunner:
         if len(errorMsg):
             self.__loggerAddSeparator()
             self.__logger.append(errorMsg, WConsoleType.ERROR, errorData)
+
+            self.__console.setScriptIsRunning(False)
+            self.__isRunning = False
             return False
 
         return True
@@ -377,6 +383,7 @@ class BPPyRunner:
                               ],
                              WConsoleType.INFO)
         self.__console.setScriptIsRunning(False)
+        self.__isRunning = False
 
     def __run(self):
         """Run script"""
@@ -464,3 +471,8 @@ class BPPyRunner:
 
         self.__logger.close()
         self.__logger = None
+
+    def isRunning(self):
+        """return is currently running"""
+        return self.__isRunning
+
