@@ -14,28 +14,38 @@ from enum import Enum
 
 import PyQt5.uic
 from PyQt5.Qt import *
+from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtCore import (
         pyqtSignal,
         QSettings,
         QStandardPaths
     )
 
-from os.path import (join, getsize)
+import os
 import json
 import re
 import sys
 import shutil
 
+from .bpthemes import BPThemes
+
+from ..pktk.modules.imgutils import buildIcon
 from ..pktk.modules.utils import (
         checkKritaVersion,
         Debug
     )
+from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.settings import (
                         Settings,
                         SettingsFmt,
                         SettingsKey,
                         SettingsRule
                     )
+from ..pktk.widgets.wcodeeditor import (
+        WCodeEditor,
+        WCodeEditorTheme
+    )
+from ..pktk.widgets.wtabbar import WTabBar
 from ..pktk.pktk import *
 
 # -----------------------------------------------------------------------------
@@ -49,14 +59,23 @@ class BPSettingsKey(SettingsKey):
 
     CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT =                 'config.session.documents.recents.count'
 
-    CONFIG_EDITOR_FONT_NAME =                                'config.editor.font.name'
-    CONFIG_EDITOR_INDENT_WIDTH =                             'config.editor.indent.width'
-    CONFIG_EDITOR_SPACES_COLOR =                             'config.editor.spaces.color'
-    CONFIG_EDITOR_RIGHTLIMIT_WIDTH =                         'config.editor.rightLimit.width'
+    CONFIG_DOCUMENT_DEFAULTTYPE =                            'config.documents.default.type'
+    CONFIG_DOCUMENT_PY_TRIMONSAVE =                          'config.documents.type.python.trimOnSave'
 
-    CONFIG_DOCKER_CONSOLE_BUFFERSIZE =                       'session.docker.console.bufferSize'
+    CONFIG_EDITOR_FONT_NAME =                                'config.editor.appearance.font.name'
+    CONFIG_EDITOR_THEME_SELECTED =                           'config.editor.appearance.theme.selected'
+    CONFIG_EDITOR_INDENT_WIDTH =                             'config.editor.editing.indent.width'
+    CONFIG_EDITOR_RIGHTLIMIT_WIDTH =                         'config.editor.editing.rightLimit.width'
+    CONFIG_EDITOR_ENCLOSINGCHARS =                           'config.editor.editing.enclosingCharacters'
+    CONFIG_EDITOR_AUTOCLOSE =                                'config.editor.editing.autoclose'
+
+    CONFIG_DOCKER_CONSOLE_BUFFERSIZE =                       'config.docker.console.bufferSize'
+
+    CONFIG_TOOLBARS =                                        'config.toolbars'
 
     # -- session
+
+    SESSION_TOOLBARS =                                       'session.toolbars'
 
     SESSION_EDITOR_WRAPLINES_ACTIVE =                        'session.editor.wrapLines.active'
     SESSION_EDITOR_INDENT_VISIBLE =                          'session.editor.indent.visible'
@@ -125,9 +144,16 @@ class BPSettings(Settings):
 
             SettingsRule(BPSettingsKey.CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT,              25,                       SettingsFmt(int, (1, 100))),
 
+            SettingsRule(BPSettingsKey.CONFIG_DOCUMENT_DEFAULTTYPE,                         ".py",                    SettingsFmt(str)),
+            SettingsRule(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE,                       True,                     SettingsFmt(bool)),
+
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_FONT_NAME,                             "DejaVu Sans Mono",       SettingsFmt(str)),
+            SettingsRule(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED,                        "bulipi",                 SettingsFmt(str)),
+
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH,                          4,                        SettingsFmt(int, (1, 8))),
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH,                      120,                      SettingsFmt(int, (40, 240))),
+            SettingsRule(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS,                        "() {} [] '' \"\" ``",    SettingsFmt(str)),
+            SettingsRule(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE,                             True,                     SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE,                    0,                        SettingsFmt(int)),
 
@@ -180,7 +206,351 @@ class BPSettings(Settings):
             SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED,  False,                    SettingsFmt(bool)),
             SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_TEXT,                      '',                       SettingsFmt(str)),
             SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_REPLACE_TEXT,                     '',                       SettingsFmt(str)),
-            SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE,                 12,                       SettingsFmt(int))
+            SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE,                 12,                       SettingsFmt(int)),
+
+            SettingsRule(BPSettingsKey.CONFIG_TOOLBARS,                                     [],                         SettingsFmt(list, dict)),
+            SettingsRule(BPSettingsKey.SESSION_TOOLBARS,                                    [],                         SettingsFmt(list, dict))
         ]
 
         super(BPSettings, self).__init__(pluginId, rules)
+
+
+class BPSettingsDialogBox(QDialog):
+    """User interface fo settings"""
+
+    CATEGORY_DOCUMENTS = 0
+    CATEGORY_EDITOR = 1
+    CATEGORY_SCRIPTEXEC = 2
+    CATEGORY_TOOLBAR_CONFIG = 3
+    CATEGORY_CACHE = 3
+
+    __CODE_EXAMPLE = {'.py': '''# Python file example to check font & theme selection
+# {0}
+# {1}
+
+import krita
+
+class HelloWorld(object):
+    """A really simple class
+
+    You can copy/paste content to test it!
+    """
+    @staticmethod
+    def hello(name):
+        """Just print hello to standard output"""
+        print(f"Hello {name}!")
+
+    def __init__(self):
+        self.__version = b'\\x01\\x01'
+        self.__name = None
+
+    def setName(self, name):
+        """Set user name"""
+        if isinstance(name, str) or name is None:
+            self.__name = name
+
+    def helloWorld(self, repeat=0):
+        """Print hello to standard output"""
+        for index in range(repeat + 1):
+            print('Hello world!')
+
+        if self.__name is None:
+            print(f'How are you?')
+        else:
+            print(f'How are you {self.__name}?')
+
+
+hw = HelloWorld()
+hw.setName('Buli')
+hw.helloWorld(2)''',
+                      '.xml': '''<?xml version="1.0" encoding = "UTF-8" standalone = "yes" ?>
+<!DOCTYPE test>
+<!-- XML file example to check font & theme selection
+     {0}
+     {1}
+-->
+<root>
+    <node index='0'>
+        <type value="test"/>
+        <content>This is a normal content with some special characters like: &apos;&lt;&apos; and &quot;&gt;&quot;</content>
+    </node>
+    <node index='1'>
+        <type value="test"/>
+        <content><![CDATA[
+            This is a content & an example with some specific '<' and ">" characters &amp;
+            This is a normal content with some special characters like: '<' and ">"
+        ]]>
+        </content>
+</root>''',
+                      '.json': '''{
+    "comment": [
+        "JSON file example to check font & theme selection",
+        "{0}",
+        "{1}"
+    ],
+    "items": [
+        "string": "A string",
+        "special values": [null, true, false],
+        "numbers":  {
+            "examples 1": [12, 34.56, -7, -8.99],
+            "examples 2": [12e-1, 34.56e+2, -7e1, -8.99e2]
+        }
+    ]
+}''',
+                      '.txt': '''Text file example to check font & theme selection
+{0}
+{1}
+
+
+
+
+
+
+Vote Buli!'''}
+
+    def __init__(self, title, uicontroller, parent=None):
+        super(BPSettingsDialogBox, self).__init__(parent)
+
+        self.__title = title
+
+        uiFileName = os.path.join(os.path.dirname(__file__), 'resources', 'bpsettings.ui')
+        PyQt5.uic.loadUi(uiFileName, self)
+
+        self.setWindowTitle(self.__title)
+        self.lwPages.itemSelectionChanged.connect(self.__categoryChanged)
+
+        self.__itemCatDocuments = QListWidgetItem(buildIcon("pktk:file_copy"), i18n("Documents"))
+        self.__itemCatDocuments.setData(Qt.UserRole, BPSettingsDialogBox.CATEGORY_DOCUMENTS)
+        self.__itemCatEditor = QListWidgetItem(buildIcon("pktk:process_edit"), i18n("Editor"))
+        self.__itemCatEditor.setData(Qt.UserRole, BPSettingsDialogBox.CATEGORY_EDITOR)
+        self.__itemCatScriptExecution = QListWidgetItem(buildIcon("pktk:process_output_info"), i18n("Script execution"))
+        self.__itemCatScriptExecution.setData(Qt.UserRole, BPSettingsDialogBox.CATEGORY_SCRIPTEXEC)
+        self.__itemCatToolbarConfiguration = QListWidgetItem(buildIcon("pktk:tune_toolbar"), i18n("Toolbars"))
+        self.__itemCatToolbarConfiguration.setData(Qt.UserRole, BPSettingsDialogBox.CATEGORY_TOOLBAR_CONFIG)
+
+        self.__uiController = uicontroller
+
+        self.__tabBar = WTabBar(self, self.twEditorSetup.tabBar())
+        self.__tabBar.setStyleSheet(self.__tabBar.styleSheet() + """
+            WTabBar::tab:selected {
+                background: palette(Light);
+            }
+        """)
+
+        self.twEditorSetup.setTabBar(self.__tabBar)
+        self.twEditorSetup.setStyleSheet("""
+            QTabWidget>* {
+                padding: 0;
+                margin: -2px;
+                border: 0px none;
+                background: palette(Window);
+
+            }
+            QTabWidget::pane {
+                padding: 0px;
+                margin: 0px;
+                border: 0px none;
+                background: palette(Window);
+            }
+        """)
+
+        self.bbOkCancel.accepted.connect(self.__applySettings)
+
+        self.__initialise()
+
+    def __initialise(self):
+        """Initialise interface"""
+        self.lwPages.addItem(self.__itemCatDocuments)
+        self.lwPages.addItem(self.__itemCatEditor)
+        self.lwPages.addItem(self.__itemCatScriptExecution)
+        self.lwPages.addItem(self.__itemCatToolbarConfiguration)
+        self.__setCategory(BPSettingsDialogBox.CATEGORY_DOCUMENTS)
+
+        # --- DOCUMENTS category -----------------------------------------------------
+        self.cbCDocNewDocumentType.clear()
+        self.cbCDocNewDocumentType.addItem(i18n("Python document"), '.py')
+        self.cbCDocNewDocumentType.addItem(i18n("Text document"), '.txt')
+
+        # -- values from config file
+        defaultDocType = BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_DEFAULTTYPE)
+        for index in range(self.cbCDocNewDocumentType.count()):
+            if self.cbCDocNewDocumentType.itemData(index) == defaultDocType:
+                self.cbCDocNewDocumentType.setCurrentIndex(index)
+                break
+
+        self.cbCDocPythonTrimOnSave.setChecked(BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE))
+
+        # --- EDITOR Category -----------------------------------------------------
+        self.__database = QFontDatabase()
+
+        self.cbCEAppearanceFontName.clear()
+        for family in self.__database.families(QFontDatabase.Latin):
+            if self.__database.isFixedPitch(family):
+                self.cbCEAppearanceFontName.addItem(family)
+
+        self.cbCEAppearanceFontName.currentIndexChanged.connect(self.__updateCEAppearanceFontNameChanged)
+        self.sbCEAppearanceFontSize.valueChanged.connect(self.__updateCEAppearanceFontSizeChanged)
+
+        self.ceCEAppearancePreview.setOptionMultiLine(True)
+        self.ceCEAppearancePreview.setOptionCommentCharacter('#')
+        self.ceCEAppearancePreview.setOptionShowLineNumber(True)
+        self.ceCEAppearancePreview.setOptionShowIndentLevel(True)
+        self.ceCEAppearancePreview.setOptionShowRightLimit(True)
+        self.ceCEAppearancePreview.setOptionShowSpaces(True)
+        self.ceCEAppearancePreview.setOptionAutoCompletion(False)
+        self.ceCEAppearancePreview.setOptionAutoCompletionHelp(False)
+        self.ceCEAppearancePreview.setOptionAllowWheelSetFontSize(True)
+        self.ceCEAppearancePreview.setLanguageDefinition(self.__uiController.languageDef('.py'))
+        # a default source code in preview
+        self.cbFileExample.clear()
+        self.cbFileExample.addItem("Python", '.py')
+        self.cbFileExample.addItem("XML", '.xml')
+        self.cbFileExample.addItem("JSON", '.json')
+        self.cbFileExample.addItem("Text", '.txt')
+        self.cbFileExample.setCurrentIndex(0)
+        self.cbFileExample.currentIndexChanged.connect(self.__updateCEFileExampleChanged)
+
+        # load themes
+        self.cbCEAppearanceTheme.clear()
+        for theme in BPThemes.themes(True):
+            # 0: id
+            # 1: name
+            self.cbCEAppearanceTheme.addItem(theme[1], theme[0])
+            self.ceCEAppearancePreview.addTheme(BPThemes.theme(theme[0]))
+
+        self.cbCEAppearanceTheme.currentIndexChanged.connect(self.__updateCEAppearanceTheme)
+
+        self.ceCEAppearancePreview.fontSizeChanged.connect(self.__updateCEAppearancePreviewFontSizeChanged)
+
+        self.leCEEditingEnclosingCharacters.textChanged.connect(self.__enclosingCharactersChanged)
+
+        # -- values from config file
+        fontName = BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME)
+        for index in range(self.cbCEAppearanceFontName.count()):
+            if self.cbCEAppearanceFontName.itemText(index) == fontName:
+                self.cbCEAppearanceFontName.setCurrentIndex(index)
+                break
+
+        self.__updateCEFileExampleChanged(0)
+
+        self.sbCEAppearanceFontSize.setValue(BPSettings.get(BPSettingsKey.SESSION_EDITOR_FONT_SIZE))
+
+        selectedTheme = BPSettings.get(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED)
+        for index in range(self.cbCEAppearanceTheme.count()):
+            if self.cbCEAppearanceTheme.itemData(index) == selectedTheme:
+                self.cbCEAppearanceTheme.setCurrentIndex(index)
+                break
+
+        self.sbCEEditingRightLimit.setValue(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+        self.sbCEEditingIndentSize.setValue(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
+
+        self.leCEEditingEnclosingCharacters.setText(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS))
+
+        self.cbCEEditingAutoClose.setChecked(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
+
+        # --- SCRIPT EXECUTION Category -----------------------------------------------------
+
+        # --- TOOLBAR CONFIGURATION categeory ----------------------------------------------
+        self.wToolbarConfiguration.beginAvailableActionUpdate()
+        self.wToolbarConfiguration.addAvailableActionSeparator()
+        self.wToolbarConfiguration.initialiseAvailableActionsFromMenubar(self.__uiController.window().menuBar())
+        self.wToolbarConfiguration.endAvailableActionUpdate()
+        self.wToolbarConfiguration.availableActionsExpandAll()
+        self.wToolbarConfiguration.toolbarsImport(BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS))
+
+    def __applySettings(self):
+        """Apply current settings"""
+
+        # --- DOCUMENTS category -----------------------------------------------------
+        BPSettings.set(BPSettingsKey.CONFIG_DOCUMENT_DEFAULTTYPE, self.cbCDocNewDocumentType.currentData())
+        BPSettings.set(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE, self.cbCDocPythonTrimOnSave.isChecked())
+
+        # --- EDITOR Category --------------------------------------------------------
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_FONT_NAME, self.cbCEAppearanceFontName.currentText())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_FONT_SIZE, self.sbCEAppearanceFontSize.value())
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED, self.cbCEAppearanceTheme.currentData())
+
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH, self.sbCEEditingRightLimit.value())
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH, self.sbCEEditingIndentSize.value())
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS, self.leCEEditingEnclosingCharacters.text())
+        BPSettings.set(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE, self.cbCEEditingAutoClose.isChecked())
+
+        # --- SCRIPT EXECUTION Category -----------------------------------------------------
+
+        # --- TOOLBAR CONFIGURATION categeory ----------------------------------------------
+        self.__uiController.commandSettingsToolbars(self.wToolbarConfiguration.toolbarsExport(), None)
+
+    def __categoryChanged(self):
+        """Set page according to category"""
+        self.swCatPages.setCurrentIndex(self.lwPages.currentItem().data(Qt.UserRole))
+
+    def __setCategory(self, value):
+        """Set category setting
+
+        Select icon, switch to panel
+        """
+        self.lwPages.setCurrentRow(value)
+
+    def __updateTextExample(self):
+        """Update texte example accordoing to selected them & file example"""
+        themeComments = BPThemes.theme(self.cbCEAppearanceTheme.currentData()).comments()
+        text = BPSettingsDialogBox.__CODE_EXAMPLE[self.cbFileExample.currentData()]
+        text = text.replace('{0}', themeComments[0]).replace('{1}', themeComments[1])
+        self.ceCEAppearancePreview.setPlainText(text)
+
+    def __updateCEAppearanceFontNameChanged(self, index):
+        """A font has been selected, update editor preview"""
+        font = self.ceCEAppearancePreview.optionFont()
+        font.setFamily(self.cbCEAppearanceFontName.itemText(index))
+        self.ceCEAppearancePreview.setOptionFont(font)
+
+    def __updateCEFileExampleChanged(self, index):
+        """File type example modified"""
+        self.ceCEAppearancePreview.setLanguageDefinition(BPThemes.languageDef(self.cbFileExample.currentData()))
+        self.ceCEAppearancePreview.setCurrentTheme(self.cbCEAppearanceTheme.currentData())
+        self.__updateTextExample()
+
+    def __updateCEAppearancePreviewFontSizeChanged(self, value):
+        """Font size has been modified from editor preview, update spinbox"""
+        print("__updateCEAppearancePreviewFontSizeChanged", value)
+        self.sbCEAppearanceFontSize.setValue(value)
+
+    def __updateCEAppearanceFontSizeChanged(self, value):
+        """Font size has been modified from spinbox, update editor preview"""
+        self.ceCEAppearancePreview.setOptionFontSize(value)
+
+    def __updateCEAppearanceTheme(self, value):
+        """Theme has been changed"""
+        # update code editor theme
+        self.ceCEAppearancePreview.setCurrentTheme(self.cbCEAppearanceTheme.currentData())
+        self.__updateTextExample()
+
+    def __enclosingCharactersChanged(self, text):
+        """Enclosing characters definition has been modified; check if valid"""
+        cursorPosition = self.leCEEditingEnclosingCharacters.cursorPosition()
+
+        btOk = self.bbOkCancel.button(QDialogButtonBox.Ok)
+        strippedText = re.sub(r'\s+', '', text)
+        if len(strippedText) % 2 != 0:
+            # need tuples -> even number of characters)
+            btOk.setEnabled(False)
+            self.leCEEditingEnclosingCharacters.setToolTip(i18n("Invalid enclosing characters definition"))
+            self.leCEEditingEnclosingCharacters.setStyleSheet(UITheme.style('error-bg'))
+            return
+        else:
+            btOk.setEnabled(True)
+            self.leCEEditingEnclosingCharacters.setToolTip(f"<html><head/><body><p>{i18n('When typed, selected text will be enclosed by defined characters tuple')}</p></body></html>")
+            self.leCEEditingEnclosingCharacters.setStyleSheet('')
+
+        # reformat: separate tuples with a space
+        formattedText = ' '.join(re.findall('..', strippedText))
+        self.leCEEditingEnclosingCharacters.setText(formattedText)
+
+        newCursorPosition = len(' '.join(re.findall('..', re.sub(r'\s+', '', text[0:cursorPosition + 1]))))
+        self.leCEEditingEnclosingCharacters.setCursorPosition(newCursorPosition)
+
+    @staticmethod
+    def open(title, uicontroller):
+        """Open dialog box"""
+        db = BPSettingsDialogBox(title, uicontroller)
+        return db.exec()

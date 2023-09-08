@@ -32,6 +32,7 @@ from PyQt5.QtCore import (
         QFileSystemWatcher
     )
 
+from .bpthemes import BPThemes
 from .bplanguagedef import BPLanguageDefPython
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 
@@ -43,7 +44,10 @@ from .bpsettings import (
 from ..pktk.modules.languagedef import LanguageDef
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.utils import Debug
-from ..pktk.modules.strutils import strDefault
+from ..pktk.modules.strutils import (
+        strDefault,
+        trimLinesRight
+    )
 from ..pktk.modules.bytesrw import BytesRW
 from ..pktk.widgets.wtabbar import WTabBar
 from ..pktk.widgets.wcodeeditor import WCodeEditor
@@ -91,6 +95,10 @@ class WBPDocument(WBPDocumentBase):
     ACTION_RELOADAUTO =     0x06
 
     def __init__(self, parent=None, languageDef=None, uiController=None):
+        def emitFontSizeChanged():
+            self.__delayedFontSizeTimer.stop()
+            self.fontSizeChanged.emit(self)
+
         super(WBPDocument, self).__init__(parent)
 
         self.__layout = QVBoxLayout(self)
@@ -121,7 +129,7 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.undoAvailable.connect(lambda: self.undoAvailable.emit(self))
         self.__codeEditor.selectionChanged.connect(lambda: self.selectionChanged.emit(self))
         self.__codeEditor.copyAvailable.connect(lambda: self.copyAvailable.emit(self))
-        self.__codeEditor.fontSizeChanged.connect(lambda: self.fontSizeChanged.emit(self))
+        self.__codeEditor.fontSizeChanged.connect(lambda: self.__delayedFontSizeTimer.start(150))
 
         # File watcher on document; allows to check if file is modified outside editor
         self.__fsWatcher = QFileSystemWatcher()
@@ -136,6 +144,13 @@ class WBPDocument(WBPDocumentBase):
         self.__autoReload = False
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveCache())
+
+        self.__trimBeforeSave = False
+
+        # when font size is changed, signal will require to change font size on ALL documents
+        # then to avoid lag due too to many signal sent (and editor to update), emit signal few milliseconds after the font size has been changed
+        self.__delayedFontSizeTimer = QTimer()
+        self.__delayedFontSizeTimer.timeout.connect(lambda: emitFontSizeChanged())
         self.applySettings()
 
     def __repr__(self):
@@ -328,16 +343,12 @@ class WBPDocument(WBPDocumentBase):
         font.setFixedPitch(True)
         self.__codeEditor.setOptionFont(font)
 
-        # TODO: implement color theme...
-
-        # must be same font than editor
-        # self.__codeEditor.setOptionGutterText(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
+        for themeId in BPThemes.themes():
+            self.__codeEditor.addTheme(BPThemes.theme(themeId))
+        self.__codeEditor.setCurrentTheme(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED))
 
         self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
-        # self.__codeEditor.setOptionSpacesColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
         self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
-        # self.__codeEditor.setOptionRightLimitColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
-        # self.__codeEditor.setOptionHighlightedLineColor(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_))
 
         self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE))
         self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE))
@@ -348,6 +359,11 @@ class WBPDocument(WBPDocumentBase):
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.WidgetWidth)
         else:
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
+
+        self.__codeEditor.setOptionEnclosingCharacters(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS).split(' '))
+        self.__codeEditor.setOptionAutoClose(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
+
+        self.__trimBeforeSave = BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE)
 
         self.__codeEditor.setUpdatesEnabled(True)
 
@@ -411,12 +427,21 @@ class WBPDocument(WBPDocumentBase):
         if self.__documentFileName is None:
             return False
 
+        docText = self.__codeEditor.toPlainText()
+        if self.__trimBeforeSave:
+            if re.search(r"\s+$", docText, flags=re.M):
+                editorState = self.__codeEditor.editorState()
+                self.__codeEditor.setUpdatesEnabled(False)
+                self.__codeEditor.setPlainText(trimLinesRight(docText))
+                self.__codeEditor.restoreEditorState(editorState)
+                self.__codeEditor.setUpdatesEnabled(True)
+
         if self.modified() or forceSave:
             # save only if has been modified
             try:
                 self.__stopWatcher()
                 with open(self.__documentFileName, "w") as fHandle:
-                    fHandle.write(self.__codeEditor.toPlainText())
+                    fHandle.write(docText)
                 self.setModified(False)
                 self.saveCache()
                 self.__initWatcher()
@@ -433,10 +458,19 @@ class WBPDocument(WBPDocumentBase):
         If document can't be saved, raise an exception (and fileName is not modified!)
         """
         # save only if has been modified
+        docText = self.__codeEditor.toPlainText()
+        if self.__trimBeforeSave:
+            if re.search(r"\s+$", docText, flags=re.M):
+                editorState = self.__codeEditor.editorState()
+                self.__codeEditor.setUpdatesEnabled(False)
+                self.__codeEditor.setPlainText(trimLinesRight(docText))
+                self.__codeEditor.restoreEditorState(editorState)
+                self.__codeEditor.setUpdatesEnabled(True)
+
         try:
             self.__stopWatcher()
             with open(fileName, "w") as fHandle:
-                fHandle.write(self.__codeEditor.toPlainText())
+                fHandle.write(docText)
             self.setModified(False)
             self.__documentFileName = fileName
             self.__newDocNumber = 0

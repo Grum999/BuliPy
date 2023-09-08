@@ -46,11 +46,12 @@ class BPDockWidgetSearchReplace(WDockWidget):
     OPTION_BTN_WHOLEWORD =           0b00000000000_00100
     OPTION_BTN_BACKWARD =            0b00000000000_01000
     OPTION_BTN_HIGHLIGHT =           0b00000000000_10000
-    # available bits:                     <------>
+    # available bits:                      <----->
     OPTION_TXT_SEARCH =              0b10000000000_00000
     OPTION_TXT_REPLACE =             0b01000000000_00000
     OPTION_FONTSIZE =                0b00100000000_00000
-    #                                     <------>
+    OPTION_FONTNAME =                0b00010000000_00000
+    #                                      <----->
 
     def __init__(self, parent, documents, name='Search and Replace'):
         super(BPDockWidgetSearchReplace, self).__init__(name, parent)
@@ -283,6 +284,7 @@ class BPDockWidgetSearchReplace(WDockWidget):
             BPDockWidgetSearchReplace.OPTION_TXT_SEARCH                     String
             BPDockWidgetSearchReplace.OPTION_TXT_REPLACE                    String
             BPDockWidgetSearchReplace.OPTION_FONTSIZE                       Integer
+            BPDockWidgetSearchReplace.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetSearchReplace.OPTION_BTN_REGEX == BPDockWidgetSearchReplace.OPTION_BTN_REGEX:
             return self.__siSearch.options() & SearchOptions.REGEX == SearchOptions.REGEX
@@ -300,6 +302,8 @@ class BPDockWidgetSearchReplace(WDockWidget):
             return self.__siSearch.replaceText()
         elif optionId & BPDockWidgetSearchReplace.OPTION_FONTSIZE == BPDockWidgetSearchReplace.OPTION_FONTSIZE:
             return self.__cResults.optionFontSize()
+        elif optionId & BPDockWidgetSearchReplace.OPTION_FONTNAME == BPDockWidgetSearchReplace.OPTION_FONTNAME:
+            return self.__cResults.optionFontName()
 
     def setOption(self, optionId, value):
         """Set option value
@@ -313,6 +317,7 @@ class BPDockWidgetSearchReplace(WDockWidget):
             BPDockWidgetSearchReplace.OPTION_TXT_SEARCH                     String
             BPDockWidgetSearchReplace.OPTION_TXT_REPLACE                    String
             BPDockWidgetSearchReplace.OPTION_FONTSIZE                       Integer
+            BPDockWidgetSearchReplace.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetSearchReplace.OPTION_BTN_REGEX == BPDockWidgetSearchReplace.OPTION_BTN_REGEX:
             if value:
@@ -345,3 +350,5 @@ class BPDockWidgetSearchReplace(WDockWidget):
             self.__siSearch.setReplaceText(value)
         elif optionId & BPDockWidgetSearchReplace.OPTION_FONTSIZE == BPDockWidgetSearchReplace.OPTION_FONTSIZE:
             self.__cResults.setOptionFontSize(value)
+        elif optionId & BPDockWidgetSearchReplace.OPTION_FONTNAME == BPDockWidgetSearchReplace.OPTION_FONTNAME:
+            self.__cResults.setOptionFontName(value)

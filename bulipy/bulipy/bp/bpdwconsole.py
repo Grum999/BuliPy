@@ -62,7 +62,7 @@ class BPDockWidgetConsoleOutput(WDockWidget):
     OPTION_BTN_WHOLEWORD =           0b00000000000_00100
     OPTION_BTN_BACKWARD =            0b00000000000_01000
     OPTION_BTN_HIGHLIGHT =           0b00000000000_10000
-    # available bits:                         <-->
+    # available bits:                          <->
     OPTION_BTN_BUTTONSHOW =          0b10000000000_00000
     OPTION_TXT_SEARCH =              0b01000000000_00000
     OPTION_FILTER_TYPES =            0b00100000000_00000
@@ -70,7 +70,8 @@ class BPDockWidgetConsoleOutput(WDockWidget):
     OPTION_BUFFER_SIZE =             0b00001000000_00000
     OPTION_AUTOCLEAR =               0b00000100000_00000
     OPTION_FONTSIZE =                0b00000010000_00000
-    #                                         <-->
+    OPTION_FONTNAME =                0b00000001000_00000
+    #                                          <->
 
     def __init__(self, parent, documents, name='Script execution output'):
         super(BPDockWidgetConsoleOutput, self).__init__(name, parent)
@@ -186,11 +187,14 @@ class BPDockWidgetConsoleOutput(WDockWidget):
             BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE                    Integer
             BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR                      Boolean
             BPDockWidgetConsoleOutput.OPTION_FONTSIZE                       Integer
+            BPDockWidgetConsoleOutput.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE == BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE:
             return self.__cConsole.optionBufferSize()
         elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTSIZE == BPDockWidgetConsoleOutput.OPTION_FONTSIZE:
             return self.__cConsole.optionFontSize()
+        elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTNAME == BPDockWidgetConsoleOutput.OPTION_FONTNAME:
+            return self.__cConsole.optionFontName()
         else:
             return self.__tbFilter.option(optionId)
 
@@ -209,11 +213,14 @@ class BPDockWidgetConsoleOutput(WDockWidget):
             BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE                    Integer
             BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR                      Boolean
             BPDockWidgetConsoleOutput.OPTION_FONTSIZE                       Integer
+            BPDockWidgetConsoleOutput.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE == BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE:
             self.__cConsole.setOptionBufferSize(value)
         elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTSIZE == BPDockWidgetConsoleOutput.OPTION_FONTSIZE:
             self.__cConsole.setOptionFontSize(value)
+        elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTNAME == BPDockWidgetConsoleOutput.OPTION_FONTNAME:
+            self.__cConsole.setOptionFontName(value)
         else:
             self.__tbFilter.setOption(optionId, value)
 

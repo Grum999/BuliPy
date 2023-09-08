@@ -41,8 +41,8 @@ class BPLanguageDefPython(LanguageDef):
         BSTRING_LONG_S = ('bstr_l_s', 'A long Binary String value (single quote)')
         BSTRING_LONG_D = ('bstr_l_d', 'A long Binary String value (double quotes)')
 
-        NUMBER_INT = ('Integer number', 'An INTEGER NUMBER value')
-        NUMBER_FLT = ('Float number', 'An FLOAT NUMBER value')
+        NUMBER_INT = ('number_int', 'An INTEGER NUMBER value')
+        NUMBER_FLT = ('number_flt', 'An FLOAT NUMBER value')
 
         KEYWORD = ('kwrd', 'A keyword identifier')
         KEYWORD_SOFT = ('kwrd_soft', 'A soft keyword identifier')
@@ -299,7 +299,8 @@ class BPLanguageDefPython(LanguageDef):
 
             # Unknown --> everything else
             TokenizerRule(BPLanguageDefPython.ITokenType.UNKNOWN,  r"[^\s]+"),
-        ])
+            ],
+            BPLanguageDefPython.ITokenType)
 
         self.tokenizer().setSimplifyTokenSpaces(True)
         self.tokenizer().setIndent(4)
@@ -342,7 +343,7 @@ class BPLanguageDefPython(LanguageDef):
             (BPLanguageDefPython.ITokenType.DELIMITER_CURLYBRACE_OPEN, '#ff66d9', False, False),
             (BPLanguageDefPython.ITokenType.DELIMITER_CURLYBRACE_CLOSE, '#ff66d9', False, False),
 
-            (BPLanguageDefPython.ITokenType.LINE_JOIN, '#ff66d9', True, False),
+            (BPLanguageDefPython.ITokenType.LINE_JOIN, '#ff66d9', True, False, '#FDFF9E'),
 
             (BPLanguageDefPython.ITokenType.DECL_FUNC, '#ffe066', True, False),
             (BPLanguageDefPython.ITokenType.DECL_CLASS, '#ffe066', True, False),
@@ -350,56 +351,52 @@ class BPLanguageDefPython(LanguageDef):
             (BPLanguageDefPython.ITokenType.IDENTIFIER, '#e6e6e6', False, False),
             (BPLanguageDefPython.ITokenType.DECORATOR, '#ffffe6', True, True),
 
-            (BPLanguageDefPython.ITokenType.COMMENT, '#5c6370', False, True),
-
-            (BPLanguageDefPython.ITokenType.SPACE, None, False, False),
+            (BPLanguageDefPython.ITokenType.COMMENT, '#5c6370', False, True)
         ])
         self.setStyles(UITheme.LIGHT_THEME, [
-            (BPLanguageDefPython.ITokenType.STRING, '#98c379', False, False),
-            (BPLanguageDefPython.ITokenType.STRING_LONG_S, '#aed095', False, False),
-            (BPLanguageDefPython.ITokenType.STRING_LONG_D, '#aed095', False, False),
+            (BPLanguageDefPython.ITokenType.STRING, '#238800', False, False),
+            (BPLanguageDefPython.ITokenType.STRING_LONG_S, '#5D8C00', False, False),
+            (BPLanguageDefPython.ITokenType.STRING_LONG_D, '#5D8C00', False, False),
 
-            (BPLanguageDefPython.ITokenType.FSTRING, '#98c379', False, True),
-            (BPLanguageDefPython.ITokenType.FSTRING_LONG_S, '#aed095', False, True),
-            (BPLanguageDefPython.ITokenType.FSTRING_LONG_D, '#aed095', False, True),
+            (BPLanguageDefPython.ITokenType.FSTRING, '#238800', False, True),
+            (BPLanguageDefPython.ITokenType.FSTRING_LONG_S, '#5D8C00', False, True),
+            (BPLanguageDefPython.ITokenType.FSTRING_LONG_D, '#5D8C00', False, True),
 
-            (BPLanguageDefPython.ITokenType.BSTRING, '#56b6c2', False, False),
-            (BPLanguageDefPython.ITokenType.BSTRING_LONG_S, '#7cc6d0', False, False),
-            (BPLanguageDefPython.ITokenType.BSTRING_LONG_D, '#7cc6d0', False, False),
+            (BPLanguageDefPython.ITokenType.BSTRING, '#008878', False, False),
+            (BPLanguageDefPython.ITokenType.BSTRING_LONG_S, '#00B5A0', False, False),
+            (BPLanguageDefPython.ITokenType.BSTRING_LONG_D, '#00B5A0', False, False),
 
-            (BPLanguageDefPython.ITokenType.NUMBER_INT, '#c9986a', False, False),
-            (BPLanguageDefPython.ITokenType.NUMBER_FLT, '#c9986a', False, False),
+            (BPLanguageDefPython.ITokenType.NUMBER_INT, '#D97814', False, False),
+            (BPLanguageDefPython.ITokenType.NUMBER_FLT, '#D97814', False, False),
 
-            (BPLanguageDefPython.ITokenType.KEYWORD, '#c678dd', True, False),
-            (BPLanguageDefPython.ITokenType.KEYWORD_SOFT, '#c678dd', True, False),
-            (BPLanguageDefPython.ITokenType.KEYWORD_CONSTANT, '#c678dd', True, False),
-            (BPLanguageDefPython.ITokenType.KEYWORD_OPERATOR, '#c678dd', True, False),
+            (BPLanguageDefPython.ITokenType.KEYWORD, '#9B0F83', True, False),
+            (BPLanguageDefPython.ITokenType.KEYWORD_SOFT, '#9B0F83', True, False),
+            (BPLanguageDefPython.ITokenType.KEYWORD_CONSTANT, '#CC427B', True, False),
+            (BPLanguageDefPython.ITokenType.KEYWORD_OPERATOR, '#DF0BEA', True, False),
 
-            (BPLanguageDefPython.ITokenType.BUILTIN_FUNC, '#80bfff', True, False),
-            (BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION, '#e83030', True, False),
+            (BPLanguageDefPython.ITokenType.BUILTIN_FUNC, '#2677CC', True, False),
+            (BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION, '#BF2727', True, False),
 
-            (BPLanguageDefPython.ITokenType.OPERATOR_BINARY, '#ff00ff', False, False),
-            (BPLanguageDefPython.ITokenType.OPERATOR_DUAL, '#ff00ff', False, False),
+            (BPLanguageDefPython.ITokenType.OPERATOR_BINARY, '#DF0BEA', False, False),
+            (BPLanguageDefPython.ITokenType.OPERATOR_DUAL, '#DF0BEA', False, False),
 
-            (BPLanguageDefPython.ITokenType.DELIMITER, '#af2dff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_OPERATOR, '#ff00ff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_SEPARATOR, '#af2dff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_OPEN, '#af2dff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_CLOSE, '#af2dff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_BRACKET_OPEN, '#af2dff', False, False),
-            (BPLanguageDefPython.ITokenType.DELIMITER_BRACKET_CLOSE, '#af2dff', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER, '#D953B5', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_OPERATOR, '#DF0BEA', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_SEPARATOR, '#D953B5', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_OPEN, '#D953B5', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_CLOSE, '#D953B5', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_BRACKET_OPEN, '#D953B5', False, False),
+            (BPLanguageDefPython.ITokenType.DELIMITER_BRACKET_CLOSE, '#D953B5', False, False),
 
-            (BPLanguageDefPython.ITokenType.LINE_JOIN, '#af2dff', False, False),
+            (BPLanguageDefPython.ITokenType.LINE_JOIN, '#D953B5', False, False, '#FDFF9E'),
 
-            (BPLanguageDefPython.ITokenType.DECL_FUNC, '#ffe066', True, False),
-            (BPLanguageDefPython.ITokenType.DECL_CLASS, '#ffe066', True, False),
+            (BPLanguageDefPython.ITokenType.DECL_FUNC, '#00019C', True, False),
+            (BPLanguageDefPython.ITokenType.DECL_CLASS, '#00019C', True, False),
 
-            (BPLanguageDefPython.ITokenType.IDENTIFIER, '#e6e6e6', False, True),
-            (BPLanguageDefPython.ITokenType.DECORATOR, '#ffffe6', True, True),
+            (BPLanguageDefPython.ITokenType.IDENTIFIER, '#333333', False, True),
+            (BPLanguageDefPython.ITokenType.DECORATOR, '#8D8D7F', True, True),
 
-            (BPLanguageDefPython.ITokenType.COMMENT, '#5c6370', False, True),
-
-            (BPLanguageDefPython.ITokenType.SPACE, None, False, False)
+            (BPLanguageDefPython.ITokenType.COMMENT, '#686D9C', False, True)
 
         ])
 
@@ -417,7 +414,8 @@ class BPLanguageDefText(LanguageDef):
 
     def __init__(self):
         """Initialise language & styles"""
-        super(BPLanguageDefText, self).__init__([])
+        super(BPLanguageDefText, self).__init__()
+        self.clearStyles()
 
     def name(self):
         """Return language name"""
@@ -433,7 +431,8 @@ class BPLanguageDefUnmanaged(LanguageDef):
 
     def __init__(self):
         """Initialise language & styles"""
-        super(BPLanguageDefUnmanaged, self).__init__([])
+        super(BPLanguageDefUnmanaged, self).__init__()
+        self.clearStyles()
 
     def name(self):
         """Return language name"""

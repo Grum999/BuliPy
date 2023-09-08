@@ -133,8 +133,19 @@
     <property name="title">
      <string>Setti&amp;ngs</string>
     </property>
+    <widget class="QMenu" name="menuSettingsToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+       <normaloff>:/pktk/images/normal/toolbar</normaloff>
+       <disabledoff>:/pktk/images/disabled/toolbar</disabledoff>:/pktk/images/normal/toolbar</iconset>
+     </property>
+    </widget>
     <addaction name="actionSettingsPreferences"/>
     <addaction name="separator"/>
+    <addaction name="menuSettingsToolbars"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">

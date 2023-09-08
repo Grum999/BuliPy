@@ -83,6 +83,8 @@ class BPMainWindow(QMainWindow):
 
         self.__pixmapBullet = None
 
+        self.__toolbars = []
+
         self.setDockOptions(QMainWindow.AllowTabbedDocks | QMainWindow.AllowNestedDocks)
         self.setTabPosition(Qt.AllDockWidgetAreas, QTabWidget.North)
         self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
@@ -90,6 +92,18 @@ class BPMainWindow(QMainWindow):
         self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
         self.setDocumentMode(False)
+
+        self.setStyleSheet("""
+            QToolBar { border-width: 0px; }
+            QToolBar QToolButton:checked {
+                    background-color: palette(Highlight);
+                }
+
+            /* QMenu::icon ==> doesn't work?? */
+            QMenu::item:checked:enabled {
+                    background-color: palette(Highlight);
+                }
+        """)
 
         self.__initStatusBar()
         self.__initBPDocuments()
@@ -148,6 +162,189 @@ class BPMainWindow(QMainWindow):
     def __initBPDocuments(self):
         """Initialise documents manager"""
         self.msDocuments.setUiController(self.__uiController)
+
+    def __menuSettingsToolbarsToggled(self, value):
+        """A toolbar Sub-menu checkedbox has been changed"""
+        action = self.sender()
+        action.data().setVisible(value)
+
+    def __menuSettingsToolbarsShow(self):
+        """Display toolbar menu"""
+        self.menuSettingsToolbars.clear()
+
+        for toolbar in self.__toolbars:
+            action = self.menuSettingsToolbars.addAction(toolbar.windowTitle())
+            action.setCheckable(True)
+            action.setChecked(toolbar.isVisible())
+            action.setData(toolbar)
+            action.toggled.connect(self.__menuSettingsToolbarsToggled)
+
+    def __menuFileRecentShow(self):
+        """Menu for 'file recent' is about to be displayed
+
+        Build menu content
+        """
+        self.__uiController.buildmenuFileRecent(self.menuFileRecent)
+
+    def __menuAboutToShow(self):
+        """menu is about to show, update it if needed"""
+        self.__uiController.updateMenu()
+
+    def __actionNotYetImplemented(self, v=None):
+        """"Method called when an action not yet implemented is triggered"""
+        QMessageBox.warning(
+                QWidget(),
+                self.__uiController.name(),
+                i18n(f"Sorry! Action has not yet been implemented ({v})")
+            )
+
+    def showEvent(self, event):
+        """Event trigerred when dialog is shown
+
+           At this time, all widgets are initialised and size/visiblity is known
+
+
+           Example
+           =======
+                # define callback function
+                def my_callback_function():
+                    # BPMa__menuEditShowinWindow shown!
+                    pass
+
+                # initialise a dialog from an xml .ui file
+                dlgMain = BPMainWindow.loadUi(uiFileName)
+
+                # execute my_callback_function() when dialog became visible
+                dlgMain.dialogShown.connect(my_callback_function)
+        """
+        super(BPMainWindow, self).showEvent(event)
+
+        pixmapBullet = bullet(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].height()//2, self.palette().color(QPalette.Active, QPalette.Highlight), 'circle')
+        self.__pixmapBullet = QPixmap(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].size())
+        self.__pixmapBullet.fill(Qt.transparent)
+        painter = QPainter(self.__pixmapBullet)
+        painter.drawPixmap((self.__pixmapBullet.width() - pixmapBullet.width())//2, (self.__pixmapBullet.height() - pixmapBullet.height())//2, pixmapBullet)
+        painter.end()
+
+        self.dialogShown.emit()
+
+    def closeEvent(self, event):
+        """Event executed when window is about to be closed"""
+        # event.ignore()
+        self.__uiController.close()
+        event.accept()
+
+    def eventFilter(self, object, event):
+        """Manage event filters for window"""
+        if object in self.__eventCallBack.keys():
+            return self.__eventCallBack[object](event)
+
+        return super(BPMainWindow, self).eventFilter(object, event)
+
+    def setEventCallback(self, object, method):
+        """Add an event callback method for given object
+
+           Example
+           =======
+                # define callback function
+                def my_callback_function(event):
+                    if event.type() == QEvent.xxxx:
+                        # Event!
+                        return True
+                    return False
+
+
+                # initialise a dialog from an xml .ui file
+                dlgMain = BPMainWindow.loadUi(uiFileName)
+
+                # define callback for widget from ui
+                dlgMain.setEventCallback(dlgMain.my_widget, my_callback_function)
+        """
+        if object is None:
+            return False
+
+        self.__eventCallBack[object] = method
+        object.installEventFilter(self)
+
+    def initToolbar(self, toolbarsConfig, toolbarsSession=None):
+        """Initialise toolbars
+
+        Given `toolbars` is a list of dictionary
+        Each dictionary contains at least the following keys:
+            id: toolbar id
+            label : toolbar label
+            actions: list of QAction id
+
+        Can additionally contains:
+            visible: toolbar is visible or hidden
+            area: area in which toolbar is docked
+            rect: position+size of toolbar
+        """
+        def sortToolbar(toolbarSessionDef):
+
+            if toolbarSessionDef['area'] in (Qt.LeftToolBarArea, Qt.RightToolBarArea):
+                return f"{toolbarSessionDef['area']:02}{toolbarSessionDef['rect'][0]:05}{toolbarSessionDef['rect'][1]:05}"
+            else:
+                return f"{toolbarSessionDef['area']:02}{toolbarSessionDef['rect'][1]:05}{toolbarSessionDef['rect'][0]:05}"
+
+        # Disable window updates while preparing content (avoid flickering effect)
+        self.setUpdatesEnabled(False)
+
+        for toolbar in self.toolbarList():
+            self.removeToolBar(toolbar)
+        self.__toolbars = []
+
+        # sort toolbar by area/position
+        sortedId = []
+        if toolbarsSession is not None:
+            toolbarsSession.sort(key=sortToolbar)
+
+            tmp = {toolbarDefinition['id']: toolbarDefinition for toolbarDefinition in toolbarsConfig}
+            toolbarsConfigSorted = []
+            for toolbarId in [toolbarSession['id'] for toolbarSession in toolbarsSession]:
+                if toolbarId in tmp:
+                    toolbarsConfigSorted.append(tmp.pop(toolbarId))
+
+            for toolbarDefinition in toolbarsConfig:
+                if toolbarDefinition['id'] in tmp:
+                    toolbarsConfigSorted.append(toolbarDefinition)
+
+            toolbarsConfig = toolbarsConfigSorted
+
+        for toolbarDefinition in toolbarsConfig:
+            toolbar = self.addToolBar(toolbarDefinition['label'])
+            toolbar.setObjectName(toolbarDefinition['id'])
+            toolbar.setToolButtonStyle(1)
+            toolbar.setToolButtonStyle(toolbarDefinition['style'])
+            toolbar.setFloatable(False)
+            for action in toolbarDefinition['actions']:
+                if action == 'ba32b31ff4730cbf42ba0962f981407bcb4e9c58':  # separator Id
+                    toolbar.addSeparator()
+                else:
+                    foundAction = self.findChild(QAction, action, Qt.FindChildrenRecursively)
+                    if foundAction:
+                        toolbar.addAction(foundAction)
+            self.__toolbars.append(toolbar)
+
+        if toolbarsSession is not None:
+            for toolbarSession in toolbarsSession:
+                for toolbar in self.__toolbars:
+                    if toolbar.objectName() == toolbarSession['id']:
+                        if toolbarSession['break']:
+                            self.addToolBarBreak(toolbarSession['area'])
+                        self.addToolBar(toolbarSession['area'], toolbar)
+                        geometry = toolbarSession['rect']
+                        toolbar.setVisible(toolbarSession['visible'])
+                        # not working...?
+                        # toolbar.setGeometry(geometry[0], geometry[1], geometry[2], geometry[3])
+                        break
+
+        self.menuSettingsToolbars.setEnabled(len(self.__toolbars) > 0)
+        self.setUpdatesEnabled(True)
+
+    def toolbarList(self):
+        """Return list of toolbar"""
+        return self.__toolbars
 
     def initMainView(self):
         """Initialise main view content"""
@@ -238,97 +435,11 @@ class BPMainWindow(QMainWindow):
         self.actionSettingsPreferences.triggered.connect(self.__uiController.commandSettingsOpen)
 
         self.menuSettings.aboutToShow.connect(self.__menuAboutToShow)
+        self.menuSettingsToolbars.aboutToShow.connect(self.__menuSettingsToolbarsShow)
 
         # Menu HELP
         # ----------------------------------------------------------------------
         self.actionHelpAboutBP.triggered.connect(self.__uiController.commandAboutBp)
-
-    def __menuFileRecentShow(self):
-        """Menu for 'file recent' is about to be displayed
-
-        Build menu content
-        """
-        self.__uiController.buildmenuFileRecent(self.menuFileRecent)
-
-    def __menuAboutToShow(self):
-        """menu is about to show, update it if needed"""
-        self.__uiController.updateMenu()
-
-    def __actionNotYetImplemented(self, v=None):
-        """"Method called when an action not yet implemented is triggered"""
-        QMessageBox.warning(
-                QWidget(),
-                self.__uiController.name(),
-                i18n(f"Sorry! Action has not yet been implemented ({v})")
-            )
-
-    def showEvent(self, event):
-        """Event trigerred when dialog is shown
-
-           At this time, all widgets are initialised and size/visiblity is known
-
-
-           Example
-           =======
-                # define callback function
-                def my_callback_function():
-                    # BPMa__menuEditShowinWindow shown!
-                    pass
-
-                # initialise a dialog from an xml .ui file
-                dlgMain = BPMainWindow.loadUi(uiFileName)
-
-                # execute my_callback_function() when dialog became visible
-                dlgMain.dialogShown.connect(my_callback_function)
-        """
-        super(BPMainWindow, self).showEvent(event)
-
-        pixmapBullet = bullet(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].height()//2, self.palette().color(QPalette.Active, QPalette.Highlight), 'circle')
-        self.__pixmapBullet = QPixmap(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].size())
-        self.__pixmapBullet.fill(Qt.transparent)
-        painter = QPainter(self.__pixmapBullet)
-        painter.drawPixmap((self.__pixmapBullet.width() - pixmapBullet.width())//2, (self.__pixmapBullet.height() - pixmapBullet.height())//2, pixmapBullet)
-        painter.end()
-
-        self.dialogShown.emit()
-
-    def closeEvent(self, event):
-        """Event executed when window is about to be closed"""
-        # event.ignore()
-        self.__uiController.close()
-        event.accept()
-
-    def eventFilter(self, object, event):
-        """Manage event filters for window"""
-        if object in self.__eventCallBack.keys():
-            return self.__eventCallBack[object](event)
-
-        return super(BPMainWindow, self).eventFilter(object, event)
-
-    def setEventCallback(self, object, method):
-        """Add an event callback method for given object
-
-           Example
-           =======
-                # define callback function
-                def my_callback_function(event):
-                    if event.type() == QEvent.xxxx:
-                        # Event!
-                        return True
-                    return False
-
-
-                # initialise a dialog from an xml .ui file
-                dlgMain = BPMainWindow.loadUi(uiFileName)
-
-                # define callback for widget from ui
-                dlgMain.setEventCallback(dlgMain.my_widget, my_callback_function)
-        """
-        if object is None:
-            return False
-
-        self.__eventCallBack[object] = method
-        object.installEventFilter(self)
 
     def getWidgets(self):
         """Return a list of ALL widgets"""

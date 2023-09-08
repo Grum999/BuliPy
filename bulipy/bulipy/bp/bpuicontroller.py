@@ -46,21 +46,14 @@ from .bpwopensavedialog import BPWOpenSave
 from .bppyrunner import (BPPyRunner, BPLogger)
 from .bpdocument import (WBPDocument, BPDocuments)
 from .bphistory import BPHistory
-from .bplanguagedef import (
-        BPLanguageDefPython,
-        BPLanguageDefText,
-        BPLanguageDefUnmanaged
-    )
 from .bpmainwindow import BPMainWindow
+from .bpthemes import BPThemes
 from .bpsettings import (
         BPSettings,
-        BPSettingsKey
+        BPSettingsKey,
+        BPSettingsDialogBox
     )
 
-from ..pktk.modules.languagedef import (
-        LanguageDefXML,
-        LanguageDefJSON
-    )
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.utils import (
@@ -90,24 +83,27 @@ class BPUIController(QObject):
     def __init__(self, bpName="BuliPy", bpVersion="testing", kritaIsStarting=False):
         super(BPUIController, self).__init__(None)
 
-        self.__pbStarted = False
-        self.__pbStarting = False
+        self.__bpStarted = False
+        self.__bpStarting = False
 
         self.__window = None
         self.__bpName = bpName
         self.__bpVersion = bpVersion
-        self.__pbTitle = "{0} - {1}".format(bpName, bpVersion)
+        self.__bpTitle = "{0} - {1}".format(bpName, bpVersion)
 
-        self.__languageDefPython = BPLanguageDefPython()
-        self.__languageDefXml = LanguageDefXML()
-        self.__languageDefJson = LanguageDefJSON()
-        self.__languageDefText = BPLanguageDefText()
-        self.__languageDefUnmanaged = BPLanguageDefUnmanaged()
+        # cache directory
+        self.__bpCachePath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.CacheLocation), "bulipy")
+        try:
+            os.makedirs(self.__bpCachePath, exist_ok=True)
+            for subDirectory in ['documents', 'themes']:
+                os.makedirs(self.cachePath(subDirectory), exist_ok=True)
+        except Exception as e:
+            Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
 
         BPSettings.load()
 
         UITheme.load()
-        # BP theme must be loaded before systray is initialized
+        BPThemes.load()
 
         # store a global reference to activeWindow to be able to work with
         # activeWindow signals
@@ -125,14 +121,8 @@ class BPUIController(QObject):
         self.__clipboard = QGuiApplication.clipboard()
         self.__clipboard.changed.connect(self.__updateMenuEditPaste)
 
-        # cache directory
-        self.__pbCachePath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.CacheLocation), "bulipy")
-        try:
-            os.makedirs(self.__pbCachePath, exist_ok=True)
-            for subDirectory in ['documents']:
-                os.makedirs(self.cachePath(subDirectory), exist_ok=True)
-        except Exception as e:
-            Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
+        # toolbars
+        self.__toolbarsTmpSession = []
 
         # document manager
         self.__documents = BPDocuments(self)
@@ -183,15 +173,15 @@ class BPUIController(QObject):
 
     def start(self):
         """Start plugin interface"""
-        if self.__pbStarted:
+        if self.__bpStarted:
             # user interface is already started, bring to front and exit
             self.commandViewBringToFront()
             return
-        elif self.__pbStarting:
+        elif self.__bpStarting:
             # user interface is already starting, exit
             return
 
-        self.__pbStarting = True
+        self.__bpStarting = True
 
         # Check if windows are opened and then, connect signal if needed
         self.__checkKritaWindows()
@@ -224,7 +214,7 @@ class BPUIController(QObject):
         self.__dwSearchReplaceAction.setText(i18n("Search & Replace"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwSearchReplace)
 
-        self.__window.setWindowTitle(self.__pbTitle)
+        self.__window.setWindowTitle(self.__bpTitle)
         self.__window.show()
         self.__window.activateWindow()
 
@@ -236,7 +226,7 @@ class BPUIController(QObject):
         (ie: the widget size are known) to be applied
         """
         if self.__initialised:
-            self.__pbStarted = True
+            self.__bpStarted = True
             self.bpWindowShown.emit()
             # already initialised, do nothing
             return
@@ -317,17 +307,27 @@ class BPUIController(QObject):
         self.__window.initMenu()
 
         self.__initialised = True
-        self.__pbStarted = True
-        self.__pbStarting = False
+        self.__bpStarted = True
+        self.__bpStarting = False
 
         self.bpWindowShown.emit()
 
         self.__currentDocument = self.__documents.document()
+
+        self.__updateUiFromSettings()
         self.__invalidateMenu()
 
     def __themeChanged(self):
         """Theme has been changed, reload resources"""
         UITheme.reloadResources()
+
+    def __updateUiFromSettings(self):
+        """Update UI from settings"""
+        self.__documents.updateSettings()
+
+        # use same font than one choosen for editor
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
 
     def __invalidateMenu(self):
         """Invalidate menu..."""
@@ -515,6 +515,30 @@ class BPUIController(QObject):
         document.saveCache(delayedSave=BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
         self.saveSettings(BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
 
+    def __updateToolbarTmpSession(self):
+        """Update current toolbar temporary session variable from current toolbars state"""
+        if self.__bpStarted:
+            # update toolbars session only if self.__bpStarted is True (BC is started)
+            # if not True this means main window is closed and then, toolbar are not visible
+            # in this case we don't want to save toolbar status/visiblity are they're not
+            # representative of real state
+
+            # get current toolbar configuration from settings as dict for which key is toolbar id
+            toolbarSettings = {toolbar['id']: toolbar for toolbar in BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS)}
+            self.__toolbarsTmpSession = []
+            # loop over toolbar to update settings: visibility, area, position
+            for toolbar in self.__window.toolbarList():
+                id = toolbar.objectName()
+                if id in toolbarSettings:
+                    geometry = toolbar.geometry()
+                    self.__toolbarsTmpSession.append({
+                            'id': id,
+                            'visible': toolbar.isVisible(),
+                            'area': self.__window.toolBarArea(toolbar),
+                            'break': self.__window.toolBarBreak(toolbar),
+                            'rect': [geometry.left(), geometry.top(), geometry.width(), geometry.height()]
+                        })
+
     def updateMenu(self):
         """Update menu for current active document"""
         if not self.__currentDocument:
@@ -629,7 +653,7 @@ class BPUIController(QObject):
 
     def started(self):
         """Return True if BuliPy interface is started"""
-        return self.__pbStarted
+        return self.__bpStarted
 
     def version(self):
         """Return BuliPy plugin version"""
@@ -637,20 +661,17 @@ class BPUIController(QObject):
 
     def title(self):
         """Return BuliPy plugin title"""
-        return self.__pbTitle
+        return self.__bpTitle
+
+    def window(self):
+        """Return main window attached to uiController"""
+        return self.__window
 
     def languageDef(self, extension=None):
         """Return BuliPy language definition"""
-        if extension is None or extension in self.__languageDefPython.extensions():
-            return self.__languageDefPython
-        elif extension in self.__languageDefXml.extensions():
-            return self.__languageDefXml
-        elif extension in self.__languageDefJson.extensions():
-            return self.__languageDefJson
-        elif extension in self.__languageDefText.extensions():
-            return self.__languageDefText
-        else:
-            return self.__languageDefUnmanaged
+        if extension is None:
+            extension = '.py'
+        return BPThemes.languageDef(extension)
 
     def cachePath(self, subDirectory=None):
         """Return BuliPy cache directory
@@ -658,9 +679,9 @@ class BPUIController(QObject):
         If a `subDirectory` name is provided, return cache path for subdirectory
         """
         if subDirectory is None or subDirectory == '':
-            return self.__pbCachePath
+            return self.__bpCachePath
         elif isinstance(subDirectory, str):
-            return os.path.join(self.__pbCachePath, subDirectory)
+            return os.path.join(self.__bpCachePath, subDirectory)
         else:
             raise EInvalidType('Given `subDirectory` must be None or <str > ')
 
@@ -736,7 +757,7 @@ class BPUIController(QObject):
     def close(self):
         """When window is about to be closed, execute some cleanup/backup/stuff before exiting BuliPy"""
         # save current settings
-        if not self.__pbStarted:
+        if not self.__bpStarted:
             return
 
         for document in self.__documents.documents():
@@ -754,7 +775,7 @@ class BPUIController(QObject):
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
 
-        self.__pbStarted = False
+        self.__bpStarted = False
         self.bpWindowClosed.emit()
 
     def optionIsMaximized(self):
@@ -1361,28 +1382,31 @@ class BPUIController(QObject):
 
         return [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()]
 
-    def commandSettingsSaveSessionOnExit(self, saveSession=None):
-        """Define if current session properties have to be save or not"""
-        if saveSession is None:
-            saveSession = self.__window.actionSettingsSaveSessionOnExit.isChecked()
-        elif isinstance(saveSession, bool):
-            self.__window.actionSettingsSaveSessionOnExit.setChecked(saveSession)
-        else:
-            raise EInvalidValue('Given `visible` must be a <bool>')
-
     def commandSettingsOpenAtStartup(self, value=False):
         """Set option to start BP at Krita's startup"""
         BPSettings.set(BPSettingsKey.CONFIG_OPEN_ATSTARTUP, value)
 
     def commandSettingsOpen(self):
         """Open dialog box settings"""
-        # if BPSettingsDialogBox.open(f'{self.__bpName}::Settings', self):
-        #    self.saveSettings()
-        print("TODO: implement commandSettingsOpen")
+        self.__updateToolbarTmpSession()
+        if BPSettingsDialogBox.open(f'{self.__bpName}::Settings', self):
+            self.__updateUiFromSettings()
+            self.saveSettings()
+
+    def commandSettingsToolbars(self, config=None, session=None):
+        """Set toolbars definition"""
+        if config is None:
+            return (BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS), BPSettings.get(BPSettingsKey.SESSION_TOOLBARS))
+        else:
+            BPSettings.set(BPSettingsKey.CONFIG_TOOLBARS, config)
+            if session is not None:
+                BPSettings.set(BPSettingsKey.SESSION_TOOLBARS, session)
+                self.__toolbarsTmpSession = session
+            self.__window.initToolbar(config, self.__toolbarsTmpSession)
 
     def commandAboutBp(self):
         """Display 'About BuliPy' dialog box"""
         WAboutWindow(self.__bpName, self.__bpVersion, os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'), None, ':BuliPy')
 
 
-Debug.setEnabled(True)
+# Debug.setEnabled(True)
