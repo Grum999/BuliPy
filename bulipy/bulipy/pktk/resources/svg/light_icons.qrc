@@ -169,6 +169,7 @@
     <file alias="pause">light/32dp/pause.svg</file>
     <file alias="pinned">light/32dp/pinned.svg</file>
     <file alias="play">light/32dp/play.svg</file>
+    <file alias="process_edit">light/32dp/process_edit.svg</file>
     <file alias="process_out">light/32dp/process_out.svg</file>
     <file alias="process_output_info">light/32dp/process_output_info.svg</file>
     <file alias="row_resize">light/32dp/row_resize.svg</file>
@@ -416,6 +417,7 @@
     <file alias="pause">light/32dp-disabled/pause.svg</file>
     <file alias="pinned">light/32dp-disabled/pinned.svg</file>
     <file alias="play">light/32dp-disabled/play.svg</file>
+    <file alias="process_edit">light/32dp-disabled/process_edit.svg</file>
     <file alias="process_out">light/32dp-disabled/process_out.svg</file>
     <file alias="process_output_info">light/32dp-disabled/process_output_info.svg</file>
     <file alias="row_resize">light/32dp-disabled/row_resize.svg</file>

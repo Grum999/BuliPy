@@ -169,6 +169,7 @@
     <file alias="pause">dark/32dp/pause.svg</file>
     <file alias="pinned">dark/32dp/pinned.svg</file>
     <file alias="play">dark/32dp/play.svg</file>
+    <file alias="process_edit">dark/32dp/process_edit.svg</file>
     <file alias="process_out">dark/32dp/process_out.svg</file>
     <file alias="process_output_info">dark/32dp/process_output_info.svg</file>
     <file alias="row_resize">dark/32dp/row_resize.svg</file>
@@ -416,6 +417,7 @@
     <file alias="pause">dark/32dp-disabled/pause.svg</file>
     <file alias="pinned">dark/32dp-disabled/pinned.svg</file>
     <file alias="play">dark/32dp-disabled/play.svg</file>
+    <file alias="process_edit">dark/32dp-disabled/process_edit.svg</file>
     <file alias="process_out">dark/32dp-disabled/process_out.svg</file>
     <file alias="process_output_info">dark/32dp-disabled/process_output_info.svg</file>
     <file alias="row_resize">dark/32dp-disabled/row_resize.svg</file>

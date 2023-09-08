@@ -517,6 +517,16 @@ class WConsole(QPlainTextEdit):
         font.setPointSize(value)
         self.setFont(font)
 
+    def optionFontName(self):
+        """Return current console font name"""
+        return self.font().family()
+
+    def setOptionFontName(self, value):
+        """Set current console font name"""
+        font = self.font()
+        font.setFamily(value)
+        self.setFont(font)
+
     def optionAllowWheelSetFontSize(self):
         """Return if CTRL+WHEEL allows to change font size"""
         return self.__optionWheelSetFontSize

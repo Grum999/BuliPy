@@ -71,8 +71,8 @@ class WTabBar(QTabBar):
             qp = QPainter(self)
             qp.drawPixmap(0, 0, self.pixmap)
 
-    def __init__(self, parent, *args, **kwargs):
-        super(WTabBar, self).__init__(parent, *args, **kwargs)
+    def __init__(self, parent, fromTabBar=None):
+        super(WTabBar, self).__init__(parent)
         self.__movingTab = None
         self.__isMoving = False
         self.__pressedIndex = -1
@@ -125,6 +125,13 @@ class WTabBar(QTabBar):
 
         # track mouse to highlight tab when over
         self.setMouseTracking(True)
+
+        if isinstance(fromTabBar, QTabBar):
+            for tabIndex in range(fromTabBar.count()):
+                addedTabIndex = self.addTab(fromTabBar.tabIcon(tabIndex), fromTabBar.tabText(tabIndex))
+                self.setTabData(addedTabIndex, fromTabBar.tabData(tabIndex))
+                self.setTabToolTip(addedTabIndex, fromTabBar.tabToolTip(tabIndex))
+                self.setTabVisible(addedTabIndex, fromTabBar.isTabVisible(tabIndex))
 
     def __drawTab(self, painter, index, tabOption, forPixmap=False):
         """Draw tab according to current state"""
@@ -249,18 +256,21 @@ class WTabBar(QTabBar):
                 if self.__overIndex != -1:
                     # hide button for previous tab, if any
                     closeButton = self.tabButton(self.__overIndex, QTabBar.RightSide)
-                    closeButton.hide()
+                    if closeButton:
+                        closeButton.hide()
 
                 if overIndex != -1:
                     # show button for current tab, if any
                     closeButton = self.tabButton(overIndex, QTabBar.RightSide)
-                    closeButton.show()
+                    if closeButton:
+                        closeButton.show()
 
                 self.__overIndex = overIndex
         else:
             if not self.__isMoving:
                 closeButton = self.tabButton(self.__pressedIndex, QTabBar.RightSide)
-                closeButton.hide()
+                if closeButton:
+                    closeButton.hide()
 
             delta = event.pos() - self.startPos
             if not self.__isMoving and delta.manhattanLength() < QApplication.startDragDistance():
