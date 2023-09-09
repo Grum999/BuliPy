@@ -113,6 +113,8 @@ class BPMainWindow(QMainWindow):
 
         [ Path/File name    | Column: 999 . Row: 999/999 | Selection: 999 | INSOVR ]
         """
+        statusBar = self.statusBar()
+
         self.__statusBarWidgets = [
                 QLabel(),                                   # Modification status
                 WLabelElide(Qt.ElideLeft),                  # File name
@@ -122,6 +124,9 @@ class BPMainWindow(QMainWindow):
                 QLabel("000:00000 - 000:00000 [000000]"),   # Selection start (col:row) - Selection end (col:row) [selection length]
                 QLabel("WWW"),                              # INSert/OVeRwrite
             ]
+
+        for statusBarItem in self.__statusBarWidgets:
+            statusBarItem.setFont(statusBar.font())
 
         fontMetrics = self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME].fontMetrics()
 
@@ -144,7 +149,6 @@ class BPMainWindow(QMainWindow):
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_SELECTION].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
 
-        statusBar = self.statusBar()
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS])
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME])
         statusBar.addPermanentWidget(WVLine())

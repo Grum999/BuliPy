@@ -80,6 +80,7 @@ class BPDockWidgetConsoleOutput(WDockWidget):
         self.__widget.setMinimumWidth(200)
 
         self.__layout = QVBoxLayout(self.__widget)
+        self.__layout.setContentsMargins(4, 4, 4, 0)
         self.__widget.setLayout(self.__layout)
 
         self.__cConsole = WConsole(self)
@@ -160,17 +161,18 @@ class BPDockWidgetConsoleOutput(WDockWidget):
 
             document = self.__documents.document()
             line = data['fromPosition'].y()
-            file = data['source'].replace(f"@{document.cacheUuid()}", document.tabName(True))
+            if data['source']:
+                file = data['source'].replace(f"@{document.cacheUuid()}", document.tabName(True))
 
-            rect = self.__cConsole.blockBoundingGeometry(cursor.block()).translated(self.__cConsole.contentOffset())
-            position = self.__cConsole.mapToGlobal(rect.topLeft().toPoint()) + QPoint(25, 30)
+                rect = self.__cConsole.blockBoundingGeometry(cursor.block()).translated(self.__cConsole.contentOffset())
+                position = self.__cConsole.mapToGlobal(rect.topLeft().toPoint()) + QPoint(25, 30)
 
-            msg = i18n(f"CTRL+Click to go to file {file}, line {line}")
+                msg = i18n(f"CTRL+Click to go to file {file}, line {line}")
 
-            QToolTip.showText(position, msg+" ", self)  # dirty trick to force tooltip to be displayed at expected position when mouse move
-            QToolTip.showText(position, msg, self)
-        else:
-            QToolTip.hideText()
+                QToolTip.showText(position, msg+" ", self)  # dirty trick to force tooltip to be displayed at expected position when mouse move
+                QToolTip.showText(position, msg, self)
+                return
+        QToolTip.hideText()
 
     def option(self, optionId):
         """Return current option value

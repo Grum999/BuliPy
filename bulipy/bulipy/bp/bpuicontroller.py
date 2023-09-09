@@ -437,7 +437,10 @@ class BPUIController(QObject):
     def __updateMenuEditPaste(self):
         """Update menu Edit > Paste according to clipboard content"""
         if self.__currentDocument:
-            scriptIsRunning = self.__dwConsoleOutput.scriptIsRunning()
+            if self.__dwConsoleOutput:
+                scriptIsRunning = self.__dwConsoleOutput.scriptIsRunning()
+            else:
+                scriptIsRunning = False
             self.__window.actionEditPaste.setEnabled(self.__currentDocument.codeEditor().canPaste() and not (scriptIsRunning or self.__currentDocument.readOnly()))
 
     def __updateDockersContent(self, document):

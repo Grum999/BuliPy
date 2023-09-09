@@ -42,6 +42,7 @@ class BPDockWidgetColorPicker(WDockWidget):
         self.__widget.setMinimumWidth(200)
 
         self.__layout = QVBoxLayout(self.__widget)
+        self.__layout.setContentsMargins(4, 4, 4, 0)
         self.__widget.setLayout(self.__layout)
 
         self.__cColorPicker = WColorPicker(self)
