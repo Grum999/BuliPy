@@ -161,12 +161,14 @@ class BPUIController(QObject):
         # editor/syntax theme
         self.__theme = ''
 
-        # flag to determinate if menu has to be updated or not
-        self.__menuInvalidated = True
-
         # to save session
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveSettings())
+
+        # When invalidated, update of menu is delayed after a short time to avoid multiple call of menu update
+        # otherwise if need and immediate update, call updateMenu() method directly
+        self.__delayedUpdateMenu = QTimer()
+        self.__delayedUpdateMenu.timeout.connect(lambda: self.updateMenu())
 
         if kritaIsStarting and BPSettings.get(BPSettingsKey.CONFIG_OPEN_ATSTARTUP):
             self.start()
@@ -331,7 +333,9 @@ class BPUIController(QObject):
 
     def __invalidateMenu(self):
         """Invalidate menu..."""
-        self.__menuInvalidated = True
+        # When invalidated, update of menu is delayed after a short time to avoid multiple call of menu update
+        # otherwise if need and immediate update, call updateMenu() method directly
+        self.__delayedUpdateMenu.start(25)
 
     def __documentChanged(self, document):
         """Current active document has been changed"""
@@ -548,10 +552,6 @@ class BPUIController(QObject):
             # no active document? does nothing
             return
 
-        if not self.__menuInvalidated:
-            # menu already up-to-date
-            return
-
         if self.__dwConsoleOutput:
             scriptIsRunning = self.__dwConsoleOutput.scriptIsRunning()
         else:
@@ -624,8 +624,6 @@ class BPUIController(QObject):
         # Menu SETTINGS
         # ----------------------------------------------------------------------
         self.__window.actionSettingsPreferences.setEnabled(not scriptIsRunning)
-
-        self.__menuInvalidated = False
 
     def buildmenuFileRecent(self, menu):
         """Menu for 'file recent' is about to be displayed

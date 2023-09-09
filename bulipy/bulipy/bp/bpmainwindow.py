@@ -191,7 +191,7 @@ class BPMainWindow(QMainWindow):
         self.__uiController.buildmenuFileRecent(self.menuFileRecent)
 
     def __menuAboutToShow(self):
-        """menu is about to show, update it if needed"""
+        """menu is about to show, force update"""
         self.__uiController.updateMenu()
 
     def __actionNotYetImplemented(self, v=None):
