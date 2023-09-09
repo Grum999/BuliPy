@@ -80,7 +80,7 @@
      <item>
       <widget class="QStackedWidget" name="swCatPages">
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="pageCatDocuments">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -583,6 +583,44 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
+         <item row="1" column="3">
+          <widget class="QToolButton" name="toolButton">
+           <property name="toolTip">
+            <string>Add folder</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+             <normaloff>:/pktk/images/normal/folder_open_add</normaloff>
+             <disabledoff>:/pktk/images/disabled/folder_open_add</disabledoff>:/pktk/images/normal/folder_open_add</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QToolButton" name="toolButton_3">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically add path of executed script to &lt;span style=&quot; font-family:'consolas','monospace'; font-weight:600;&quot;&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+             <normaloff>:/pktk/images/normal/folder_open_pinned</normaloff>:/pktk/images/normal/folder_open_pinned</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_4">
            <property name="toolTip">
@@ -592,19 +630,6 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Paths automatically added to &lt;span style='font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-         </item>
-         <item row="2" column="0">
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
          <item row="0" column="0" colspan="5">
           <widget class="QLabel" name="label_18">
@@ -643,48 +668,28 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1" colspan="4">
+         <item row="3" column="0">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0" colspan="5">
           <widget class="QListWidget" name="listWidget">
+           <property name="font">
+            <font>
+             <family>DejaVu Sans Mono, Consolas, Courier New</family>
+            </font>
+           </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of paths automatically added to &lt;span style='font-weight: bold; font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QToolButton" name="toolButton">
-           <property name="toolTip">
-            <string>Add folder</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-             <normaloff>:/pktk/images/normal/folder_open_add</normaloff>
-             <disabledoff>:/pktk/images/disabled/folder_open_add</disabledoff>:/pktk/images/normal/folder_open_add</iconset>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QToolButton" name="toolButton_3">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically add path of executed script to &lt;span style=&quot; font-family:'consolas','monospace'; font-weight:600;&quot;&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-             <normaloff>:/pktk/images/normal/folder_open_pinned</normaloff>:/pktk/images/normal/folder_open_pinned</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
