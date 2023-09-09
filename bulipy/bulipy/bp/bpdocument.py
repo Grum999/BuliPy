@@ -435,6 +435,7 @@ class WBPDocument(WBPDocumentBase):
                 self.__codeEditor.setPlainText(trimLinesRight(docText))
                 self.__codeEditor.restoreEditorState(editorState)
                 self.__codeEditor.setUpdatesEnabled(True)
+                self.setModified(True)
 
         if self.modified() or forceSave:
             # save only if has been modified
