@@ -123,7 +123,7 @@ class BPUIController(QObject):
         # toolbars
         self.__toolbarsTmpSession = []
 
-        # document manager
+        # document manager, initialised when starting plugin UI
         self.__documents = BPDocuments(self)
         self.__documents.documentAdded.connect(self.__documentAdded)
         self.__documents.documentRemoved.connect(self.__documentRemoved)
@@ -780,7 +780,17 @@ class BPUIController(QObject):
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
 
+        self.__documents.cleanup()
+
         self.__bpStarted = False
+        self.__bpStarting = False
+        self.__initialised = False
+        self.__window = None
+
+        self.__toolbarsTmpSession = []
+
+        self.__currentDocument = None
+
         self.bpWindowClosed.emit()
 
     def optionIsMaximized(self):
@@ -789,7 +799,8 @@ class BPUIController(QObject):
 
     def commandQuit(self):
         """Close BuliPy"""
-        self.__window.close()
+        if self.__window:
+            self.__window.close()
 
     def commandFileNew(self):
         """Create a new empty document"""

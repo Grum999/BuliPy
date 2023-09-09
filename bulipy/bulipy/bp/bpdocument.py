@@ -386,10 +386,23 @@ class WBPDocument(WBPDocumentBase):
         """Set if document is in read only mode"""
         self.__codeEditor.setReadOnly(value)
 
-    def close(self):
+    def close(self, deleteCache=True):
         """Close document"""
         self.__stopWatcher()
-        self.deleteCache()
+
+        self.__codeEditor.readOnlyModeChanged.disconnect()
+        self.__codeEditor.overwriteModeChanged.disconnect()
+        self.__codeEditor.cursorCoordinatesChanged.disconnect()
+        self.__codeEditor.modificationChanged.disconnect()
+        self.__codeEditor.textChanged.disconnect()
+        self.__codeEditor.redoAvailable.disconnect()
+        self.__codeEditor.undoAvailable.disconnect()
+        self.__codeEditor.selectionChanged.disconnect()
+        self.__codeEditor.copyAvailable.disconnect()
+        self.__codeEditor.fontSizeChanged.disconnect()
+
+        if deleteCache:
+            self.deleteCache()
 
     def open(self, fileName):
         """Open document from given `fileName`
@@ -847,6 +860,7 @@ class BPDocuments(QObject):
     def initialise(self, documentsList, activeDocument):
         """Initialise document manager with list of documents to load"""
         self.__counterNewDocument = 0
+        self.__documents = []
 
         for fileName in documentsList:
             # can be a filename or @uuid
@@ -862,6 +876,26 @@ class BPDocuments(QObject):
             self.newDocument()
         else:
             self.setActiveDocument(activeDocument)
+
+    def cleanup(self):
+        """Cleanup current opened document list"""
+        while len(self.__documents):
+            document = self.__documents.pop()
+            document.readOnlyModeChanged.disconnect()
+            document.overwriteModeChanged.disconnect()
+            document.cursorCoordinatesChanged.disconnect()
+            document.modificationChanged.disconnect()
+            document.textChanged.disconnect()
+            document.redoAvailable.disconnect()
+            document.undoAvailable.disconnect()
+            document.selectionChanged.disconnect()
+            document.copyAvailable.disconnect()
+            document.languageDefChanged.disconnect()
+            document.fontSizeChanged.disconnect()
+            document.close(False)
+
+        self.__currentDocument = None
+        self.__counterNewDocument = 0
 
     def updateSettings(self, includeConfig=False):
         """Global settings has been modified, update documents according to settings"""
@@ -1017,6 +1051,17 @@ class BPDocuments(QObject):
             for index, documentToDelete in enumerate(self.__documents):
                 if documentToDelete.cacheUuid() == document.cacheUuid():
                     self.__documents.pop(index)
+                    document.readOnlyModeChanged.disconnect()
+                    document.overwriteModeChanged.disconnect()
+                    document.cursorCoordinatesChanged.disconnect()
+                    document.modificationChanged.disconnect()
+                    document.textChanged.disconnect()
+                    document.redoAvailable.disconnect()
+                    document.undoAvailable.disconnect()
+                    document.selectionChanged.disconnect()
+                    document.copyAvailable.disconnect()
+                    document.languageDefChanged.disconnect()
+                    document.fontSizeChanged.disconnect()
                     document.close()
                     self.documentRemoved.emit(document)
 
@@ -1186,7 +1231,6 @@ class WBPDocuments(QWidget):
     """
     def __init__(self, parent=None):
         super(WBPDocuments, self).__init__(parent)
-
         # default controller not yet initialised
         self.__uiController = None
 
