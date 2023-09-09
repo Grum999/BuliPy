@@ -151,7 +151,7 @@ class WBPDocument(WBPDocumentBase):
         # then to avoid lag due too to many signal sent (and editor to update), emit signal few milliseconds after the font size has been changed
         self.__delayedFontSizeTimer = QTimer()
         self.__delayedFontSizeTimer.timeout.connect(lambda: emitFontSizeChanged())
-        self.applySettings()
+        self.applySettings(True)
 
     def __repr__(self):
         return f"<WBPDocument({self.tabName(True)}, {self.modified()})>"
@@ -333,8 +333,12 @@ class WBPDocument(WBPDocumentBase):
             self.__currentAlert = None
             self.__updateAlerts()
 
-    def applySettings(self):
-        """Apply global BuliPy editor settings"""
+    def applySettings(self, includeConfig=False):
+        """Apply global BuliPy editor settings
+
+        If `includeConfig`, will apply ALL settings (ie: take in account change from BuliPy configuration)
+        Otherwise only session settings are taken in account
+        """
         self.__codeEditor.setUpdatesEnabled(False)
 
         font = QFont()
@@ -343,12 +347,16 @@ class WBPDocument(WBPDocumentBase):
         font.setFixedPitch(True)
         self.__codeEditor.setOptionFont(font)
 
-        for themeId in BPThemes.themes():
-            self.__codeEditor.addTheme(BPThemes.theme(themeId))
-        self.__codeEditor.setCurrentTheme(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED))
+        if includeConfig:
+            for themeId in BPThemes.themes():
+                self.__codeEditor.addTheme(BPThemes.theme(themeId))
+                self.__codeEditor.setCurrentTheme(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED))
 
-        self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
-        self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+            self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
+            self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+            self.__codeEditor.setOptionEnclosingCharacters(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS).split(' '))
+            self.__codeEditor.setOptionAutoClose(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
+            self.__trimBeforeSave = BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE)
 
         self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE))
         self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE))
@@ -359,11 +367,6 @@ class WBPDocument(WBPDocumentBase):
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.WidgetWidth)
         else:
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
-
-        self.__codeEditor.setOptionEnclosingCharacters(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS).split(' '))
-        self.__codeEditor.setOptionAutoClose(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
-
-        self.__trimBeforeSave = BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE)
 
         self.__codeEditor.setUpdatesEnabled(True)
 
@@ -765,6 +768,9 @@ class BPDocuments(QObject):
 
         self.__optionAutoCompletionHelp = True
 
+        # define if there's currently a mass update and we need to avoid to updated all opened documents
+        self.__massUpdate = 0
+
     def __readOnlyModeChanged(self, document):
         """Need to update status of read-only mode"""
         self.readOnlyModeChanged.emit(document)
@@ -857,10 +863,16 @@ class BPDocuments(QObject):
         else:
             self.setActiveDocument(activeDocument)
 
-    def updateSettings(self):
+    def updateSettings(self, includeConfig=False):
         """Global settings has been modified, update documents according to settings"""
+        if self.__massUpdate > 0:
+            return
+
+        # update active document first (first visible)
+        self.__currentDocument.applySettings(includeConfig)
         for document in self.__documents:
-            document.applySettings()
+            if document != self.__currentDocument:
+                document.applySettings(includeConfig)
 
     def count(self):
         """Return number of documents"""
@@ -1052,6 +1064,23 @@ class BPDocuments(QObject):
             self.__optionAutoCompletionHelp = value
             for document in self.__documents:
                 document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
+
+    def isMassUpdate(self):
+        """return if a mass update is ongoing"""
+        return (self.__massUpdate > 0)
+
+    def setMassUpdate(self, value):
+        """set mass update mode"""
+        if value:
+            self.__massUpdate += 1
+        else:
+            self.__massUpdate -= 1
+
+            if self.__massUpdate < 0:
+                self.__massUpdate = 0
+
+            if self.__massUpdate == 0:
+                self.updateSettings()
 
 
 class WBPDocumentTabs(QTabWidget):

@@ -58,8 +58,6 @@ class BPSettingsKey(SettingsKey):
 
     # -- from settings dialogbox
 
-    CONFIG_OPEN_ATSTARTUP =                                  'config.open.atStartup'
-
     CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT =                 'config.session.documents.recents.count'
 
     CONFIG_DOCUMENT_DEFAULTTYPE =                            'config.documents.default.type'
@@ -146,8 +144,6 @@ class BPSettings(Settings):
             # values are tuples:
             # [0]       = default value
             # [1..n]    = values types & accepted values
-            SettingsRule(BPSettingsKey.CONFIG_OPEN_ATSTARTUP,                               False,                    SettingsFmt(bool)),
-
             SettingsRule(BPSettingsKey.CONFIG_SESSION_DOCUMENTS_RECENTS_COUNT,              25,                       SettingsFmt(int, (1, 100))),
 
             SettingsRule(BPSettingsKey.CONFIG_DOCUMENT_DEFAULTTYPE,                         ".py",                    SettingsFmt(str)),

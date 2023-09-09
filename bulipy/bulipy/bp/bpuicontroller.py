@@ -101,7 +101,6 @@ class BPUIController(QObject):
             Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
 
         BPSettings.load()
-
         UITheme.load()
         BPThemes.load()
 
@@ -170,9 +169,6 @@ class BPUIController(QObject):
         self.__delayedUpdateMenu = QTimer()
         self.__delayedUpdateMenu.timeout.connect(lambda: self.updateMenu())
 
-        if kritaIsStarting and BPSettings.get(BPSettingsKey.CONFIG_OPEN_ATSTARTUP):
-            self.start()
-
     def start(self):
         """Start plugin interface"""
         if self.__bpStarted:
@@ -233,6 +229,9 @@ class BPUIController(QObject):
             # already initialised, do nothing
             return
 
+        # avoid multiple update of opened documents during initialisation
+        self.__documents.setMassUpdate(True)
+
         # Here we know we have an active window
         if self.__kraActiveWindow is None:
             self.__kraActiveWindow = Krita.instance().activeWindow()
@@ -249,11 +248,11 @@ class BPUIController(QObject):
         # reload
         BPSettings.load()
 
-        self.commandSettingsOpenAtStartup(BPSettings.get(BPSettingsKey.CONFIG_OPEN_ATSTARTUP))
-
         self.commandViewMainWindowGeometry(BPSettings.get(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_GEOMETRY))
         self.commandViewMainWindowMaximized(BPSettings.get(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_MAXIMIZED))
 
+        # initialise toolbar reset checked values?
+        # - initialise option after toolbar...
         self.commandViewWrapLines(BPSettings.get(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE))
         self.commandViewShowRightLimit(BPSettings.get(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE))
         self.commandViewShowLineNumber(BPSettings.get(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE))
@@ -308,6 +307,10 @@ class BPUIController(QObject):
 
         self.__window.initMenu()
 
+        # toolbar settings MUST be initialized after menu :-)
+        self.__toolbarsTmpSession = BPSettings.get(BPSettingsKey.SESSION_TOOLBARS)
+        self.commandSettingsToolbars(BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS), self.__toolbarsTmpSession)
+
         self.__initialised = True
         self.__bpStarted = True
         self.__bpStarting = False
@@ -317,7 +320,8 @@ class BPUIController(QObject):
         self.__currentDocument = self.__documents.document()
 
         self.__updateUiFromSettings()
-        self.__invalidateMenu()
+        self.__documents.setMassUpdate(False)
+        self.updateMenu()
 
     def __themeChanged(self):
         """Theme has been changed, reload resources"""
@@ -325,7 +329,7 @@ class BPUIController(QObject):
 
     def __updateUiFromSettings(self):
         """Update UI from settings"""
-        self.__documents.updateSettings()
+        self.__documents.updateSettings(True)
 
         # use same font than one choosen for editor
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
@@ -1382,10 +1386,6 @@ class BPUIController(QObject):
         self.__window.setGeometry(rect)
 
         return [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()]
-
-    def commandSettingsOpenAtStartup(self, value=False):
-        """Set option to start BP at Krita's startup"""
-        BPSettings.set(BPSettingsKey.CONFIG_OPEN_ATSTARTUP, value)
 
     def commandSettingsOpen(self):
         """Open dialog box settings"""
