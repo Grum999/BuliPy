@@ -583,54 +583,6 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item row="1" column="3">
-          <widget class="QToolButton" name="toolButton">
-           <property name="toolTip">
-            <string>Add folder</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-             <normaloff>:/pktk/images/normal/folder_open_add</normaloff>
-             <disabledoff>:/pktk/images/disabled/folder_open_add</disabledoff>:/pktk/images/normal/folder_open_add</iconset>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QToolButton" name="toolButton_3">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically add path of executed script to &lt;span style=&quot; font-family:'consolas','monospace'; font-weight:600;&quot;&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-             <normaloff>:/pktk/images/normal/folder_open_pinned</normaloff>:/pktk/images/normal/folder_open_pinned</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Define list of paths automatically added to &lt;span style='font-weight: bold; font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Paths automatically added to &lt;span style='font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0" colspan="5">
           <widget class="QLabel" name="label_18">
            <property name="font">
@@ -651,24 +603,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QToolButton" name="toolButton_2">
-           <property name="toolTip">
-            <string>Remove selected folders</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
-             <normaloff>:/pktk/images/normal/folder_open_remove</normaloff>:/pktk/images/normal/folder_open_remove</iconset>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <spacer name="verticalSpacer_3">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -681,15 +616,71 @@
            </property>
           </spacer>
          </item>
-         <item row="2" column="0" colspan="5">
-          <widget class="QListWidget" name="listWidget">
+         <item row="3" column="0" colspan="5">
+          <widget class="WOrderedList" name="lwCSEAutomaticallyAddedSysPath">
            <property name="font">
             <font>
              <family>DejaVu Sans Mono, Consolas, Courier New</family>
             </font>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of paths automatically added to &lt;span style='font-weight: bold; font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of paths automatically added to &lt;span style=&quot; font-family:'consolas','monospace'; font-weight:600;&quot;&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Drag'n'Drop to reorganize priorities&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Define list of paths automatically added to &lt;span style='font-weight: bold; font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Paths automatically added to &lt;span style='font-family: consolas, monospace;'&gt;sys.path&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QToolButton" name="tbCSEAutomaticallyAddedAddPath">
+           <property name="toolTip">
+            <string>Add folder</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+             <normaloff>:/pktk/images/normal/folder_open_add</normaloff>
+             <disabledoff>:/pktk/images/disabled/folder_open_add</disabledoff>:/pktk/images/normal/folder_open_add</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QToolButton" name="tbCSEAutomaticallyAddedRemovePath">
+           <property name="toolTip">
+            <string>Remove selected folders</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+             <normaloff>:/pktk/images/normal/folder_open_remove</normaloff>
+             <disabledoff>:/pktk/images/disabled/folder_open_remove</disabledoff>:/pktk/images/normal/folder_open_remove</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="3">
+          <widget class="QCheckBox" name="cbCSEAutomaticallyAddedScriptPath">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically add path of executed script to &lt;span style=&quot; font-family:'consolas','monospace'; font-weight:600;&quot;&gt;sys.path&lt;/span&gt; during script execution&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Always added after paths from list&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Executed script path</string>
            </property>
           </widget>
          </item>
@@ -746,6 +737,11 @@
    <class>WLineEdit</class>
    <extends>QLineEdit</extends>
    <header>bulipy.pktk.widgets.wlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>WOrderedList</class>
+   <extends>QListWidget</extends>
+   <header>bulipy.pktk.widgets.worderedlist</header>
   </customwidget>
  </customwidgets>
  <resources>

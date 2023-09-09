@@ -20,7 +20,10 @@ from PyQt5.Qt import *
 import PyQt5.QtCore as QtCore
 
 from .bpdwconsole import BPDockWidgetConsoleOutput
-
+from .bpsettings import (
+        BPSettings,
+        BPSettingsKey
+    )
 from ..pktk.modules.utils import (JsonQObjectEncoder, JsonQObjectDecoder)
 from ..pktk.modules.timeutils import (tsToStr, secToStrTime)
 from ..pktk.widgets.wconsole import (WConsoleType, WConsole, WConsoleUserData)
@@ -389,11 +392,20 @@ class BPPyRunner:
         """Run script"""
         self.__console.setUpdatesEnabled(False)
 
+        for pathNfo in BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS):
+            if pathNfo[1]:
+                # active, add it
+                normPath = os.path.abspath(os.path.expanduser(pathNfo[0]))
+                if normPath not in sys.path:
+                    # add current file directory in sys.path
+                    # => make easier to load relative modules of files
+                    sys.path.append(normPath)
+
         if self.__scriptPath:
             # execution from a saved file
 
-            if self.__scriptPath not in sys.path:
-                # add current file directory in sys.path
+            if BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT) and self.__scriptPath not in sys.path:
+                # add current file directory in sys.path if settings require to add script path
                 # => make easier to load relative modules of files
                 sys.path.append(self.__scriptPath)
 
@@ -459,6 +471,15 @@ class BPPyRunner:
         if self.__scriptPath and self.__scriptPath in sys.path:
             # remove current file directory from sys.path
             sys.path.remove(self.__scriptPath)
+
+        for pathNfo in BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS):
+            if pathNfo[1]:
+                # active, add it
+                normPath = os.path.abspath(os.path.expanduser(pathNfo[0]))
+                if normPath in sys.path:
+                    # remove current file directory from sys.path
+                    # => make easier to load relative modules of files
+                    sys.path.remove(normPath)
 
     def run(self):
         # initialise logger

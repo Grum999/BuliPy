@@ -41,11 +41,14 @@ from ..pktk.modules.settings import (
                         SettingsKey,
                         SettingsRule
                     )
+
+from ..pktk.widgets.worderedlist import OrderedItem
 from ..pktk.widgets.wcodeeditor import (
         WCodeEditor,
         WCodeEditorTheme
     )
 from ..pktk.widgets.wtabbar import WTabBar
+from ..pktk.widgets.wiodialog import WDialogFile
 from ..pktk.pktk import *
 
 # -----------------------------------------------------------------------------
@@ -68,6 +71,9 @@ class BPSettingsKey(SettingsKey):
     CONFIG_EDITOR_RIGHTLIMIT_WIDTH =                         'config.editor.editing.rightLimit.width'
     CONFIG_EDITOR_ENCLOSINGCHARS =                           'config.editor.editing.enclosingCharacters'
     CONFIG_EDITOR_AUTOCLOSE =                                'config.editor.editing.autoclose'
+
+    CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS =                   'config.scriptExecution.syspath.paths'
+    CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT =                  'config.scriptExecution.syspath.script'
 
     CONFIG_DOCKER_CONSOLE_BUFFERSIZE =                       'config.docker.console.bufferSize'
 
@@ -148,12 +154,15 @@ class BPSettings(Settings):
             SettingsRule(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE,                       True,                     SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_FONT_NAME,                             "DejaVu Sans Mono",       SettingsFmt(str)),
-            SettingsRule(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED,                        "bulipi",                 SettingsFmt(str)),
+            SettingsRule(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED,                        "",                       SettingsFmt(str)),
 
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH,                          4,                        SettingsFmt(int, (1, 8))),
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH,                      120,                      SettingsFmt(int, (40, 240))),
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS,                        "() {} [] '' \"\" ``",    SettingsFmt(str)),
             SettingsRule(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE,                             True,                     SettingsFmt(bool)),
+
+            SettingsRule(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS,                [],                       SettingsFmt(list)),
+            SettingsRule(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT,               True,                     SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE,                    0,                        SettingsFmt(int)),
 
@@ -449,6 +458,24 @@ Vote Buli!'''}
         self.cbCEEditingAutoClose.setChecked(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
 
         # --- SCRIPT EXECUTION Category -----------------------------------------------------
+        self.lwCSEAutomaticallyAddedSysPath.setSortOptionAvailable(False)
+        self.lwCSEAutomaticallyAddedSysPath.setCheckOptionAvailable(True)
+        self.lwCSEAutomaticallyAddedSysPath.setReorderOptionAvailable(True)
+
+        for item in BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS):
+            # label = value
+            path = os.path.abspath(os.path.expanduser(item[0]))
+            if not os.path.isdir(path):
+                # path doesn't exist? force to uncheck it
+                item[1] = False
+            self.lwCSEAutomaticallyAddedSysPath.addItem(item[0], item[0], item[1])
+
+        self.cbCSEAutomaticallyAddedScriptPath.setChecked(BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT))
+
+        self.tbCSEAutomaticallyAddedAddPath.clicked.connect(self.__automaticallyAddedScriptAddPath)
+        self.tbCSEAutomaticallyAddedRemovePath.clicked.connect(self.__automaticallyAddedScriptRemovePath)
+        self.lwCSEAutomaticallyAddedSysPath.itemSelectionChanged.connect(self.__automaticallyAddedScriptSelectionChanged)
+        self.tbCSEAutomaticallyAddedRemovePath.setEnabled(False)
 
         # --- TOOLBAR CONFIGURATION categeory ----------------------------------------------
         self.wToolbarConfiguration.beginAvailableActionUpdate()
@@ -476,6 +503,8 @@ Vote Buli!'''}
         BPSettings.set(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE, self.cbCEEditingAutoClose.isChecked())
 
         # --- SCRIPT EXECUTION Category -----------------------------------------------------
+        BPSettings.set(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS, [(item.value(), item.checked()) for item in self.lwCSEAutomaticallyAddedSysPath.items(False)])
+        BPSettings.set(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT, self.cbCSEAutomaticallyAddedScriptPath.isChecked())
 
         # --- TOOLBAR CONFIGURATION categeory ----------------------------------------------
         self.__uiController.commandSettingsToolbars(self.wToolbarConfiguration.toolbarsExport(), None)
@@ -548,6 +577,32 @@ Vote Buli!'''}
 
         newCursorPosition = len(' '.join(re.findall('..', re.sub(r'\s+', '', text[0:cursorPosition + 1]))))
         self.leCEEditingEnclosingCharacters.setCursorPosition(newCursorPosition)
+
+    def __automaticallyAddedScriptAddPath(self, value):
+        """Add a path to list"""
+        currentPath = os.path.dirname(__file__)
+        selectedItem = self.lwCSEAutomaticallyAddedSysPath.currentItem()
+        if selectedItem:
+            currentPath = selectedItem.value()
+
+        selectedPath = WDialogFile.openDirectory(i18n("Add path to Python sys.path"), currentPath)
+        if selectedPath:
+            normPath = os.path.abspath(os.path.expanduser(selectedPath['directory']))
+            for item in self.lwCSEAutomaticallyAddedSysPath.items(False):
+                if os.path.abspath(os.path.expanduser(item.value())) == normPath:
+                    # path already in list, cancel
+                    return
+            self.lwCSEAutomaticallyAddedSysPath.addItem(selectedPath['directory'], selectedPath['directory'])
+
+    def __automaticallyAddedScriptRemovePath(self, value):
+        """Remove selected path from list"""
+        items = self.lwCSEAutomaticallyAddedSysPath.selectedItems()
+        for item in items:
+            self.lwCSEAutomaticallyAddedSysPath.takeItem(self.lwCSEAutomaticallyAddedSysPath.row(item))
+
+    def __automaticallyAddedScriptSelectionChanged(self):
+        """Selected items changed in list, update buttons"""
+        self.tbCSEAutomaticallyAddedRemovePath.setEnabled(len(self.lwCSEAutomaticallyAddedSysPath.selectedItems()) > 0)
 
     @staticmethod
     def open(title, uicontroller):
