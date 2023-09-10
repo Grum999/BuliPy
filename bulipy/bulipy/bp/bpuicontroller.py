@@ -445,11 +445,7 @@ class BPUIController(QObject):
     def __updateMenuEditPaste(self):
         """Update menu Edit > Paste according to clipboard content"""
         if self.__currentDocument:
-            if self.__dwConsoleOutput:
-                scriptIsRunning = self.__dwConsoleOutput.scriptIsRunning()
-            else:
-                scriptIsRunning = False
-            self.__window.actionEditPaste.setEnabled(self.__currentDocument.codeEditor().canPaste() and not (scriptIsRunning or self.__currentDocument.readOnly()))
+            self.__window.actionEditPaste.setEnabled(self.__currentDocument.codeEditor().canPaste() and not (self.scriptIsRunning() or self.__currentDocument.readOnly()))
 
     def __updateDockersContent(self, document):
         """Update docker content according to given document"""
@@ -556,10 +552,7 @@ class BPUIController(QObject):
             # no active document? does nothing
             return
 
-        if self.__dwConsoleOutput:
-            scriptIsRunning = self.__dwConsoleOutput.scriptIsRunning()
-        else:
-            scriptIsRunning = False
+        scriptIsRunning = self.scriptIsRunning()
         cursor = self.__currentDocument.codeEditor().cursorPosition()
 
         extensions = self.__currentDocument.languageDefinition().extensions()
@@ -593,13 +586,16 @@ class BPUIController(QObject):
         self.__window.actionEditSearchReplace.setEnabled(not scriptIsRunning)
 
         self.__window.actionEditCodeComment.setEnabled(not scriptIsRunning and '.py' in extensions)
-        self.__window.actionEditCodeUncomment.setEnabled(not scriptIsRunning and '.py' in extensions)
         self.__window.actionEditCodeIndent.setEnabled(not scriptIsRunning)
         self.__window.actionEditCodeDedent.setEnabled(not scriptIsRunning)
         self.__window.actionEditDeleteLine.setEnabled(not scriptIsRunning)
         self.__window.actionEditDuplicateLine.setEnabled(not scriptIsRunning)
+
+        self.__window.actionEditReadOnlyMode.setChecked(self.__currentDocument.codeEditor().overwriteMode())
         self.__window.actionEditOverwriteMode.setEnabled(not scriptIsRunning)
-        self.__window.actionEditReadOnlyMode.setEnabled(not scriptIsRunning)
+
+        self.__window.actionEditReadOnlyMode.setChecked(self.__currentDocument.readOnly())
+        self.__window.actionEditReadOnlyMode.setEnabled(self.__currentDocument.writeable() and not scriptIsRunning)
 
         # Menu VIEW
         # ----------------------------------------------------------------------
@@ -796,6 +792,12 @@ class BPUIController(QObject):
     def optionIsMaximized(self):
         """Return current option value"""
         return self.__window.isMaximized()
+
+    def scriptIsRunning(self):
+        """Return is script is running"""
+        if self.__dwConsoleOutput:
+            return self.__dwConsoleOutput.scriptIsRunning()
+        return False
 
     def commandQuit(self):
         """Close BuliPy"""
@@ -1074,42 +1076,45 @@ class BPUIController(QObject):
     def commandEditComment(self):
         """Comment selected lines or current line from active document"""
         if self.__currentDocument:
-            pass
-
-    def commandEditUncomment(self):
-        """Uncomment selected lines or current line from active document"""
-        if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doToggleComment()
 
     def commandEditIndent(self):
         """Indent selected lines or current line from active document"""
         if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doIndent()
 
     def commandEditDedent(self):
         """Dedent selected lines or current line from active document"""
         if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doDedent()
 
     def commandEditDeleteLine(self):
         """Delete selected lines or current line from active document"""
         if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doDeleteLine()
 
     def commandEditDuplicateLine(self):
         """Duplicate selected lines or current line from active document"""
         if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doDuplicateLine()
 
-    def commandEditOverwriteMode(self):
-        """Duplicate selected lines or current line from active document"""
-        if self.__currentDocument:
-            pass
+    def commandEditOverwriteMode(self, value=None):
+        """Set document in overwrite/insert mode
 
-    def commandEditReadOnlyMode(self):
-        """set/unset active document as read-only"""
+        If `value` is None, invert current state
+        """
         if self.__currentDocument:
-            pass
+            self.__currentDocument.codeEditor().doOverwriteMode(value)
+            self.__invalidateMenu()
+
+    def commandEditReadOnlyMode(self, value=None):
+        """set/unset active document as read-only
+
+        If `value` is None, invert current state
+        """
+        if self.__currentDocument and not self.scriptIsRunning():
+            self.__currentDocument.setReadOnly(value)
+            self.__invalidateMenu()
 
     def commandEditDockSearchAndReplaceVisible(self, visible=True):
         """Display search and replace docker"""

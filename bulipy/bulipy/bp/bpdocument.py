@@ -120,6 +120,7 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.setOptionAllowWheelSetFontSize(True)
         self.__codeEditor.setOptionAutoCompletion(False)
 
+        # code editor signals to manage actions
         self.__codeEditor.readOnlyModeChanged.connect(lambda: self.readOnlyModeChanged.emit(self))
         self.__codeEditor.overwriteModeChanged.connect(lambda: self.overwriteModeChanged.emit(self))
         self.__codeEditor.cursorCoordinatesChanged.connect(lambda: self.cursorCoordinatesChanged.emit(self))
@@ -144,6 +145,9 @@ class WBPDocument(WBPDocumentBase):
         self.__autoReload = False
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveCache())
+
+        # flag to inform if file is read only
+        self.__fileIsReadOnly = False
 
         self.__trimBeforeSave = False
 
@@ -182,6 +186,7 @@ class WBPDocument(WBPDocumentBase):
         """File has been modified by an external process"""
         Debug.print('[WBPDocument.__externalFileModification] File has been modified {0}', fileName)
 
+        self.__checkFileIsReadOnly()
         if os.path.isfile(fileName):
             # file still exists, then modified alert
             self.__addAlert(WBPDocument.ALERT_FILE_MODIFIED)
@@ -333,6 +338,14 @@ class WBPDocument(WBPDocumentBase):
             self.__currentAlert = None
             self.__updateAlerts()
 
+    def __checkFileIsReadOnly(self):
+        self.__fileIsReadOnly = False
+        if self.__documentFileName is not None:
+            if os.path.isfile(self.__documentFileName):
+                if not os.access(self.__documentFileName, os.W_OK):
+                    self.__fileIsReadOnly = True
+                    self.__codeEditor.setReadOnly(True)
+
     def applySettings(self, includeConfig=False):
         """Apply global BuliPy editor settings
 
@@ -378,12 +391,28 @@ class WBPDocument(WBPDocumentBase):
         """Set if document is modified or not"""
         return self.__codeEditor.document().setModified(value)
 
+    def writeable(self):
+        """Return if document (file on disk) is writeable
+
+        Notes:
+        - a document writeable can be flagged as readOnly
+        - a document that is not writeable is flagged as readOnly
+        """
+        return not self.__fileIsReadOnly
+
     def readOnly(self):
         """Return if document is in read only mode"""
-        return self.__codeEditor.isReadOnly()
+        return self.__codeEditor.isReadOnly() or self.__fileIsReadOnly
 
-    def setReadOnly(self, value):
+    def setReadOnly(self, value=None):
         """Set if document is in read only mode"""
+        if self.__fileIsReadOnly:
+            # if file on disk is read-only, then force read only mode for document
+            self.__codeEditor.setReadOnly(True)
+            return
+
+        if value is None:
+            value = not self.__codeEditor.isReadOnly()
         self.__codeEditor.setReadOnly(value)
 
     def close(self, deleteCache=True):
@@ -415,6 +444,7 @@ class WBPDocument(WBPDocumentBase):
             with open(self.__documentFileName, "r") as fHandle:
                 self.__codeEditor.setPlainText(fHandle.read())
             self.setModified(False)
+            self.__checkFileIsReadOnly()
             self.__initWatcher()
         except Exception as e:
             self.__addAlert(WBPDocument.ALERT_FILE_CANTOPEN)
@@ -537,6 +567,8 @@ class WBPDocument(WBPDocumentBase):
             0000 0000 0000 0000 0000 0000 0000 0001: document has a selection
             0000 0000 0000 0000 0000 0000 0000 0010: document is modified
             0000 0000 0000 0000 0000 0000 0000 0100: document have a file name
+            0000 0000 0000 0000 0000 0000 0000 1000: document is read-only mode
+            0000 0000 0000 0000 0000 0000 0001 0000: document is in overwrite mode
 
             . a UInt2 integer (cache file format version = 0x0001)
             . a UInt4 integer (contains flags)
@@ -568,13 +600,19 @@ class WBPDocument(WBPDocumentBase):
         flags = 0x00
 
         if cursor.selectionStart() != cursor.selectionEnd():
-            flags |= 0b00000001
+            flags |= 0b0000_0001
 
         if self.modified():
-            flags |= 0b00000010
+            flags |= 0b0000_0010
 
         if not (self.__documentFileName is None or self.__documentFileName == ''):
-            flags |= 0b00000100
+            flags |= 0b0000_0100
+
+        if self.readOnly():
+            flags |= 0b0000_1000
+
+        if self.__codeEditor.overwriteMode():
+            flags |= 0b0001_0000
 
         dataWrite.writeUInt2(0x0001)
         dataWrite.writeUInt4(flags)
@@ -646,7 +684,7 @@ class WBPDocument(WBPDocumentBase):
 
         dataRead.close()
 
-        if flags & 0b00000100 == 0b00000100 and fullPathFileName != '':
+        if flags & 0b0000_0100 == 0b0000_0100 and fullPathFileName != '':
             # file name provided, read file content
             newDocNumber = 0
             if not self.open(fullPathFileName):
@@ -659,7 +697,7 @@ class WBPDocument(WBPDocumentBase):
 
         self.__newDocNumber = newDocNumber
 
-        if flags & 0b00000010 == 0b00000010:
+        if flags & 0b0000_0010 == 0b0000_0010:
             # document has been modified
             # apply last modified version
             # => can't use setPlainText() as it clear undo/redo stack
@@ -672,10 +710,20 @@ class WBPDocument(WBPDocumentBase):
         # manage cursor position
         cursor = self.__codeEditor.textCursor()
         cursor.setPosition(cursorSelStart, QTextCursor.MoveAnchor)
-        if flags & 0b00000001 == 0b00000001:
+        if flags & 0b0000_0001 == 0b0000_0001:
             # there a selection, go selection end
             cursor.setPosition(cursorSelEnd, QTextCursor.KeepAnchor)
         self.__codeEditor.setTextCursor(cursor)
+
+        self.__checkFileIsReadOnly()
+
+        if flags & 0b0000_1000 == 0b0000_1000:
+            # file is flagged as read-only mode
+            self.setReadOnly(True)
+
+        if flags & 0b0001_0000 == 0b0001_0000:
+            # file is flagged as in overwrite mode
+            self.__codeEditor.setOverwriteMode(True)
 
         self.__updateAlerts()
         return True

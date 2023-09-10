@@ -38,6 +38,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
      </widget>
     </item>
    </layout>
@@ -94,7 +97,6 @@
       <string>Code</string>
      </property>
      <addaction name="actionEditCodeComment"/>
-     <addaction name="actionEditCodeUncomment"/>
      <addaction name="separator"/>
      <addaction name="actionEditCodeIndent"/>
      <addaction name="actionEditCodeDedent"/>
@@ -626,7 +628,10 @@
      <disabledoff>:/pktk/images/disabled/text_hashtag</disabledoff>:/pktk/images/normal/text_hashtag</iconset>
    </property>
    <property name="text">
-    <string>Comment</string>
+    <string>Toggle comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
    </property>
   </action>
   <action name="actionEditCodeUncomment">
@@ -648,6 +653,9 @@
    <property name="text">
     <string>Indent</string>
    </property>
+   <property name="shortcut">
+    <string>Tab</string>
+   </property>
   </action>
   <action name="actionEditCodeDedent">
    <property name="icon">
@@ -657,6 +665,9 @@
    </property>
    <property name="text">
     <string>Dedent</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Tab</string>
    </property>
   </action>
   <action name="actionEditGoToLine">
@@ -668,6 +679,9 @@
    </property>
   </action>
   <action name="actionEditReadOnlyMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Read-only mode</string>
    </property>
@@ -676,6 +690,9 @@
    </property>
   </action>
   <action name="actionEditOverwriteMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Overwrite mode</string>
    </property>

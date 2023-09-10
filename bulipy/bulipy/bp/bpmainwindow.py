@@ -383,13 +383,12 @@ class BPMainWindow(QMainWindow):
         self.actionEditSearchReplace.triggered.connect(lambda: self.__uiController.commandEditDockSearchAndReplaceVisible(True))
 
         self.actionEditCodeComment.triggered.connect(self.__uiController.commandEditComment)
-        self.actionEditCodeUncomment.triggered.connect(self.__uiController.commandEditUncomment)
         self.actionEditCodeIndent.triggered.connect(self.__uiController.commandEditIndent)
         self.actionEditCodeDedent.triggered.connect(self.__uiController.commandEditDedent)
         self.actionEditDeleteLine.triggered.connect(self.__uiController.commandEditDeleteLine)
         self.actionEditDuplicateLine.triggered.connect(self.__uiController.commandEditDuplicateLine)
-        self.actionEditOverwriteMode.triggered.connect(self.__uiController.commandEditOverwriteMode)
-        self.actionEditReadOnlyMode.triggered.connect(self.__uiController.commandEditReadOnlyMode)
+        self.actionEditOverwriteMode.triggered.connect(lambda: self.__uiController.commandEditOverwriteMode())
+        self.actionEditReadOnlyMode.triggered.connect(lambda: self.__uiController.commandEditReadOnlyMode())
         self.actionEditGoToLine.triggered.connect(self.__uiController.commandEditGoToLine)
 
         self.menuEdit.aboutToShow.connect(self.__menuAboutToShow)
