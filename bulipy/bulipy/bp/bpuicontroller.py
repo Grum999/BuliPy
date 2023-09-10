@@ -65,6 +65,7 @@ from ..pktk.widgets.wabout import WAboutWindow
 from ..pktk.widgets.wconsole import WConsoleType
 from ..pktk.widgets.wiodialog import (
         WDialogBooleanInput,
+        WDialogIntInput,
         WDialogRadioButtonChoiceInput
     )
 
@@ -194,7 +195,7 @@ class BPUIController(QObject):
         self.__dwConsoleOutputAction = self.__dwConsoleOutput.toggleViewAction()
         self.__dwConsoleOutputAction.setText(i18n("Console output"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwConsoleOutput)
-        self.__dwConsoleOutput.sourceRefClicked.connect(lambda source, fromPosition, toPosition: self.commandEditGoToLine(fromPosition, toPosition, source, True))
+        self.__dwConsoleOutput.sourceRefClicked.connect(lambda source, fromPosition, toPosition: self.commandEditGoToLine(fromPosition.y(), source, True))
         self.__dwConsoleOutput.consoleClear.connect(self.commandToolsShowVersion)
 
         self.__dwColorPicker = BPDockWidgetColorPicker(self.__window, self.__documents)
@@ -1128,16 +1129,32 @@ class BPUIController(QObject):
             else:
                 self.__dwSearchReplace.hide()
 
-    def commandEditGoToLine(self, fromPosition, toPosition, document=None, setFocus=False):
-        """Scroll to line number of given document"""
+    def commandEditGoToLine(self, toLine=None, document=None, setFocus=False):
+        """Scroll to line number of given document
+
+        Note: given `toLine` start from 1 (not from 0)
+        """
         if isinstance(document, WBPDocument):
             self.__documents.setActiveDocument(document)
 
+        if toLine is None:
+            toLine = WDialogIntInput.display(i18n("Go to line"), minValue=1, maxValue=self.__currentDocument.codeEditor().blockCount(), minSize=QSize(450, 0))
+            if toLine is None:
+                return
+
+        if not isinstance(toLine, int):
+            raise EInvalidType("Given `toLine` must be <int>")
+
+        if toLine < 1:
+            toLine = 1
+        if toLine > self.__currentDocument.codeEditor().blockCount():
+            toLine = self.__currentDocument.codeEditor().blockCount()
+
         if self.__currentDocument:
-            self.__currentDocument.codeEditor().scrollToLine(fromPosition.y())
+            self.__currentDocument.codeEditor().scrollToLine(toLine)
             cursor = self.__currentDocument.codeEditor().textCursor()
             cursor.movePosition(QTextCursor.Start, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, fromPosition.y() - 1)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, toLine - 1)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             self.__currentDocument.codeEditor().setTextCursor(cursor)
             if setFocus:

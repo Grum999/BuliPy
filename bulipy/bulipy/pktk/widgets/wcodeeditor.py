@@ -2322,3 +2322,4 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
     def lastCursorToken(self):
         """Return last token processed before current token on which cursor is"""
         return self.__cursorLastToken
+

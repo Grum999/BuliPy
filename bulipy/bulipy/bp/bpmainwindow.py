@@ -149,6 +149,14 @@ class BPMainWindow(QMainWindow):
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_SELECTION].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
 
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_RO].setCursor(Qt.PointingHandCursor)
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].setCursor(Qt.PointingHandCursor)
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setCursor(Qt.PointingHandCursor)
+
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_RO].mousePressEvent = lambda e: self.__uiController.commandEditReadOnlyMode()
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].mousePressEvent = lambda e: self.__uiController.commandEditGoToLine()
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].mousePressEvent = lambda e: self.__uiController.commandEditOverwriteMode()
+
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS])
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME])
         statusBar.addPermanentWidget(WVLine())
@@ -389,7 +397,7 @@ class BPMainWindow(QMainWindow):
         self.actionEditDuplicateLine.triggered.connect(self.__uiController.commandEditDuplicateLine)
         self.actionEditOverwriteMode.triggered.connect(lambda: self.__uiController.commandEditOverwriteMode())
         self.actionEditReadOnlyMode.triggered.connect(lambda: self.__uiController.commandEditReadOnlyMode())
-        self.actionEditGoToLine.triggered.connect(self.__uiController.commandEditGoToLine)
+        self.actionEditGoToLine.triggered.connect(lambda: self.__uiController.commandEditGoToLine())
 
         self.menuEdit.aboutToShow.connect(self.__menuAboutToShow)
 
