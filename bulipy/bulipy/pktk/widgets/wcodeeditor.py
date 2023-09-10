@@ -55,7 +55,8 @@ from PyQt5.QtGui import (
         QFontMetrics,
         QFontMetricsF,
         QBrush,
-        QPen
+        QPen,
+        QKeySequence
     )
 from ..modules.languagedef import LanguageDef
 from ..modules.uitheme import (
@@ -112,6 +113,8 @@ class WCodeEditor(QPlainTextEdit):
     KEY_AUTOINDENT = 'autoIndent'
     KEY_COMPLETION = 'completion'
     KEY_INSERTOVERWRITE_MODE = 'insertOverwriteMode'
+    KEY_DELETE_LINE = 'deleteLine'
+    KEY_IGNORE = 'ignore'
 
     CTRL_KEY_TRUE = True
     CTRL_KEY_FALSE = False
@@ -218,25 +221,23 @@ class WCodeEditor(QPlainTextEdit):
         self.__optionWheelSetFontSize = True
 
         self.__shortCuts = {
-            Qt.Key_Tab: {
-                    WCodeEditor.CTRL_KEY_FALSE: WCodeEditor.KEY_INDENT
-                },
-            Qt.Key_Backtab: {
-                    # SHIFT+TAB = BACKTAB
-                    WCodeEditor.CTRL_KEY_FALSE: WCodeEditor.KEY_DEDENT
-                },
-            Qt.Key_Slash: {
-                    WCodeEditor.CTRL_KEY_TRUE: WCodeEditor.KEY_TOGGLE_COMMENT
-                },
-            Qt.Key_Return: {
-                    WCodeEditor.CTRL_KEY_FALSE: WCodeEditor.KEY_AUTOINDENT
-                },
-            Qt.Key_Space: {
-                    WCodeEditor.CTRL_KEY_TRUE: WCodeEditor.KEY_COMPLETION
-                },
-            Qt.Key_Insert: {
-                    WCodeEditor.CTRL_KEY_FALSE: WCodeEditor.KEY_INSERTOVERWRITE_MODE
-                }
+            QKeySequence(Qt.Key_Tab): WCodeEditor.KEY_INDENT,
+            # SHIFT+TAB = BACKTAB
+            QKeySequence(Qt.Key_Backtab): WCodeEditor.KEY_DEDENT,
+            QKeySequence(Qt.Key_Slash + Qt.CTRL): WCodeEditor.KEY_TOGGLE_COMMENT,
+            QKeySequence(Qt.Key_Return): WCodeEditor.KEY_AUTOINDENT,
+            QKeySequence(Qt.Key_Space + Qt.CTRL): WCodeEditor.KEY_COMPLETION,
+            QKeySequence(Qt.Key_Insert): WCodeEditor.KEY_INSERTOVERWRITE_MODE,
+            QKeySequence(Qt.Key_Delete + Qt.SHIFT): WCodeEditor.KEY_DELETE_LINE,
+            # disable some default shortcuts
+            # -- Ctrl+Insert: Copy the selected text to the clipboard.
+            QKeySequence(Qt.Key_Insert + Qt.CTRL): WCodeEditor.KEY_IGNORE,
+            # -- Shift+INsert: Pastes the clipboard text into text edit.
+            QKeySequence(Qt.Key_Insert + Qt.SHIFT): WCodeEditor.KEY_IGNORE,
+            # -- Shift+Enter / Shift+Return: Insert vertical tab?
+            QKeySequence('Shift+Num+Enter'): WCodeEditor.KEY_IGNORE,
+            QKeySequence(Qt.Key_Return + Qt.SHIFT): WCodeEditor.KEY_IGNORE,
+            QKeySequence(Qt.Key_Enter + Qt.SHIFT): WCodeEditor.KEY_IGNORE
         }
 
         # ---- Set default font (monospace, 10pt)
@@ -646,7 +647,7 @@ class WCodeEditor(QPlainTextEdit):
                                                                    Qt.Key_Meta,
                                                                    Qt.Key_Alt):
                 action = WCodeEditor.KEY_COMPLETION
-        elif event.key() == Qt.Key_Return:
+        elif action == WCodeEditor.KEY_AUTOINDENT:
             super(WCodeEditor, self).keyPressEvent(event)
 
         self.doAction(action)
@@ -800,29 +801,31 @@ class WCodeEditor(QPlainTextEdit):
     def doAction(self, action=None):
         """Execute given action"""
         if action is None:
-            return
+            return False
         elif action == WCodeEditor.KEY_INDENT:
             self.doIndent()
         elif action == WCodeEditor.KEY_DEDENT:
             self.doDedent()
         elif action == WCodeEditor.KEY_TOGGLE_COMMENT:
             self.doToggleComment()
+        elif action == WCodeEditor.KEY_DELETE_LINE:
+            self.doDeleteLine()
         elif action == WCodeEditor.KEY_AUTOINDENT:
             self.doAutoIndent()
         elif action == WCodeEditor.KEY_COMPLETION:
             self.doCompletionPopup()
         elif action == WCodeEditor.KEY_INSERTOVERWRITE_MODE:
             self.doOverwriteMode()
+        return True
 
     def shortCut(self, key, modifiers):
         """Return action for given key/modifier shortCut
 
         If nothing is defined, return None
         """
-        if key in self.__shortCuts:
-            ctrlModifier = (Qt.ControlModifier & modifiers == Qt.ControlModifier)
-            if ctrlModifier in self.__shortCuts[key]:
-                return self.__shortCuts[key][ctrlModifier]
+        keySequence = QKeySequence(int(key) + int(modifiers))
+        if keySequence in self.__shortCuts:
+            return self.__shortCuts[keySequence]
         return None
 
     def setShortCut(self, key, modifiers, action):
@@ -841,17 +844,21 @@ class WCodeEditor(QPlainTextEdit):
 
         self.__shortCuts[key][modifiers] = action
 
-    def actionShortCut(self, action):
-        """Return shortcut for given action
+    def clearShortcuts(self):
+        """Remove all shortcuts"""
+        self.__shortCuts = {}
 
-        If nothing is defined or action doesn't exists, return None
-        If found, Shortcut is returned as a tuple (key, modifiers)
+    def actionShortCut(self, action):
+        """Return shortcuts for given action
+
+        If nothing is defined or action doesn't exists, return empty list
+        If found, Shortcut is returned as a QKeySequence
         """
+        returned = []
         for key in self.__shortCuts:
-            for modifiers in self.__shortCuts[key]:
-                if self.__shortCuts[key][modifiers] == action:
-                    return (key, modifiers)
-        return None
+            if self.__shortCuts[key] == action:
+                returned = key
+        return returned
 
     def doAutoIndent(self):
         """Indent current line to match indent of previous line
@@ -894,7 +901,6 @@ class WCodeEditor(QPlainTextEdit):
 
     def doIndent(self):
         """Indent current line or current selection"""
-
         cursor = self.textCursor()
 
         selectionStart = cursor.selectionStart()
@@ -964,6 +970,7 @@ class WCodeEditor(QPlainTextEdit):
         cursor.movePosition(QTextCursor.Start)
         cursor.movePosition(QTextCursor.NextBlock, n=startBlock)
 
+        cursor.beginEditBlock()
         for blockNumber in range(startBlock, endBlock+processLastBlock):
             if not self.__isEmptyBlock(blockNumber):
                 # empty lines are not indented
@@ -972,6 +979,7 @@ class WCodeEditor(QPlainTextEdit):
                 cursor.insertText(" " * self.__calculateIndent(nbChar))
 
             cursor.movePosition(QTextCursor.NextBlock)
+        cursor.endEditBlock()
 
     def doDedent(self):
         """Dedent current line or current selection"""
@@ -996,6 +1004,7 @@ class WCodeEditor(QPlainTextEdit):
         cursor.movePosition(QTextCursor.Start)
         cursor.movePosition(QTextCursor.NextBlock, n=startBlock)
 
+        cursor.beginEditBlock()
         for blockNumber in range(startBlock, endBlock + processLastBlock):
             nbChar = self.__calculateDedent(len(cursor.block().text()) - len(cursor.block().text().lstrip()))
             if nbChar > 0:
@@ -1004,9 +1013,14 @@ class WCodeEditor(QPlainTextEdit):
                 cursor.removeSelectedText()
 
             cursor.movePosition(QTextCursor.NextBlock)
+        cursor.endEditBlock()
 
     def doToggleComment(self):
-        """Toggle comment for current line or selected lines"""
+        """Toggle comment for current line or selected lines
+
+            if at least one block is not commented, then active COMMENT
+            if ALL block are commented, then active UNCOMMENT
+        """
         cursor = self.textCursor()
 
         selectionStart = cursor.selectionStart()
@@ -1054,6 +1068,7 @@ class WCodeEditor(QPlainTextEdit):
         cursor.movePosition(QTextCursor.Start)
         cursor.movePosition(QTextCursor.NextBlock, n=startBlock)
 
+        cursor.beginEditBlock()
         for blockNumber in range(startBlock, endBlock + processLastBlock):
             blockText = cursor.block().text()
 
@@ -1073,6 +1088,59 @@ class WCodeEditor(QPlainTextEdit):
                 cursor.removeSelectedText()
 
             cursor.movePosition(QTextCursor.NextBlock)
+        cursor.endEditBlock()
+
+    def doDuplicateLine(self):
+        """Duplicates current line or selected lines"""
+        cursor = self.textCursor()
+
+        selectionStart = cursor.selectionStart()
+        selectionEnd = cursor.selectionEnd()
+
+        # determinate block numbers
+        cursor.setPosition(selectionStart)
+        startBlock = cursor.blockNumber()
+
+        cursor.setPosition(selectionEnd)
+        endBlock = cursor.blockNumber()
+
+        cursor.movePosition(QTextCursor.Start)
+        cursor.movePosition(QTextCursor.NextBlock, QTextCursor.MoveAnchor, startBlock)
+        cursor.movePosition(QTextCursor.NextBlock, QTextCursor.KeepAnchor, endBlock - startBlock + 1)
+        p = cursor.position()
+
+        text = cursor.selectedText()
+        cursor.beginEditBlock()
+        cursor.setPosition(p, QTextCursor.MoveAnchor)
+        cursor.insertText(text)
+        cursor.endEditBlock()
+
+    def doDeleteLine(self):
+        """Delete current line or selected lines"""
+        cursor = self.textCursor()
+
+        selectionStart = cursor.selectionStart()
+        selectionEnd = cursor.selectionEnd()
+
+        # determinate block numbers
+        cursor.setPosition(selectionStart)
+        startBlock = cursor.blockNumber()
+
+        cursor.setPosition(selectionEnd)
+        endBlock = cursor.blockNumber()
+
+        deleteToNextLine = 0
+        if cursor.columnNumber() > 0 or selectionStart == selectionEnd:
+            deleteToNextLine = 1
+
+        cursor.movePosition(QTextCursor.Start)
+        cursor.movePosition(QTextCursor.NextBlock, QTextCursor.MoveAnchor, startBlock)
+        cursor.movePosition(QTextCursor.NextBlock, QTextCursor.KeepAnchor, endBlock - startBlock + deleteToNextLine)
+
+        text = cursor.selectedText()
+        cursor.beginEditBlock()
+        cursor.removeSelectedText()
+        cursor.endEditBlock()
 
     def doCompletionPopup(self):
         """Display autocompletion popup"""
@@ -2254,4 +2322,3 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
     def lastCursorToken(self):
         """Return last token processed before current token on which cursor is"""
         return self.__cursorLastToken
-
