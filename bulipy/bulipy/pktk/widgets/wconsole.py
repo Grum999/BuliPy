@@ -262,7 +262,7 @@ class WConsole(QPlainTextEdit):
                      r"(?<!\$)(#)|"
                      r"(?<!\$)(\*\*)|"
                      r"(?<!\$)(\*)")
-            tokens = [token for token in re.split(regEx, text, re.I | re.M) if token]
+            tokens = [token for token in re.split(regEx, text,  flags=re.I | re.M) if token]
 
             hasColor = False
             returned = []
@@ -290,7 +290,7 @@ class WConsole(QPlainTextEdit):
                         color = False
                     else:
                         returned.append(token)
-                elif regResult := re.match("#(l?[rgbcmykw]|[A-F0-9]{6})#", token, re.I):
+                elif regResult := re.match("#(l?[rgbcmykw]|[A-F0-9]{6})#", token,  flags=re.I):
                     if color:
                         # already in a color block?
                         returned.append(f'</span>')
