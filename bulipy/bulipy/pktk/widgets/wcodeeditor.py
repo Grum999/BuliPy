@@ -51,12 +51,18 @@ from PyQt5.QtGui import (
         QTextCursor,
         QCursor,
         QTextFormat,
+        QTextBlockUserData,
         QPainter,
         QFontMetrics,
         QFontMetricsF,
         QBrush,
         QPen,
         QKeySequence
+    )
+from ..modules.listutils import (
+        EXTRASELECTION_FILTER_REMOVE,
+        sortExtraSelections,
+        filterExtraSelections
     )
 from ..modules.languagedef import LanguageDef
 from ..modules.uitheme import (
@@ -94,10 +100,67 @@ class WCodeEditorTheme(BaseTheme):
         super(WCodeEditorTheme, self).__init__(id, name, colors, base, comments)
 
 
+class WCodeEditorHighlightLineRule:
+    """A base class that can be used to define rules too highlight lines"""
+
+    def __init__(self):
+        pass
+
+    def ruleId(self):
+        """Return rule id"""
+        return 0x0000
+
+    def highlight(self, block, text, tokens, lineNumber, isCurrentLine):
+        """Return highlight properties, or None
+
+        When called, are provided:
+        - text `block` (QTextBlock)
+        - `text` (str)
+        - `tokens` is a Tokens object or None (if no token)
+        - `lineNumber` (int)
+        - is the current line (bool)
+
+        Method returns:
+        - None if line don't have to be highlighted
+        - A tuple if line have to be highlighted
+            0: int      Rule Id; also define priority (0xFF is current line color select; lower values are rendered before, higher value are rendered after)
+            1: QColor   Define color for highlighting
+            2: Boolean  Define if gutter have to be highlighted too
+        """
+        raise EInvalidStatus("Abstract method must be overriden by class")
+
+
+class WCodeEditorBlockUserData(QTextBlockUserData):
+    """Manage specific data linked to blocks"""
+
+    def __init__(self):
+        super(WCodeEditorBlockUserData, self).__init__()
+        self.__extraSelections = []
+
+    def __del__(self):
+        self.__extraSelections = []
+
+    def extraSelections(self):
+        """Return extraselection linked to block"""
+        return self.__extraSelections
+
+    def setExtraSelections(self, extraSelections):
+        """Set extraselection for block"""
+        self.__extraSelections = extraSelections
+
+
 class WCodeEditor(QPlainTextEdit):
     """Extended editor with syntax highlighting, autocompletion, line number..."""
 
     __LINENUMBER_PADDING = 3
+
+    __EXTRASELECTIONTYPE_CURRENTLINE =          0x00FF
+    __EXTRASELECTIONTYPE_HIGHLIGHTEDSEARCH =    SearchFromPlainTextEdit.EXTRASELECTIONTYPE_HIGHLIGHTEDSEARCH
+    __EXTRASELECTIONTYPE_CURRENTSEARCH =        SearchFromPlainTextEdit.EXTRASELECTIONTYPE_CURRENTSEARCH
+
+    __EXTRASELECTIONPROP_TYPE =                 QTextFormat.UserProperty
+    __EXTRASELECTIONPROP_SHOWGUTTER =           QTextFormat.UserProperty + 0x0100
+    __EXTRASELECTIONPROP_LINENUMBER =           QTextFormat.UserProperty + 0x0101
 
     cursorCoordinatesChanged = Signal(QPoint, QPoint, QPoint, int)  # cursor position, selection start position, selection end position, selection length
     overwriteModeChanged = Signal(bool)     # INS / OVR mode changed
@@ -115,9 +178,6 @@ class WCodeEditor(QPlainTextEdit):
     KEY_INSERTOVERWRITE_MODE = 'insertOverwriteMode'
     KEY_DELETE_LINE = 'deleteLine'
     KEY_IGNORE = 'ignore'
-
-    CTRL_KEY_TRUE = True
-    CTRL_KEY_FALSE = False
 
     # define base themes for color editor
     DEFAULT_DARK = WCodeEditorTheme(UITheme.DARK_THEME,
@@ -219,6 +279,9 @@ class WCodeEditor(QPlainTextEdit):
 
         # allows key bindings
         self.__optionWheelSetFontSize = True
+
+        # rules to highlight some lines
+        self.__highlightedLinesRules = []
 
         self.__shortCuts = {
             QKeySequence(Qt.Key_Tab): WCodeEditor.KEY_INDENT,
@@ -458,13 +521,15 @@ class WCodeEditor(QPlainTextEdit):
         # manage
         extraSelections = self.extraSelections()
 
+        position = 0
         # remove current selection from extra selection list
         # => can't clear selection as maybe, there's other extra selection
-        for selection in extraSelections:
-            if selection.format.boolProperty(QTextFormat.FullWidthSelection):
+        for index, selection in enumerate(extraSelections):
+            if selection.format.property(WCodeEditor.__EXTRASELECTIONPROP_TYPE) == WCodeEditor.__EXTRASELECTIONTYPE_CURRENTLINE:
                 # found, remove it and exit, no need to continue to search there's normaly only
                 # one extra selection like this one
                 extraSelections.remove(selection)
+                position = index
                 break
 
         if self.__optionMultiLine and not self.isReadOnly():
@@ -472,11 +537,11 @@ class WCodeEditor(QPlainTextEdit):
 
             selection.format.setBackground(self.__optionColorHighlightedLine)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, WCodeEditor.__EXTRASELECTIONTYPE_CURRENTLINE)
             selection.cursor = self.textCursor()
 
-            # insert at beginning, must be the first extra selection rendered
-            # especially if there's extra selection from "search"
-            extraSelections.insert(0, selection)
+            # insert extra selection to initial position in list
+            extraSelections.insert(position, selection)
 
         self.setExtraSelections(extraSelections)
         self.__updateCurrentPositionAndToken(False)
@@ -559,6 +624,10 @@ class WCodeEditor(QPlainTextEdit):
             # Check if the block is visible in addition to check if it is in the areas viewport
             #   a block can, for example, be hidden by a window placed over the text edit
             if block.isVisible() and bottom >= event.rect().top():
+                if userData := block.userData():
+                    for extraSelection in userData.extraSelections():
+                        painter.fillRect(QRectF(0, top, lineNumberAreaWidth, self.__fHeight), extraSelection.format.background())
+
                 number = f"{blockNumber + 1}"
                 painter.setPen(color)
                 painter.drawText(QRectF(WCodeEditor.__LINENUMBER_PADDING, top, lineNumberAreaWidth, self.__fHeight), Qt.AlignRight, number)
@@ -833,16 +902,16 @@ class WCodeEditor(QPlainTextEdit):
         if action not in (None,
                           WCodeEditor.KEY_INDENT,
                           WCodeEditor.KEY_DEDENT,
-                          WCodeEditor.KEY_TOGGLE_COMMENT):
+                          WCodeEditor.KEY_TOGGLE_COMMENT,
+                          WCodeEditor.KEY_AUTOINDENT,
+                          WCodeEditor.KEY_COMPLETION,
+                          WCodeEditor.KEY_INSERTOVERWRITE_MODE,
+                          WCodeEditor.KEY_DELETE_LINE,
+                          WCodeEditor.KEY_IGNORE):
             raise EInvalidValue('Given `action` is not a valid value')
 
-        if modifiers is None:
-            modifiers = WCodeEditor.CTRL_KEY_FALSE
-
-        if key not in self.__shortCuts:
-            self.__shortCuts[key] = {}
-
-        self.__shortCuts[key][modifiers] = action
+        keySequence = QKeySequence(int(key) + int(modifiers))
+        self.__shortCuts[keySequence] = action
 
     def clearShortcuts(self):
         """Remove all shortcuts"""
@@ -859,6 +928,88 @@ class WCodeEditor(QPlainTextEdit):
             if self.__shortCuts[key] == action:
                 returned = key
         return returned
+
+    def checkIfHighlighted(self, block, text, tokens, isCurrentLine):
+        """Check if block line have to be highlighted, and update extra selection if needed"""
+        extraSelections = self.extraSelections()
+        newExtraSelection = []
+
+        userData = block.userData()
+        if userData:
+            userDataExtraSelection = userData.extraSelections()
+        else:
+            userDataExtraSelection = []
+
+        lineNumber = block.blockNumber()
+        for rule in self.__highlightedLinesRules:
+            filterExtraSelections(userDataExtraSelection, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+            filterExtraSelections(extraSelections, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+
+            if toApply := rule.highlight(block, text, tokens, lineNumber, isCurrentLine):
+                selection = QTextEdit.ExtraSelection()
+
+                selection.format.setBackground(toApply[1])
+                selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, toApply[0])
+                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_SHOWGUTTER, toApply[2])
+                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, lineNumber)
+                selection.cursor = QTextCursor(block)
+
+                extraSelections.append(selection)
+                userDataExtraSelection.append(selection)
+            elif userData:
+                userData.setHighlighted(None)
+
+        sortExtraSelections(userDataExtraSelection)
+        sortExtraSelections(extraSelections)
+        self.setExtraSelections(extraSelections)
+
+        if userData is None:
+            if len(userDataExtraSelection):
+                # need to create user data for block and set extra selections
+                userData = WCodeEditorBlockUserData()
+                userData.setExtraSelections(userDataExtraSelection)
+                block.setUserData(userData)
+        else:
+            # user data already exists, need to update it
+            userData.setExtraSelections(userDataExtraSelection)
+            block.setUserData(userData)
+
+    def highlightedLineRules(self):
+        """Return defined to highlight lines"""
+        return self.__highlightedLinesRules
+
+    def setHighlightedLineRule(self, rule):
+        """Return defined to highlight lines"""
+        if not isinstance(rule, WCodeEditorHighlightLineRule):
+            raise EInvalidType("Given `rule` must be a <WCodeEditorHighlightLineRule>")
+
+        if rule not in self.__highlightedLinesRules:
+            self.__highlightedLinesRules.append(rule)
+            if self.__highlighter:
+                self.__highlighter.rehighlight()
+
+    def delHighlightedLineRule(self, rule):
+        """Removed rule from defined rules"""
+        if rule in self.__highlightedLinesRules:
+            index = self.__highlightedLinesRules.index(rule)
+            self.__highlightedLinesRules.pop(index)
+
+            removed = []
+            extraSelections = self.extraSelections()
+            filterExtraSelections(extraSelections, rule.ruleId(), EXTRASELECTION_FILTER_REMOVE, removed=removed)
+            self.setExtraSelections(extraSelections)
+
+            for removedSelection in removed:
+                block = removedSelection.cursor.block()
+                if userData := block.userData():
+                    userDataExtraSelection = userData.extraSelections()
+                    filterExtraSelections(userDataExtraSelection, rule.ruleId(), EXTRASELECTION_FILTER_REMOVE)
+                    userData.setExtraSelections(userDataExtraSelection)
+                    block.setUserData(userData)
+
+            if self.__highlighter:
+                self.__highlighter.rehighlight()
 
     def doAutoIndent(self):
         """Indent current line to match indent of previous line
@@ -2276,13 +2427,18 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
 
         The thing is the current item to parse may not know the previous/next lines define begin/end of multiline text
         """
+        # determinate if current processed block is current line
+        notCurrentLine = (self.currentBlock().firstLineNumber() != self.__editor.textCursor().block().firstLineNumber())
+
         if self.__languageDef is None or len(self.__languageDef.tokenizer().rules()) == 0:
             self.setFormat(0, len(text), self.__editor.viewport().palette().text().color())
+            self.__editor.checkIfHighlighted(self.currentBlock(), text, None, not notCurrentLine)
             return
 
         if text == '':
             # empty string, no need to proceed it
             self.setCurrentBlockState(self.previousBlockState())
+            self.__editor.checkIfHighlighted(self.currentBlock(), '', None, not notCurrentLine)
             return
 
         # consider current block at Ok
@@ -2292,8 +2448,7 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         self.__cursorToken = None
         self.__cursorPreviousToken = None
 
-        # determinate if current processed block is current line
-        notCurrentLine = (self.currentBlock().firstLineNumber() != self.__editor.textCursor().block().firstLineNumber())
+        self.__editor.checkIfHighlighted(self.currentBlock(), text, tokens, not notCurrentLine)
 
         cursor = self.__editor.textCursor()
         cursorPosition = cursor.selectionEnd()
