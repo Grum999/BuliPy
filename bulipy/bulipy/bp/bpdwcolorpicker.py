@@ -36,7 +36,7 @@ class BPDockWidgetColorPicker(WDockWidget):
     def __init__(self, parent, documents, name='Color Picker'):
         super(BPDockWidgetColorPicker, self).__init__(name, parent)
 
-        self.__mode = BPDockWidgetColorPicker.MODE_INSERT
+        self.__mode = None
 
         self.__widget = QWidget(self)
         self.__widget.setMinimumWidth(200)
@@ -61,7 +61,7 @@ class BPDockWidgetColorPicker(WDockWidget):
 
         self.__btnUpsert = QPushButton("xx")
         self.__btnUpsert.clicked.connect(self.__clicked)
-        self.setMode(self.__mode)
+        self.setMode(BPDockWidgetColorPicker.MODE_INSERT)
 
         self.__layout.addWidget(self.__cColorPicker)
         self.__layout.addWidget(self.__btnUpsert)
@@ -94,7 +94,7 @@ class BPDockWidgetColorPicker(WDockWidget):
     def setColor(self, color):
         """Set current color"""
         if isinstance(color, str):
-            if r := re.search(r"^#([A-F0-9]{2})?([A-F0-9]{6})$", color, re.IGNORE):
+            if r := re.search(r"^#([A-F0-9]{2})?([A-F0-9]{6})$", color, flags=re.I):
                 color = QColor(color)
 
         if not isinstance(color, QColor):
@@ -108,11 +108,12 @@ class BPDockWidgetColorPicker(WDockWidget):
 
     def setMode(self, mode):
         """Set button mode INSERT or REPLACE"""
-        if mode == BPDockWidgetColorPicker.MODE_INSERT:
-            self.__btnUpsert.setText(i18n('Insert color'))
-            self.__btnUpsert.setToolTip(i18n('Insert current color in script'))
-            self.__mode = mode
-        elif mode == BPDockWidgetColorPicker.MODE_UPDATE:
-            self.__btnUpsert.setText(i18n('Update color'))
-            self.__btnUpsert.setToolTip(i18n('Update current color in script'))
-            self.__mode = mode
+        if self.__mode != mode:
+            if mode == BPDockWidgetColorPicker.MODE_INSERT:
+                self.__btnUpsert.setText(i18n('Insert color'))
+                self.__btnUpsert.setToolTip(i18n('Insert current color in script'))
+                self.__mode = mode
+            elif mode == BPDockWidgetColorPicker.MODE_UPDATE:
+                self.__btnUpsert.setText(i18n('Update color'))
+                self.__btnUpsert.setToolTip(i18n('Update current color in script'))
+                self.__mode = mode

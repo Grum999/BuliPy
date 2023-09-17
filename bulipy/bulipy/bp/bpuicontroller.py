@@ -43,6 +43,7 @@ from .bpdwcolorpicker import BPDockWidgetColorPicker
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
 from .bpwopensavedialog import BPWOpenSave
 
+from .bplanguagedef import BPLanguageDefPython
 from .bppyrunner import (BPPyRunner, BPLogger)
 from .bpdocument import (WBPDocument, BPDocuments)
 from .bphistory import BPHistory
@@ -54,6 +55,10 @@ from .bpsettings import (
         BPSettingsDialogBox
     )
 
+from ..pktk.modules.languagedef import (
+        LanguageDefXML,
+        LanguageDefJSON
+    )
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.utils import (
@@ -204,6 +209,7 @@ class BPUIController(QObject):
         self.__dwColorPicker.apply.connect(self.commandToolsColorCodeInsert)
         self.__dwColorPickerAction = self.__dwColorPicker.toggleViewAction()
         self.__dwColorPickerAction.setText(i18n("Color picker"))
+        self.__dwColorPickerAction.toggled.connect(self.commandToolsDockColorPickerVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwColorPicker)
 
         self.__dwSearchReplace = BPDockWidgetSearchReplace(self.__window, self.__documents)
@@ -286,6 +292,7 @@ class BPUIController(QObject):
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE, BPSettings.get(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE))
 
         self.__dwColorPicker.setOptions(BPSettings.get(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED))
+        self.__dwColorPicker.setColor('#ffffffff')
 
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED))
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED))
@@ -397,6 +404,26 @@ class BPUIController(QObject):
         """A document cursor position/selection has been modified"""
         self.__updateStatusUiCursor(document)
         self.__delayedDocumentSaveCache(document)
+
+        currentToken = document.codeEditor().cursorToken()
+        if currentToken:
+            if (document.languageDefinition().name() == 'Python' and
+                currentToken.type() in (BPLanguageDefPython.ITokenType.STRING,
+                                        BPLanguageDefPython.ITokenType.BSTRING,
+                                        BPLanguageDefPython.ITokenType.STRING_LONG_S,
+                                        BPLanguageDefPython.ITokenType.STRING_LONG_D,
+                                        BPLanguageDefPython.ITokenType.FSTRING_LONG_S,
+                                        BPLanguageDefPython.ITokenType.FSTRING_LONG_D,
+                                        BPLanguageDefPython.ITokenType.BSTRING_LONG_S,
+                                        BPLanguageDefPython.ITokenType.BSTRING_LONG_D) or
+               document.languageDefinition().name() == 'XML' and currentToken.type() == LanguageDefXML.ITokenType.STRING or
+               document.languageDefinition().name() == 'JSON' and currentToken.type() == LanguageDefJSON.ITokenType.STRING):
+                if results := re.search(r'''^(["'])(#(?:[A-F0-9]{6}|[A-F0-9]{8}))(\1)$''', currentToken.value(), flags=re.I):
+                    self.__dwColorPicker.setColor(results.groups()[1])
+                    self.__dwColorPicker.setMode(BPDockWidgetColorPicker.MODE_UPDATE)
+                    return
+
+        self.__dwColorPicker.setMode(BPDockWidgetColorPicker.MODE_INSERT)
 
     def __documentModificationChanged(self, document):
         """A document status has been changed"""
@@ -1242,6 +1269,7 @@ class BPUIController(QObject):
                 self.__dwColorPicker.show()
             else:
                 self.__dwColorPicker.hide()
+        self.__window.actionToolsColorPicker.setChecked(visible)
 
     def commandToolsDockColorPickerSetColor(self, color):
         """Set color for color picker
@@ -1301,12 +1329,12 @@ class BPUIController(QObject):
             else:
                 colorCode = color.name(QColor.HexArgb)
 
-            Debug.print('commandColorCodeInsert', color, colorCode, mode)
-
             if mode == BPDockWidgetColorPicker.MODE_INSERT:
                 self.__currentDocument.codeEditor().insertLanguageText(colorCode)
             elif mode == BPDockWidgetColorPicker.MODE_UPDATE:
-                self.__currentDocument.codeEditor().replaceTokenText(colorCode)
+                currentToken = self.__currentDocument.codeEditor().cursorToken()
+                charQuote = currentToken.value()[0]
+                self.__currentDocument.codeEditor().replaceTokenText(f"{charQuote}{colorCode}{charQuote}")
             else:
                 raise EInvalidValue("Given `mode` value is not valid")
 
