@@ -201,7 +201,7 @@ class BPSettings(Settings):
                                                                                                                       SettingsFmt(list, ['error', 'warning', 'info', 'valid'])),
             SettingsRule(BPSettingsKey.SESSION_DOCKER_CONSOLE_OUTPUT_FONT_SIZE,             12,                       SettingsFmt(int)),
 
-            SettingsRule(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED,            ['colorRGB', 'colorHSV', 'colorAlpha', 'colorCssRGB', 'colorWheel', 'colorPreview'],
+            SettingsRule(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED,            ['colorRGB', 'colorHSV', 'colorAlpha', 'colorCssRGB', 'colorCssRGBAlphaChecked', 'colorWheel', 'colorPreview'],
                                                                                                                       SettingsFmt(list)),  # list is not fixed as palette names are not known
 
             SettingsRule(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED,         False,                    SettingsFmt(bool)),
