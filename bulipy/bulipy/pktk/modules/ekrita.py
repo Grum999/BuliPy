@@ -41,8 +41,7 @@ from ..pktk import *
 from krita import (
         Document,
         Node,
-        Resource,
-        Layer
+        Resource
     )
 
 from PyQt5.QtCore import (

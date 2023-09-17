@@ -183,7 +183,18 @@ def loadXmlUi(fileName, parent):
     properties with icon reference
     """
     # load UI
+
+    # temporary add <pluginName> path to sys.path to let 'pktk.widgets.xxx' being accessible during xmlLoad()
+    #   From:            /home/xxx/.local/share/krita/pykrita/<pluginName>/pktk/widgets/xxx.py
+    #   Add in sys.path: /home/xxx/.local/share/krita/pykrita/<pluginName>
+    #
+    #                                                               xxx.py
+    #                                               widgets         |
+    #                               pktk            |               |
+    #               <pluginName>    |               |               |
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     returned = PyQt5.uic.loadUi(fileName, parent, PkTk.packageName())
+    sys.path.pop()
 
     # Parse XML file and retrieve all object for which an icon is set
     tree = ET.parse(fileName)
@@ -439,3 +450,4 @@ class Debug(object):
                 return [(name, Debug.swDuration(name)) for name in sorted(Debug.__stopwatches.keys())]
         else:
             return []
+

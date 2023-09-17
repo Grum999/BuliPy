@@ -577,7 +577,7 @@ class WImageView(QWidget):
                 self.__bgBrush = QBrush(QColor(128, 128, 128))
                 self.__actionBgNGray.setChecked(True)
             elif self.__backgroundType == WImageView.BG_TRANSPARENT:
-                self.__bgBrush = QBrush(Krita.activeWindow().qwindow().palette().color(QPalette.Mid))
+                self.__bgBrush = QBrush(Krita.instance().activeWindow().qwindow().palette().color(QPalette.Mid))
                 self.__actionBgNone.setChecked(True)
             elif self.__backgroundType == WImageView.BG_CHECKER_BOARD:
                 self.__bgBrush = checkerBoardBrush(32)
