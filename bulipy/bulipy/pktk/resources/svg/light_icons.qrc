@@ -222,6 +222,7 @@
     <file alias="tag">light/32dp/tag.svg</file>
     <file alias="tags">light/32dp/tags.svg</file>
     <file alias="text">light/32dp/text.svg</file>
+    <file alias="text_alpha">light/32dp/text_alpha.svg</file>
     <file alias="text_f">light/32dp/text_f.svg</file>
     <file alias="text_f_r90">light/32dp/text_f_r90.svg</file>
     <file alias="text_function">light/32dp/text_function.svg</file>
@@ -476,6 +477,7 @@
     <file alias="tag">light/32dp-disabled/tag.svg</file>
     <file alias="tags">light/32dp-disabled/tags.svg</file>
     <file alias="text">light/32dp-disabled/text.svg</file>
+    <file alias="text_alpha">light/32dp-disabled/text_alpha.svg</file>
     <file alias="text_f">light/32dp-disabled/text_f.svg</file>
     <file alias="text_f_r90">light/32dp-disabled/text_f_r90.svg</file>
     <file alias="text_function">light/32dp-disabled/text_function.svg</file>
