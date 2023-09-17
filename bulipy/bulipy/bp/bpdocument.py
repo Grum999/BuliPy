@@ -33,7 +33,10 @@ from PyQt5.QtCore import (
     )
 
 from .bpthemes import BPThemes
-from .bplanguagedef import BPLanguageDefPython
+from .bplanguagedef import (
+        BPLanguageDefPython,
+        BPCodeEditorHighlightLineRulePython
+    )
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 
 from .bpsettings import (
@@ -111,6 +114,8 @@ class WBPDocument(WBPDocumentBase):
         self.__layout.addWidget(self.__codeEditor)
 
         self.__msgButtonBar.buttonClicked.connect(self.__msgAlertBtnClicked)
+
+        self.__highlightLinesRule = None
 
         # code editor properties
         self.__codeEditor.setLanguageDefinition(languageDef)
@@ -380,6 +385,14 @@ class WBPDocument(WBPDocumentBase):
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.WidgetWidth)
         else:
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
+
+        if self.__highlightLinesRule:
+            self.__codeEditor.delHighlightedLineRule(self.__highlightLinesRule)
+            self.__highlightLinesRule = None
+
+        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE):
+            self.__highlightLinesRule = BPCodeEditorHighlightLineRulePython(None)
+            self.__codeEditor.setHighlightedLineRule(self.__highlightLinesRule)
 
         self.__codeEditor.setUpdatesEnabled(True)
 

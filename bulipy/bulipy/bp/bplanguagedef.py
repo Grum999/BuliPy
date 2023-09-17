@@ -18,6 +18,7 @@ import re
 
 from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.languagedef import LanguageDef
+from ..pktk.widgets.wcodeeditor import WCodeEditorHighlightLineRule
 
 from ..pktk.modules.tokenizer import (
         Token,
@@ -442,3 +443,41 @@ class BPLanguageDefUnmanaged(LanguageDef):
         """Return language file extension as list"""
         return []
 
+
+class BPCodeEditorHighlightLineRulePython(WCodeEditorHighlightLineRule):
+    """Extend WCodeEditorHighlightLineRule to manage highlighting lines rules specific to python"""
+
+    RULEID_PYFCTCLASS = 0x0100
+
+    def __init__(self, theme):
+        pass
+
+    def ruleId(self):
+        """Return rule identifier"""
+        return BPCodeEditorHighlightLineRulePython.RULEID_PYFCTCLASS
+
+    def highlight(self, block, text, tokens, lineNumber, isCurrentLine):
+        """Return highlight properties, or None
+
+        When called, are provided:
+        - text `block` (QTextBlock)
+        - `text` (str)
+        - `tokens` list (Tokens)
+        - `lineNumber` (int)
+        - is the current line (bool)
+
+        Method returns:
+        - None if line don't have to be highlighted
+        - A tuple if line have to be highlighted
+            0: int      Define priority (0xFF is current line color select; lower values are rendered before, higher value are rendered after)
+            1: QColor   Define color for highlighting
+            2: Boolean  Define if gutter have to be highlighted too
+        """
+        if tokens is None:
+            return None
+
+        for token in tokens.list():
+            if token.type() in (BPLanguageDefPython.ITokenType.DECL_FUNC, BPLanguageDefPython.ITokenType.DECL_CLASS):
+                return (BPCodeEditorHighlightLineRulePython.RULEID_PYFCTCLASS, QColor('#0affea00'), True)
+
+        return None
