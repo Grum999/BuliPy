@@ -55,7 +55,7 @@ class TokenType(ExtendableEnum):
     DEDENT = ('Dedent', 'An indented block finished')
     WRONG_INDENT = ('WrongIndent', 'An indent is found but doesn\'t match expected indentation value')
     WRONG_DEDENT = ('WrongDedent', 'An dedent is found but doesn\'t match expected indentation value')
-    COMMENT = ('Comment', 'A comment text')
+    COMMENT = ('comment', 'A comment text')
 
     def id(self, **param):
         """Return token Id value"""
@@ -78,35 +78,55 @@ class TokenType(ExtendableEnum):
 class TokenStyle:
     """Define styles applied for tokens types"""
 
-    def __init__(self, styles=[]):
+    def __init__(self, styles=None):
         """Initialise token family"""
         self.__currentThemeId = UITheme.DARK_THEME
 
         # define default styles for tokens
         self.__tokenStyles = {}
 
-        styles = {
-                UITheme.DARK_THEME: [
-                        (TokenType.UNKNOWN, '#d85151', True, True, '#7b1b1b'),
-                        (TokenType.NEWLINE, None, False, False)
-                    ],
-                UITheme.LIGHT_THEME: [
-                        (TokenType.UNKNOWN, '#d85151', True, True, '#7b1b1b'),
-                        (TokenType.NEWLINE, None, False, False)
-                    ]
-            }
+        if styles is None or not isinstance(styles, dict):
+            styles = {
+                    UITheme.DARK_THEME: [
+                            (TokenType.UNKNOWN, '#d85151', True, True, '#7b1b1b'),
+                            (TokenType.NEWLINE, None, False, False),
+                            (TokenType.SPACE, None, False, False),
+                        ],
+                    UITheme.LIGHT_THEME: [
+                            (TokenType.UNKNOWN, '#d85151', True, True, '#7b1b1b'),
+                            (TokenType.NEWLINE, None, False, False),
+                            (TokenType.SPACE, None, False, False)
+                        ]
+                }
 
-        for style in styles:
-            for definition in styles[style]:
-                self.setStyle(style, *definition)
+        for themeId in styles:
+            for definition in styles[themeId]:
+                self.setStyle(themeId, *definition)
+
+    def reset(self):
+        """Delete ALL style, even the default one"""
+        self.__tokenStyles = {}
+
+    def styles(self):
+        """Return list of styles for current theme"""
+        if self.__currentThemeId in self.__tokenStyles:
+            return self.__tokenStyles[self.__currentThemeId]
+        return []
 
     def style(self, type):
         """Return style to apply for a token type"""
         if isinstance(type, TokenType):
             if type in self.__tokenStyles[self.__currentThemeId]:
                 return self.__tokenStyles[self.__currentThemeId][type]
+            elif type in self.__tokenStyles[UITheme.DARK_THEME]:
+                return self.__tokenStyles[UITheme.DARK_THEME][type]
+            else:
+                return self.__tokenStyles[UITheme.DARK_THEME][TokenType.SPACE]
+
         # in all other case, token style is not known...
-        return self.__tokenStyles[self.__currentThemeId][TokenType.UNKNOWN]
+        if TokenType.UNKNOWN in self.__tokenStyles[self.__currentThemeId]:
+            return self.__tokenStyles[self.__currentThemeId][TokenType.UNKNOWN]
+        return self.__tokenStyles[UITheme.DARK_THEME][TokenType.UNKNOWN]
 
     def setStyle(self, themeId, tokenType, fgColor, bold, italic, bgColor=None):
         """Define style for a token family"""
@@ -125,6 +145,10 @@ class TokenStyle:
 
         self.__tokenStyles[themeId][tokenType] = textFmt
 
+    def themes(self):
+        """Return list of available themes for token style"""
+        return list(self.__tokenStyles.keys())
+
     def theme(self):
         """Return current defined theme"""
         return self.__currentThemeId
@@ -133,7 +157,7 @@ class TokenStyle:
         """Set current theme
 
         If theme doesn't exist, current theme is not changed"""
-        if themeId in self.__currentThemeId:
+        if themeId in self.__tokenStyles:
             self.__currentThemeId = themeId
 
 

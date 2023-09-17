@@ -307,6 +307,9 @@ class WDialogStrInput(WDialogMessage):
             self._leInput.textChanged.connect(self.__checkValue)
             self.__checkValue(self._leInput.text())
 
+        # default returned value
+        self.__value = None
+
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
         self.__value = None
@@ -406,6 +409,9 @@ class WDialogIntInput(WDialogMessage):
         self._sbInput.setValue(defaultValue)
         self._sbInput.setFocus()
         self._layout.insertWidget(self._layout.count()-1, self._sbInput)
+
+        # default returned value
+        self.__value = None
 
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
@@ -520,6 +526,9 @@ class WDialogFloatInput(WDialogMessage):
         self._sbInput.setFocus()
         self._layout.insertWidget(self._layout.count()-1, self._sbInput)
 
+        # default returned value
+        self.__value = None
+
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
         self.__value = None
@@ -619,6 +628,9 @@ class WDialogComboBoxChoiceInput(WDialogMessage):
         self._cbInput.setFocus()
         self._layout.insertWidget(self._layout.count()-1, self._cbInput)
 
+        # default returned value
+        self.__value = None
+
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
         self.__value = None
@@ -704,6 +716,9 @@ class WDialogRadioButtonChoiceInput(WDialogMessage):
             self._layout.insertWidget(self._layout.count()-1, rbInput)
 
         self._rbInput[min(len(choicesValue), max(0, defaultIndex))].setChecked(True)
+
+        # default returned value
+        self.__value = None
 
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
@@ -803,6 +818,9 @@ class WDialogCheckBoxChoiceInput(WDialogMessage):
 
         if self.__minimumChecked > 0:
             self.__checkValue()
+
+        # default returned value
+        self.__value = None
 
     def __checkValue(self):
         """Check if number of checked values is valid according to minimumChecked value and enable/disabled Ok button"""
@@ -935,6 +953,9 @@ class WDialogColorInput(WDialogMessage):
             self._cpInput.setColor(QColor(defaultValue))
 
         self._layout.insertWidget(self._layout.count()-1, self._cpInput)
+
+        # default returned value
+        self.__value = None
 
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""
@@ -1092,6 +1113,9 @@ class WDialogFontInput(WDialogMessage):
         self.__init = False
         self.__updateList(QFontDatabase.Any)
 
+        # default returned value
+        self.__value = None
+
     def __updateList(self, writingSystem):
         """Build font list according to designed writingSystem"""
         self.__init = True
@@ -1238,6 +1262,9 @@ class WDialogProgress(WDialogMessage):
         self._layout.insertWidget(self._layout.count()-1, self._progressBar)
 
         self.__cancelled = False
+
+        # default returned value
+        self.__value = None
 
     def __buttonCancel(self):
         """Button 'cancel' has been clicked, return None value"""

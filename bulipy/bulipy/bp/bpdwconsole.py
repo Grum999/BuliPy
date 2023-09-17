@@ -62,7 +62,7 @@ class BPDockWidgetConsoleOutput(WDockWidget):
     OPTION_BTN_WHOLEWORD =           0b00000000000_00100
     OPTION_BTN_BACKWARD =            0b00000000000_01000
     OPTION_BTN_HIGHLIGHT =           0b00000000000_10000
-    # available bits:                         <-->
+    # available bits:                          <->
     OPTION_BTN_BUTTONSHOW =          0b10000000000_00000
     OPTION_TXT_SEARCH =              0b01000000000_00000
     OPTION_FILTER_TYPES =            0b00100000000_00000
@@ -70,7 +70,8 @@ class BPDockWidgetConsoleOutput(WDockWidget):
     OPTION_BUFFER_SIZE =             0b00001000000_00000
     OPTION_AUTOCLEAR =               0b00000100000_00000
     OPTION_FONTSIZE =                0b00000010000_00000
-    #                                         <-->
+    OPTION_FONTNAME =                0b00000001000_00000
+    #                                          <->
 
     def __init__(self, parent, documents, name='Script execution output'):
         super(BPDockWidgetConsoleOutput, self).__init__(name, parent)
@@ -79,6 +80,7 @@ class BPDockWidgetConsoleOutput(WDockWidget):
         self.__widget.setMinimumWidth(200)
 
         self.__layout = QVBoxLayout(self.__widget)
+        self.__layout.setContentsMargins(4, 4, 4, 0)
         self.__widget.setLayout(self.__layout)
 
         self.__cConsole = WConsole(self)
@@ -159,17 +161,18 @@ class BPDockWidgetConsoleOutput(WDockWidget):
 
             document = self.__documents.document()
             line = data['fromPosition'].y()
-            file = data['source'].replace(f"@{document.cacheUuid()}", document.tabName(True))
+            if data['source']:
+                file = data['source'].replace(f"@{document.cacheUuid()}", document.tabName(True))
 
-            rect = self.__cConsole.blockBoundingGeometry(cursor.block()).translated(self.__cConsole.contentOffset())
-            position = self.__cConsole.mapToGlobal(rect.topLeft().toPoint()) + QPoint(25, 30)
+                rect = self.__cConsole.blockBoundingGeometry(cursor.block()).translated(self.__cConsole.contentOffset())
+                position = self.__cConsole.mapToGlobal(rect.topLeft().toPoint()) + QPoint(25, 30)
 
-            msg = i18n(f"CTRL+Click to go to file {file}, line {line}")
+                msg = i18n(f"CTRL+Click to go to file {file}, line {line}")
 
-            QToolTip.showText(position, msg+" ", self)  # dirty trick to force tooltip to be displayed at expected position when mouse move
-            QToolTip.showText(position, msg, self)
-        else:
-            QToolTip.hideText()
+                QToolTip.showText(position, msg+" ", self)  # dirty trick to force tooltip to be displayed at expected position when mouse move
+                QToolTip.showText(position, msg, self)
+                return
+        QToolTip.hideText()
 
     def option(self, optionId):
         """Return current option value
@@ -186,11 +189,14 @@ class BPDockWidgetConsoleOutput(WDockWidget):
             BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE                    Integer
             BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR                      Boolean
             BPDockWidgetConsoleOutput.OPTION_FONTSIZE                       Integer
+            BPDockWidgetConsoleOutput.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE == BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE:
             return self.__cConsole.optionBufferSize()
         elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTSIZE == BPDockWidgetConsoleOutput.OPTION_FONTSIZE:
             return self.__cConsole.optionFontSize()
+        elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTNAME == BPDockWidgetConsoleOutput.OPTION_FONTNAME:
+            return self.__cConsole.optionFontName()
         else:
             return self.__tbFilter.option(optionId)
 
@@ -209,11 +215,14 @@ class BPDockWidgetConsoleOutput(WDockWidget):
             BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE                    Integer
             BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR                      Boolean
             BPDockWidgetConsoleOutput.OPTION_FONTSIZE                       Integer
+            BPDockWidgetConsoleOutput.OPTION_FONTNAME                       String
         """
         if optionId & BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE == BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE:
             self.__cConsole.setOptionBufferSize(value)
         elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTSIZE == BPDockWidgetConsoleOutput.OPTION_FONTSIZE:
             self.__cConsole.setOptionFontSize(value)
+        elif optionId & BPDockWidgetConsoleOutput.OPTION_FONTNAME == BPDockWidgetConsoleOutput.OPTION_FONTNAME:
+            self.__cConsole.setOptionFontName(value)
         else:
             self.__tbFilter.setOption(optionId, value)
 

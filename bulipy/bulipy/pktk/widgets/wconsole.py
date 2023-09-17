@@ -262,7 +262,7 @@ class WConsole(QPlainTextEdit):
                      r"(?<!\$)(#)|"
                      r"(?<!\$)(\*\*)|"
                      r"(?<!\$)(\*)")
-            tokens = [token for token in re.split(regEx, text, re.I | re.M) if token]
+            tokens = [token for token in re.split(regEx, text,  flags=re.I | re.M) if token]
 
             hasColor = False
             returned = []
@@ -290,7 +290,7 @@ class WConsole(QPlainTextEdit):
                         color = False
                     else:
                         returned.append(token)
-                elif regResult := re.match("#(l?[rgbcmykw]|[A-F0-9]{6})#", token, re.I):
+                elif regResult := re.match("#(l?[rgbcmykw]|[A-F0-9]{6})#", token,  flags=re.I):
                     if color:
                         # already in a color block?
                         returned.append(f'</span>')
@@ -515,6 +515,16 @@ class WConsole(QPlainTextEdit):
         """Set current console font size (in point)"""
         font = self.font()
         font.setPointSize(value)
+        self.setFont(font)
+
+    def optionFontName(self):
+        """Return current console font name"""
+        return self.font().family()
+
+    def setOptionFontName(self, value):
+        """Set current console font name"""
+        font = self.font()
+        font.setFamily(value)
         self.setFont(font)
 
     def optionAllowWheelSetFontSize(self):

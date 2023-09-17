@@ -20,7 +20,10 @@ from PyQt5.Qt import *
 import PyQt5.QtCore as QtCore
 
 from .bpdwconsole import BPDockWidgetConsoleOutput
-
+from .bpsettings import (
+        BPSettings,
+        BPSettingsKey
+    )
 from ..pktk.modules.utils import (JsonQObjectEncoder, JsonQObjectDecoder)
 from ..pktk.modules.timeutils import (tsToStr, secToStrTime)
 from ..pktk.widgets.wconsole import (WConsoleType, WConsole, WConsoleUserData)
@@ -211,6 +214,8 @@ class BPPyRunner:
         self.__fullFileName = self.__document.tabName(True)
         self.__scriptPath = None
 
+        self.__isRunning = False
+
         self.__separator = f"================{'=' * (max(len(self.__fullFileName), 19))}"
 
         self.__startTime = None
@@ -329,6 +334,7 @@ class BPPyRunner:
 
             return (returnedMsg, returnedData)
 
+        self.__isRunning = True
         self.__console.setScriptIsRunning(True)
         if not self.__console.autoClear():
             self.__loggerAddSeparator()
@@ -351,6 +357,9 @@ class BPPyRunner:
         if len(errorMsg):
             self.__loggerAddSeparator()
             self.__logger.append(errorMsg, WConsoleType.ERROR, errorData)
+
+            self.__console.setScriptIsRunning(False)
+            self.__isRunning = False
             return False
 
         return True
@@ -377,16 +386,26 @@ class BPPyRunner:
                               ],
                              WConsoleType.INFO)
         self.__console.setScriptIsRunning(False)
+        self.__isRunning = False
 
     def __run(self):
         """Run script"""
         self.__console.setUpdatesEnabled(False)
 
+        for pathNfo in BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS):
+            if pathNfo[1]:
+                # active, add it
+                normPath = os.path.abspath(os.path.expanduser(pathNfo[0]))
+                if normPath not in sys.path:
+                    # add current file directory in sys.path
+                    # => make easier to load relative modules of files
+                    sys.path.append(normPath)
+
         if self.__scriptPath:
             # execution from a saved file
 
-            if self.__scriptPath not in sys.path:
-                # add current file directory in sys.path
+            if BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_SCRIPT) and self.__scriptPath not in sys.path:
+                # add current file directory in sys.path if settings require to add script path
                 # => make easier to load relative modules of files
                 sys.path.append(self.__scriptPath)
 
@@ -453,6 +472,15 @@ class BPPyRunner:
             # remove current file directory from sys.path
             sys.path.remove(self.__scriptPath)
 
+        for pathNfo in BPSettings.get(BPSettingsKey.CONFIG_SCRIPTEXECUTION_SYSPATH_PATHS):
+            if pathNfo[1]:
+                # active, add it
+                normPath = os.path.abspath(os.path.expanduser(pathNfo[0]))
+                if normPath in sys.path:
+                    # remove current file directory from sys.path
+                    # => make easier to load relative modules of files
+                    sys.path.remove(normPath)
+
     def run(self):
         # initialise logger
         self.__logger = BPLogger(self.__console, self.__document.cacheFileNameConsole())
@@ -464,3 +492,8 @@ class BPPyRunner:
 
         self.__logger.close()
         self.__logger = None
+
+    def isRunning(self):
+        """return is currently running"""
+        return self.__isRunning
+

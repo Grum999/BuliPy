@@ -290,6 +290,39 @@ def indent(text, firstIndent='', nextIndent='', strip=False):
     return os.linesep.join(result)
 
 
+def trimLines(text, trimCharacter=r'\s'):
+    """Trim all lines from given `text` (leading/trailing characters)
+
+    Default character is space, can be defined with `trimCharacter` (provided as regular expression)
+    """
+    if trimCharacter in (r'\s', ' '):
+        # all spaces, excluding new line
+        trimCharacter = r'[^\S\r\n]'
+    return re.sub(f"^{trimCharacter}+|{trimCharacter}+$", "", text, flags=re.I | re.M)
+
+
+def trimLinesLeft(text, trimCharacter=r'\s'):
+    """Trim all lines from given `text` (leading characters only)
+
+    Default character is space, can be defined with `trimCharacter` (provided as regular expression)
+    """
+    if trimCharacter in (r'\s', ' '):
+        # all spaces, excluding new line
+        trimCharacter = r'[^\S\r\n]'
+    return re.sub(f"^{trimCharacter}+", "", text, flags=re.I | re.M)
+
+
+def trimLinesRight(text, trimCharacter=r'\s'):
+    """Trim all lines from given `text` (trainling characters only)
+
+    Default character is space, can be defined with `trimCharacter` (provided as regular expression)
+    """
+    if trimCharacter in (r'\s', ' '):
+        # all spaces, excluding new line
+        trimCharacter = r'[^\S\r\n]'
+    return re.sub(f"{trimCharacter}+$", "", text, flags=re.I | re.M)
+
+
 def boolYesNo(value):
     """Return yes or no according to value is True or False"""
     return i18n("Yes") if value else i18n("No")

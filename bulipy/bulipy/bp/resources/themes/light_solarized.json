@@ -1,0 +1,77 @@
+{
+    "comments": ["A light theme based on Ethan Schoonover's Solarized theme study",
+                 "http://ethanschoonover.com/solarized"
+                 ],
+    "id": "light_solarized",
+    "name": "Solarized - Light",
+    "base": "light",
+    "colors": {
+            "gutter.bg": "#eee8d5",
+            "gutter.fg": "#93a1a1",
+            "bg": "#fdf6e3",
+            "fg": "#657b83",
+            "highlightedLine": "#eee8d5",
+            "rightLimit": "#88657b83",
+            "spaces": "#88657b83"
+        },
+    "languages": {
+        ".py": {
+                "str": {"fg": "#859900", "bold": false, "italic": false},
+                "str_l_s": {"fg": "#859900", "bold": false, "italic": false},
+                "str_l_d": {"fg": "#859900", "bold": false, "italic": false},
+                "fstr": {"fg": "#859900", "bold": false, "italic": true},
+                "fstr_l_s": {"fg": "#859900", "bold": false, "italic": true},
+                "fstr_l_d": {"fg": "#859900", "bold": false, "italic": true},
+                "bstr": {"fg": "#2aa198", "bold": false, "italic": false},
+                "bstr_l_s": {"fg": "#2aa198", "bold": false, "italic": false},
+                "bstr_l_d": {"fg": "#2aa198", "bold": false, "italic": false},
+                "number_int": {"fg": "#cb4b16", "bold": false, "italic": false},
+                "number_flt": {"fg": "#cb4b16", "bold": false, "italic": false},
+                "kwrd": {"fg": "#6c71c4", "bold": true, "italic": false},
+                "kwrd_soft": {"fg": "#6c71c4", "bold": true, "italic": false},
+                "kwrd_const": {"fg": "#dd7892", "bold": true, "italic": false},
+                "kwrd_operator": {"fg": "#c631b8", "bold": true, "italic": false},
+                "builtin_fct": {"fg": "#268bd2", "bold": false, "italic": false},
+                "builtin_except": {"fg": "#cb4b16", "bold": true, "italic": false},
+                "boperators": {"fg": "#c631b8", "bold": false, "italic": false},
+                "doperators": {"fg": "#c631b8", "bold": false, "italic": false},
+                "delim": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_operator": {"fg": "#c631b8", "bold": false, "italic": false},
+                "delim_separator": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_parO": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_parC": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_brackO": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_brackC": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_curlbO": {"fg": "#d33682", "bold": false, "italic": false},
+                "delim_curlbC": {"fg": "#d33682", "bold": false, "italic": false},
+                "function_decl": {"fg": "#b58900", "bold": true, "italic": false},
+                "class_decl": {"fg": "#b58900", "bold": true, "italic": false},
+                "identifier": {"fg": "#839496", "bold": false, "italic": false},
+                "decorator": {"fg": "#00b57f", "bold": true, "italic": true},
+                "linejoin": {"fg": "#d33682", "bold": true, "italic": false},
+                "comment": {"fg": "#657b83", "bold": false, "italic": true}
+            },
+        ".json": {
+                "object_id": {"fg": "#6c71c4", "bold": true, "italic": false},
+                "object_definition": {"fg": "#d33682", "bold": true, "italic": false},
+                "object_separator": {"fg": "#d33682", "bold": false, "italic": false},
+                "object_marker_start": {"fg": "#d33682", "bold": false, "italic": false},
+                "object_marker_end": {"fg": "#d33682", "bold": false, "italic": false},
+                "array_marker_start": {"fg": "#d33682", "bold": false, "italic": false},
+                "array_marker_end": {"fg": "#d33682", "bold": false, "italic": false},
+                "value_string": {"fg": "#859900", "bold": false, "italic": false},
+                "value_number": {"fg": "#cb4b16", "bold": false, "italic": true},
+                "value_special": {"fg": "#dd7892", "bold": true, "italic": false}
+            },
+        ".xml": {
+                "str": {"fg": "#859900", "bold": false, "italic": false},
+                "markup": {"fg": "#6c71c4", "bold": true, "italic": false},
+                "attribute": {"fg": "#b58900", "bold": false, "italic": false},
+                "set_attribute": {"fg": "#d33682", "bold": false, "italic": false},
+                "cdata": {"fg": "#2aa198", "bold": false, "italic": true},
+                "value": {"fg": "#839496", "bold": false, "italic": false},
+                "comment": {"fg": "#657b83", "bold": false, "italic": true},
+                "special_character": {"fg": "#dd7892", "bold": false, "italic": false}
+            }
+    }
+}

@@ -32,7 +32,11 @@ from PyQt5.QtCore import (
         QFileSystemWatcher
     )
 
-from .bplanguagedef import BPLanguageDefPython
+from .bpthemes import BPThemes
+from .bplanguagedef import (
+        BPLanguageDefPython,
+        BPCodeEditorHighlightLineRulePython
+    )
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 
 from .bpsettings import (
@@ -43,7 +47,10 @@ from .bpsettings import (
 from ..pktk.modules.languagedef import LanguageDef
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.utils import Debug
-from ..pktk.modules.strutils import strDefault
+from ..pktk.modules.strutils import (
+        strDefault,
+        trimLinesRight
+    )
 from ..pktk.modules.bytesrw import BytesRW
 from ..pktk.widgets.wtabbar import WTabBar
 from ..pktk.widgets.wcodeeditor import WCodeEditor
@@ -75,6 +82,7 @@ class WBPDocument(WBPDocumentBase):
     selectionChanged = Signal(WBPDocumentBase)
     copyAvailable = Signal(WBPDocumentBase)
     languageDefChanged = Signal(WBPDocumentBase)
+    fontSizeChanged = Signal(WBPDocumentBase)
 
     ALERT_FILE_DELETED =    0x01
     ALERT_FILE_MODIFIED =   0x02
@@ -90,6 +98,10 @@ class WBPDocument(WBPDocumentBase):
     ACTION_RELOADAUTO =     0x06
 
     def __init__(self, parent=None, languageDef=None, uiController=None):
+        def emitFontSizeChanged():
+            self.__delayedFontSizeTimer.stop()
+            self.fontSizeChanged.emit(self)
+
         super(WBPDocument, self).__init__(parent)
 
         self.__layout = QVBoxLayout(self)
@@ -103,13 +115,17 @@ class WBPDocument(WBPDocumentBase):
 
         self.__msgButtonBar.buttonClicked.connect(self.__msgAlertBtnClicked)
 
+        self.__highlightLinesRule = None
+
         # code editor properties
         self.__codeEditor.setLanguageDefinition(languageDef)
         self.__codeEditor.setOptionCommentCharacter('#')
         self.__codeEditor.setOptionMultiLine(True)
         self.__codeEditor.setOptionShowLineNumber(True)
         self.__codeEditor.setOptionAllowWheelSetFontSize(True)
+        self.__codeEditor.setOptionAutoCompletion(False)
 
+        # code editor signals to manage actions
         self.__codeEditor.readOnlyModeChanged.connect(lambda: self.readOnlyModeChanged.emit(self))
         self.__codeEditor.overwriteModeChanged.connect(lambda: self.overwriteModeChanged.emit(self))
         self.__codeEditor.cursorCoordinatesChanged.connect(lambda: self.cursorCoordinatesChanged.emit(self))
@@ -119,6 +135,7 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.undoAvailable.connect(lambda: self.undoAvailable.emit(self))
         self.__codeEditor.selectionChanged.connect(lambda: self.selectionChanged.emit(self))
         self.__codeEditor.copyAvailable.connect(lambda: self.copyAvailable.emit(self))
+        self.__codeEditor.fontSizeChanged.connect(lambda: self.__delayedFontSizeTimer.start(150))
 
         # File watcher on document; allows to check if file is modified outside editor
         self.__fsWatcher = QFileSystemWatcher()
@@ -133,7 +150,17 @@ class WBPDocument(WBPDocumentBase):
         self.__autoReload = False
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveCache())
-        self.applySettings()
+
+        # flag to inform if file is read only
+        self.__fileIsReadOnly = False
+
+        self.__trimBeforeSave = False
+
+        # when font size is changed, signal will require to change font size on ALL documents
+        # then to avoid lag due too to many signal sent (and editor to update), emit signal few milliseconds after the font size has been changed
+        self.__delayedFontSizeTimer = QTimer()
+        self.__delayedFontSizeTimer.timeout.connect(lambda: emitFontSizeChanged())
+        self.applySettings(True)
 
     def __repr__(self):
         return f"<WBPDocument({self.tabName(True)}, {self.modified()})>"
@@ -164,6 +191,7 @@ class WBPDocument(WBPDocumentBase):
         """File has been modified by an external process"""
         Debug.print('[WBPDocument.__externalFileModification] File has been modified {0}', fileName)
 
+        self.__checkFileIsReadOnly()
         if os.path.isfile(fileName):
             # file still exists, then modified alert
             self.__addAlert(WBPDocument.ALERT_FILE_MODIFIED)
@@ -315,25 +343,58 @@ class WBPDocument(WBPDocumentBase):
             self.__currentAlert = None
             self.__updateAlerts()
 
-    def applySettings(self):
-        """Apply global BuliPy editor settings"""
+    def __checkFileIsReadOnly(self):
+        self.__fileIsReadOnly = False
+        if self.__documentFileName is not None:
+            if os.path.isfile(self.__documentFileName):
+                if not os.access(self.__documentFileName, os.W_OK):
+                    self.__fileIsReadOnly = True
+                    self.__codeEditor.setReadOnly(True)
+
+    def applySettings(self, includeConfig=False):
+        """Apply global BuliPy editor settings
+
+        If `includeConfig`, will apply ALL settings (ie: take in account change from BuliPy configuration)
+        Otherwise only session settings are taken in account
+        """
+        self.__codeEditor.setUpdatesEnabled(False)
+
         font = QFont()
         font.setFamily(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
-        font.setPointSize(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_SIZE))
+        font.setPointSize(BPSettings.get(BPSettingsKey.SESSION_EDITOR_FONT_SIZE))
         font.setFixedPitch(True)
-        self.__codeEditor.setFont(font)
+        self.__codeEditor.setOptionFont(font)
 
-        # TODO: implement color theme...
+        if includeConfig:
+            for themeId in BPThemes.themes():
+                self.__codeEditor.addTheme(BPThemes.theme(themeId))
+                self.__codeEditor.setCurrentTheme(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_THEME_SELECTED))
 
-        self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
-        self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_VISIBLE))
+            self.__codeEditor.setOptionIndentWidth(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_INDENT_WIDTH))
+            self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+            self.__codeEditor.setOptionEnclosingCharacters(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_ENCLOSINGCHARS).split(' '))
+            self.__codeEditor.setOptionAutoClose(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCLOSE))
+            self.__trimBeforeSave = BPSettings.get(BPSettingsKey.CONFIG_DOCUMENT_PY_TRIMONSAVE)
 
-        self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_SPACES_VISIBLE))
+        self.__codeEditor.setOptionShowSpaces(BPSettings.get(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE))
+        self.__codeEditor.setOptionShowIndentLevel(BPSettings.get(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE))
+        self.__codeEditor.setOptionShowLineNumber(BPSettings.get(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE))
+        self.__codeEditor.setOptionShowRightLimit(BPSettings.get(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE))
 
-        self.__codeEditor.setOptionShowRightLimit(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_VISIBLE))
-        self.__codeEditor.setOptionRightLimitPosition(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_RIGHTLIMIT_WIDTH))
+        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE):
+            self.__codeEditor.setLineWrapMode(QPlainTextEdit.WidgetWidth)
+        else:
+            self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
 
-        self.__codeEditor.setOptionAutoCompletion(BPSettings.get(BPSettingsKey.CONFIG_EDITOR_AUTOCOMPLETION_ACTIVE))
+        if self.__highlightLinesRule:
+            self.__codeEditor.delHighlightedLineRule(self.__highlightLinesRule)
+            self.__highlightLinesRule = None
+
+        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE):
+            self.__highlightLinesRule = BPCodeEditorHighlightLineRulePython(None)
+            self.__codeEditor.setHighlightedLineRule(self.__highlightLinesRule)
+
+        self.__codeEditor.setUpdatesEnabled(True)
 
     def modified(self):
         """Return if document is modified or not"""
@@ -343,18 +404,47 @@ class WBPDocument(WBPDocumentBase):
         """Set if document is modified or not"""
         return self.__codeEditor.document().setModified(value)
 
+    def writeable(self):
+        """Return if document (file on disk) is writeable
+
+        Notes:
+        - a document writeable can be flagged as readOnly
+        - a document that is not writeable is flagged as readOnly
+        """
+        return not self.__fileIsReadOnly
+
     def readOnly(self):
         """Return if document is in read only mode"""
-        return self.__codeEditor.isReadOnly()
+        return self.__codeEditor.isReadOnly() or self.__fileIsReadOnly
 
-    def setReadOnly(self, value):
+    def setReadOnly(self, value=None):
         """Set if document is in read only mode"""
+        if self.__fileIsReadOnly:
+            # if file on disk is read-only, then force read only mode for document
+            self.__codeEditor.setReadOnly(True)
+            return
+
+        if value is None:
+            value = not self.__codeEditor.isReadOnly()
         self.__codeEditor.setReadOnly(value)
 
-    def close(self):
+    def close(self, deleteCache=True):
         """Close document"""
         self.__stopWatcher()
-        self.deleteCache()
+
+        self.__codeEditor.readOnlyModeChanged.disconnect()
+        self.__codeEditor.overwriteModeChanged.disconnect()
+        self.__codeEditor.cursorCoordinatesChanged.disconnect()
+        self.__codeEditor.modificationChanged.disconnect()
+        self.__codeEditor.textChanged.disconnect()
+        self.__codeEditor.redoAvailable.disconnect()
+        self.__codeEditor.undoAvailable.disconnect()
+        self.__codeEditor.selectionChanged.disconnect()
+        self.__codeEditor.copyAvailable.disconnect()
+        self.__codeEditor.fontSizeChanged.disconnect()
+
+        if deleteCache:
+            self.deleteCache()
 
     def open(self, fileName):
         """Open document from given `fileName`
@@ -367,6 +457,7 @@ class WBPDocument(WBPDocumentBase):
             with open(self.__documentFileName, "r") as fHandle:
                 self.__codeEditor.setPlainText(fHandle.read())
             self.setModified(False)
+            self.__checkFileIsReadOnly()
             self.__initWatcher()
         except Exception as e:
             self.__addAlert(WBPDocument.ALERT_FILE_CANTOPEN)
@@ -395,12 +486,22 @@ class WBPDocument(WBPDocumentBase):
         if self.__documentFileName is None:
             return False
 
+        docText = self.__codeEditor.toPlainText()
+        if self.__trimBeforeSave:
+            if re.search(r"\s+$", docText, flags=re.M):
+                editorState = self.__codeEditor.editorState()
+                self.__codeEditor.setUpdatesEnabled(False)
+                self.__codeEditor.setPlainText(trimLinesRight(docText))
+                self.__codeEditor.restoreEditorState(editorState)
+                self.__codeEditor.setUpdatesEnabled(True)
+                self.setModified(True)
+
         if self.modified() or forceSave:
             # save only if has been modified
             try:
                 self.__stopWatcher()
                 with open(self.__documentFileName, "w") as fHandle:
-                    fHandle.write(self.__codeEditor.toPlainText())
+                    fHandle.write(docText)
                 self.setModified(False)
                 self.saveCache()
                 self.__initWatcher()
@@ -417,10 +518,19 @@ class WBPDocument(WBPDocumentBase):
         If document can't be saved, raise an exception (and fileName is not modified!)
         """
         # save only if has been modified
+        docText = self.__codeEditor.toPlainText()
+        if self.__trimBeforeSave:
+            if re.search(r"\s+$", docText, flags=re.M):
+                editorState = self.__codeEditor.editorState()
+                self.__codeEditor.setUpdatesEnabled(False)
+                self.__codeEditor.setPlainText(trimLinesRight(docText))
+                self.__codeEditor.restoreEditorState(editorState)
+                self.__codeEditor.setUpdatesEnabled(True)
+
         try:
             self.__stopWatcher()
             with open(fileName, "w") as fHandle:
-                fHandle.write(self.__codeEditor.toPlainText())
+                fHandle.write(docText)
             self.setModified(False)
             self.__documentFileName = fileName
             self.__newDocNumber = 0
@@ -470,6 +580,8 @@ class WBPDocument(WBPDocumentBase):
             0000 0000 0000 0000 0000 0000 0000 0001: document has a selection
             0000 0000 0000 0000 0000 0000 0000 0010: document is modified
             0000 0000 0000 0000 0000 0000 0000 0100: document have a file name
+            0000 0000 0000 0000 0000 0000 0000 1000: document is read-only mode
+            0000 0000 0000 0000 0000 0000 0001 0000: document is in overwrite mode
 
             . a UInt2 integer (cache file format version = 0x0001)
             . a UInt4 integer (contains flags)
@@ -501,13 +613,19 @@ class WBPDocument(WBPDocumentBase):
         flags = 0x00
 
         if cursor.selectionStart() != cursor.selectionEnd():
-            flags |= 0b00000001
+            flags |= 0b0000_0001
 
         if self.modified():
-            flags |= 0b00000010
+            flags |= 0b0000_0010
 
         if not (self.__documentFileName is None or self.__documentFileName == ''):
-            flags |= 0b00000100
+            flags |= 0b0000_0100
+
+        if self.readOnly():
+            flags |= 0b0000_1000
+
+        if self.__codeEditor.overwriteMode():
+            flags |= 0b0001_0000
 
         dataWrite.writeUInt2(0x0001)
         dataWrite.writeUInt4(flags)
@@ -579,7 +697,7 @@ class WBPDocument(WBPDocumentBase):
 
         dataRead.close()
 
-        if flags & 0b00000100 == 0b00000100 and fullPathFileName != '':
+        if flags & 0b0000_0100 == 0b0000_0100 and fullPathFileName != '':
             # file name provided, read file content
             newDocNumber = 0
             if not self.open(fullPathFileName):
@@ -592,7 +710,7 @@ class WBPDocument(WBPDocumentBase):
 
         self.__newDocNumber = newDocNumber
 
-        if flags & 0b00000010 == 0b00000010:
+        if flags & 0b0000_0010 == 0b0000_0010:
             # document has been modified
             # apply last modified version
             # => can't use setPlainText() as it clear undo/redo stack
@@ -605,10 +723,20 @@ class WBPDocument(WBPDocumentBase):
         # manage cursor position
         cursor = self.__codeEditor.textCursor()
         cursor.setPosition(cursorSelStart, QTextCursor.MoveAnchor)
-        if flags & 0b00000001 == 0b00000001:
+        if flags & 0b0000_0001 == 0b0000_0001:
             # there a selection, go selection end
             cursor.setPosition(cursorSelEnd, QTextCursor.KeepAnchor)
         self.__codeEditor.setTextCursor(cursor)
+
+        self.__checkFileIsReadOnly()
+
+        if flags & 0b0000_1000 == 0b0000_1000:
+            # file is flagged as read-only mode
+            self.setReadOnly(True)
+
+        if flags & 0b0001_0000 == 0b0001_0000:
+            # file is flagged as in overwrite mode
+            self.__codeEditor.setOverwriteMode(True)
 
         self.__updateAlerts()
         return True
@@ -699,6 +827,7 @@ class BPDocuments(QObject):
     selectionChanged = Signal(WBPDocument)
     copyAvailable = Signal(WBPDocument)
     languageDefChanged = Signal(WBPDocument)
+    fontSizeChanged = Signal(WBPDocument)
 
     def __init__(self, uiController, parent=None):
         super(BPDocuments, self).__init__(parent)
@@ -712,6 +841,9 @@ class BPDocuments(QObject):
         self.__currentCursorToken = None
 
         self.__optionAutoCompletionHelp = True
+
+        # define if there's currently a mass update and we need to avoid to updated all opened documents
+        self.__massUpdate = 0
 
     def __readOnlyModeChanged(self, document):
         """Need to update status of read-only mode"""
@@ -753,6 +885,10 @@ class BPDocuments(QObject):
         """language definition document changed"""
         self.languageDefChanged.emit(document)
 
+    def __fontSizeChanged(self, document):
+        """font size of document changed"""
+        self.fontSizeChanged.emit(document)
+
     def __addDocument(self, document, counterNewDocument=0):
         """Add a new document"""
         # append new document to document list
@@ -774,6 +910,7 @@ class BPDocuments(QObject):
         document.selectionChanged.connect(self.__selectionChanged)
         document.copyAvailable.connect(self.__copyAvailable)
         document.languageDefChanged.connect(self.__languageDefChanged)
+        document.fontSizeChanged.connect(self.__fontSizeChanged)
 
         document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
 
@@ -784,6 +921,7 @@ class BPDocuments(QObject):
     def initialise(self, documentsList, activeDocument):
         """Initialise document manager with list of documents to load"""
         self.__counterNewDocument = 0
+        self.__documents = []
 
         for fileName in documentsList:
             # can be a filename or @uuid
@@ -800,10 +938,36 @@ class BPDocuments(QObject):
         else:
             self.setActiveDocument(activeDocument)
 
-    def updateSettings(self):
+    def cleanup(self):
+        """Cleanup current opened document list"""
+        while len(self.__documents):
+            document = self.__documents.pop()
+            document.readOnlyModeChanged.disconnect()
+            document.overwriteModeChanged.disconnect()
+            document.cursorCoordinatesChanged.disconnect()
+            document.modificationChanged.disconnect()
+            document.textChanged.disconnect()
+            document.redoAvailable.disconnect()
+            document.undoAvailable.disconnect()
+            document.selectionChanged.disconnect()
+            document.copyAvailable.disconnect()
+            document.languageDefChanged.disconnect()
+            document.fontSizeChanged.disconnect()
+            document.close(False)
+
+        self.__currentDocument = None
+        self.__counterNewDocument = 0
+
+    def updateSettings(self, includeConfig=False):
         """Global settings has been modified, update documents according to settings"""
+        if self.__massUpdate > 0:
+            return
+
+        # update active document first (first visible)
+        self.__currentDocument.applySettings(includeConfig)
         for document in self.__documents:
-            document.applySettings()
+            if document != self.__currentDocument:
+                document.applySettings(includeConfig)
 
     def count(self):
         """Return number of documents"""
@@ -948,6 +1112,17 @@ class BPDocuments(QObject):
             for index, documentToDelete in enumerate(self.__documents):
                 if documentToDelete.cacheUuid() == document.cacheUuid():
                     self.__documents.pop(index)
+                    document.readOnlyModeChanged.disconnect()
+                    document.overwriteModeChanged.disconnect()
+                    document.cursorCoordinatesChanged.disconnect()
+                    document.modificationChanged.disconnect()
+                    document.textChanged.disconnect()
+                    document.redoAvailable.disconnect()
+                    document.undoAvailable.disconnect()
+                    document.selectionChanged.disconnect()
+                    document.copyAvailable.disconnect()
+                    document.languageDefChanged.disconnect()
+                    document.fontSizeChanged.disconnect()
                     document.close()
                     self.documentRemoved.emit(document)
 
@@ -995,6 +1170,23 @@ class BPDocuments(QObject):
             self.__optionAutoCompletionHelp = value
             for document in self.__documents:
                 document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
+
+    def isMassUpdate(self):
+        """return if a mass update is ongoing"""
+        return (self.__massUpdate > 0)
+
+    def setMassUpdate(self, value):
+        """set mass update mode"""
+        if value:
+            self.__massUpdate += 1
+        else:
+            self.__massUpdate -= 1
+
+            if self.__massUpdate < 0:
+                self.__massUpdate = 0
+
+            if self.__massUpdate == 0:
+                self.updateSettings()
 
 
 class WBPDocumentTabs(QTabWidget):
@@ -1100,7 +1292,6 @@ class WBPDocuments(QWidget):
     """
     def __init__(self, parent=None):
         super(WBPDocuments, self).__init__(parent)
-
         # default controller not yet initialised
         self.__uiController = None
 

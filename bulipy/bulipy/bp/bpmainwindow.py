@@ -83,6 +83,8 @@ class BPMainWindow(QMainWindow):
 
         self.__pixmapBullet = None
 
+        self.__toolbars = []
+
         self.setDockOptions(QMainWindow.AllowTabbedDocks | QMainWindow.AllowNestedDocks)
         self.setTabPosition(Qt.AllDockWidgetAreas, QTabWidget.North)
         self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
@@ -90,6 +92,18 @@ class BPMainWindow(QMainWindow):
         self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
         self.setDocumentMode(False)
+
+        self.setStyleSheet("""
+            QToolBar { border-width: 0px; }
+            QToolBar QToolButton:checked {
+                    background-color: palette(Highlight);
+                }
+
+            /* QMenu::icon ==> doesn't work?? */
+            QMenu::item:checked:enabled {
+                    background-color: palette(Highlight);
+                }
+        """)
 
         self.__initStatusBar()
         self.__initBPDocuments()
@@ -99,6 +113,8 @@ class BPMainWindow(QMainWindow):
 
         [ Path/File name    | Column: 999 . Row: 999/999 | Selection: 999 | INSOVR ]
         """
+        statusBar = self.statusBar()
+
         self.__statusBarWidgets = [
                 QLabel(),                                   # Modification status
                 WLabelElide(Qt.ElideLeft),                  # File name
@@ -108,6 +124,9 @@ class BPMainWindow(QMainWindow):
                 QLabel("000:00000 - 000:00000 [000000]"),   # Selection start (col:row) - Selection end (col:row) [selection length]
                 QLabel("WWW"),                              # INSert/OVeRwrite
             ]
+
+        for statusBarItem in self.__statusBarWidgets:
+            statusBarItem.setFont(statusBar.font())
 
         fontMetrics = self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME].fontMetrics()
 
@@ -130,7 +149,14 @@ class BPMainWindow(QMainWindow):
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_SELECTION].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
 
-        statusBar = self.statusBar()
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_RO].setCursor(Qt.PointingHandCursor)
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].setCursor(Qt.PointingHandCursor)
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setCursor(Qt.PointingHandCursor)
+
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_RO].mousePressEvent = lambda e: self.__uiController.commandEditReadOnlyMode()
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].mousePressEvent = lambda e: self.__uiController.commandEditGoToLine()
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].mousePressEvent = lambda e: self.__uiController.commandEditOverwriteMode()
+
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS])
         statusBar.addWidget(self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME])
         statusBar.addPermanentWidget(WVLine())
@@ -149,61 +175,21 @@ class BPMainWindow(QMainWindow):
         """Initialise documents manager"""
         self.msDocuments.setUiController(self.__uiController)
 
-    def initMainView(self):
-        """Initialise main view content"""
-        pass
+    def __menuSettingsToolbarsToggled(self, value):
+        """A toolbar Sub-menu checkedbox has been changed"""
+        action = self.sender()
+        action.data().setVisible(value)
 
-    def initMenu(self):
-        """Initialise actions for menu defaukt menu"""
+    def __menuSettingsToolbarsShow(self):
+        """Display toolbar menu"""
+        self.menuSettingsToolbars.clear()
 
-        # Menu SCRIPT
-        # ----------------------------------------------------------------------
-        self.actionFileNew.triggered.connect(self.__uiController.commandFileNew)
-        self.actionFileOpen.triggered.connect(self.__uiController.commandFileOpen)
-        self.actionFileReload.triggered.connect(self.__uiController.commandFileReload)
-        self.actionFileSave.triggered.connect(self.__uiController.commandFileSave)
-        self.actionFileSaveAs.triggered.connect(self.__uiController.commandFileSaveAs)
-        self.actionFileSaveAll.triggered.connect(self.__uiController.commandFileSaveAll)
-        self.actionFileClose.triggered.connect(self.__uiController.commandFileClose)
-        self.actionFileCloseAll.triggered.connect(self.__uiController.commandFileCloseAll)
-        self.actionFileQuit.triggered.connect(self.__uiController.commandQuit)
-
-        self.menuFileRecent.aboutToShow.connect(self.__menuFileRecentShow)
-        self.menuFile.aboutToShow.connect(self.__menuAboutToShow)
-
-        # Menu EDIT
-        # ----------------------------------------------------------------------
-        self.actionEditUndo.triggered.connect(self.__uiController.commandEditUndo)
-        self.actionEditRedo.triggered.connect(self.__uiController.commandEditRedo)
-        self.actionEditCut.triggered.connect(self.__uiController.commandEditCut)
-        self.actionEditCopy.triggered.connect(self.__uiController.commandEditCopy)
-        self.actionEditPaste.triggered.connect(self.__uiController.commandEditPaste)
-        self.actionEditSelectAll.triggered.connect(self.__uiController.commandEditSelectAll)
-        self.actionEditSearchReplace.triggered.connect(lambda: self.__uiController.commandViewDockSearchAndReplaceVisible(True))
-
-        self.menuEdit.aboutToShow.connect(self.__menuAboutToShow)
-
-        # Menu SCRIPT
-        # ----------------------------------------------------------------------
-        self.actionScriptExecute.triggered.connect(self.__uiController.commandScriptExecute)
-        self.actionScriptBreakPause.triggered.connect(self.__uiController.commandScriptBreakPause)
-        self.actionScriptStop.triggered.connect(self.__uiController.commandScriptStop)
-        self.actionScriptOutputConsole.triggered.connect(self.__uiController.commandViewDockConsoleOutputVisible)
-
-        self.menuScript.aboutToShow.connect(self.__menuAboutToShow)
-
-        # Menu TOOLS
-        # ----------------------------------------------------------------------
-        self.actionToolsColorPicker.triggered.connect(self.__uiController.commandViewDockColorPickerVisible)
-        # self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandViewDockConsoleOutputVisible)
-
-        # Menu SETTINGS
-        # ----------------------------------------------------------------------
-        self.actionSettingsPreferences.triggered.connect(self.__uiController.commandSettingsOpen)
-
-        # Menu HELP
-        # ----------------------------------------------------------------------
-        self.actionHelpAboutBP.triggered.connect(self.__uiController.commandAboutBp)
+        for toolbar in self.__toolbars:
+            action = self.menuSettingsToolbars.addAction(toolbar.windowTitle())
+            action.setCheckable(True)
+            action.setChecked(toolbar.isVisible())
+            action.setData(toolbar)
+            action.toggled.connect(self.__menuSettingsToolbarsToggled)
 
     def __menuFileRecentShow(self):
         """Menu for 'file recent' is about to be displayed
@@ -213,7 +199,7 @@ class BPMainWindow(QMainWindow):
         self.__uiController.buildmenuFileRecent(self.menuFileRecent)
 
     def __menuAboutToShow(self):
-        """menu is about to show, update it if needed"""
+        """menu is about to show, force update"""
         self.__uiController.updateMenu()
 
     def __actionNotYetImplemented(self, v=None):
@@ -291,6 +277,180 @@ class BPMainWindow(QMainWindow):
 
         self.__eventCallBack[object] = method
         object.installEventFilter(self)
+
+    def initToolbar(self, toolbarsConfig, toolbarsSession=None):
+        """Initialise toolbars
+
+        Given `toolbars` is a list of dictionary
+        Each dictionary contains at least the following keys:
+            id: toolbar id
+            label : toolbar label
+            actions: list of QAction id
+
+        Can additionally contains:
+            visible: toolbar is visible or hidden
+            area: area in which toolbar is docked
+            rect: position+size of toolbar
+        """
+        def sortToolbar(toolbarSessionDef):
+
+            if toolbarSessionDef['area'] in (Qt.LeftToolBarArea, Qt.RightToolBarArea):
+                return f"{toolbarSessionDef['area']:02}{toolbarSessionDef['rect'][0]:05}{toolbarSessionDef['rect'][1]:05}"
+            else:
+                return f"{toolbarSessionDef['area']:02}{toolbarSessionDef['rect'][1]:05}{toolbarSessionDef['rect'][0]:05}"
+
+        # Disable window updates while preparing content (avoid flickering effect)
+        self.setUpdatesEnabled(False)
+
+        for toolbar in self.toolbarList():
+            self.removeToolBar(toolbar)
+        self.__toolbars = []
+
+        # sort toolbar by area/position
+        sortedId = []
+        if toolbarsSession is not None:
+            toolbarsSession.sort(key=sortToolbar)
+
+            tmp = {toolbarDefinition['id']: toolbarDefinition for toolbarDefinition in toolbarsConfig}
+            toolbarsConfigSorted = []
+            for toolbarId in [toolbarSession['id'] for toolbarSession in toolbarsSession]:
+                if toolbarId in tmp:
+                    toolbarsConfigSorted.append(tmp.pop(toolbarId))
+
+            for toolbarDefinition in toolbarsConfig:
+                if toolbarDefinition['id'] in tmp:
+                    toolbarsConfigSorted.append(toolbarDefinition)
+
+            toolbarsConfig = toolbarsConfigSorted
+
+        for toolbarDefinition in toolbarsConfig:
+            toolbar = self.addToolBar(toolbarDefinition['label'])
+            toolbar.setObjectName(toolbarDefinition['id'])
+            toolbar.setToolButtonStyle(1)
+            toolbar.setToolButtonStyle(toolbarDefinition['style'])
+            toolbar.setFloatable(False)
+            for action in toolbarDefinition['actions']:
+                if action == 'ba32b31ff4730cbf42ba0962f981407bcb4e9c58':  # separator Id
+                    toolbar.addSeparator()
+                else:
+                    foundAction = self.findChild(QAction, action, Qt.FindChildrenRecursively)
+                    if foundAction:
+                        toolbar.addAction(foundAction)
+            self.__toolbars.append(toolbar)
+
+        if toolbarsSession is not None:
+            for toolbarSession in toolbarsSession:
+                for toolbar in self.__toolbars:
+                    if toolbar.objectName() == toolbarSession['id']:
+                        if toolbarSession['break']:
+                            self.addToolBarBreak(toolbarSession['area'])
+                        self.addToolBar(toolbarSession['area'], toolbar)
+                        geometry = toolbarSession['rect']
+                        toolbar.setVisible(toolbarSession['visible'])
+                        # not working...?
+                        # toolbar.setGeometry(geometry[0], geometry[1], geometry[2], geometry[3])
+                        break
+
+        self.menuSettingsToolbars.setEnabled(len(self.__toolbars) > 0)
+        self.setUpdatesEnabled(True)
+
+    def toolbarList(self):
+        """Return list of toolbar"""
+        return self.__toolbars
+
+    def initMainView(self):
+        """Initialise main view content"""
+        pass
+
+    def initMenu(self):
+        """Initialise actions for menu defaukt menu"""
+
+        # Menu SCRIPT
+        # ----------------------------------------------------------------------
+        self.actionFileNew.triggered.connect(self.__uiController.commandFileNew)
+        self.actionFileOpen.triggered.connect(self.__uiController.commandFileOpen)
+        self.actionFileReload.triggered.connect(self.__uiController.commandFileReload)
+        self.actionFileSave.triggered.connect(self.__uiController.commandFileSave)
+        self.actionFileSaveAs.triggered.connect(self.__uiController.commandFileSaveAs)
+        self.actionFileSaveAll.triggered.connect(self.__uiController.commandFileSaveAll)
+        self.actionFileClose.triggered.connect(self.__uiController.commandFileClose)
+        self.actionFileCloseAll.triggered.connect(self.__uiController.commandFileCloseAll)
+        self.actionFileQuit.triggered.connect(self.__uiController.commandQuit)
+
+        self.menuFileRecent.aboutToShow.connect(self.__menuFileRecentShow)
+        self.menuFile.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu EDIT
+        # ----------------------------------------------------------------------
+        self.actionEditUndo.triggered.connect(self.__uiController.commandEditUndo)
+        self.actionEditRedo.triggered.connect(self.__uiController.commandEditRedo)
+        self.actionEditCut.triggered.connect(self.__uiController.commandEditCut)
+        self.actionEditCopy.triggered.connect(self.__uiController.commandEditCopy)
+        self.actionEditPaste.triggered.connect(self.__uiController.commandEditPaste)
+        self.actionEditSelectAll.triggered.connect(self.__uiController.commandEditSelectAll)
+        self.actionEditSearchReplace.triggered.connect(lambda: self.__uiController.commandEditDockSearchAndReplaceVisible(True))
+
+        self.actionEditCodeComment.triggered.connect(self.__uiController.commandEditComment)
+        self.actionEditCodeIndent.triggered.connect(self.__uiController.commandEditIndent)
+        self.actionEditCodeDedent.triggered.connect(self.__uiController.commandEditDedent)
+        self.actionEditDeleteLine.triggered.connect(self.__uiController.commandEditDeleteLine)
+        self.actionEditDuplicateLine.triggered.connect(self.__uiController.commandEditDuplicateLine)
+        self.actionEditOverwriteMode.triggered.connect(lambda: self.__uiController.commandEditOverwriteMode())
+        self.actionEditReadOnlyMode.triggered.connect(lambda: self.__uiController.commandEditReadOnlyMode())
+        self.actionEditGoToLine.triggered.connect(lambda: self.__uiController.commandEditGoToLine())
+
+        self.menuEdit.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu VIEW
+        # ----------------------------------------------------------------------
+        self.actionViewWrapLines.triggered.connect(self.__uiController.commandViewWrapLines)
+        self.actionViewShowRightLimit.triggered.connect(self.__uiController.commandViewShowRightLimit)
+        self.actionViewShowLineNumber.triggered.connect(self.__uiController.commandViewShowLineNumber)
+        self.actionViewShowSpaces.triggered.connect(self.__uiController.commandViewShowSpaces)
+        self.actionViewShowIndent.triggered.connect(self.__uiController.commandViewShowIndent)
+        self.actionViewHighlightClassesFunctionDeclaration.triggered.connect(self.__uiController.commandViewHighlightClassesFunctionDeclaration)
+
+        self.menuView.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu SCRIPT
+        # ----------------------------------------------------------------------
+        self.actionScriptExecute.triggered.connect(self.__uiController.commandScriptExecute)
+        self.actionScriptBreakPause.triggered.connect(self.__uiController.commandScriptBreakPause)
+        self.actionScriptStop.triggered.connect(self.__uiController.commandScriptStop)
+        self.actionScriptDockOutputConsole.triggered.connect(lambda: self.__uiController.commandScriptDockOutputConsoleVisible(True))
+
+        self.menuScript.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu TOOLS
+        # ----------------------------------------------------------------------
+        self.actionToolsColorPicker.triggered.connect(self.__uiController.commandToolsDockColorPickerVisible)
+        self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandToolsDockIconSelectorVisible)
+        self.actionToolsDocuments.triggered.connect(self.__uiController.commandToolsDockDocumentsVisible)
+
+        self.actionToolsCopyFullPathFileName.triggered.connect(self.__uiController.commandToolsCopyFullPathFileName)
+        self.actionToolsCopyPathName.triggered.connect(self.__uiController.commandToolsCopyPathName)
+        self.actionToolsCopyFileName.triggered.connect(self.__uiController.commandToolsCopyFileName)
+        self.actionToolsMDocSortAscending.triggered.connect(self.__uiController.commandToolsMDocSortAscending)
+        self.actionToolsMDocSortDescending.triggered.connect(self.__uiController.commandToolsMDocSortDescending)
+        self.actionToolsMDocRemoveDuplicateLines.triggered.connect(self.__uiController.commandToolsMDocRemoveDuplicateLines)
+        self.actionToolsMDocRemoveEmptyLines.triggered.connect(self.__uiController.commandToolsMDocRemoveEmptyLines)
+        self.actionToolsMDocTrimSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimSpaces)
+        self.actionToolsMDocTrimLeadingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimLeadingSpaces)
+        self.actionToolsMDocTrimTrailingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimTrailingSpaces)
+        self.actionToolsMDocPrettify.triggered.connect(self.__uiController.commandToolsMDocPrettify)
+
+        self.menuTools.aboutToShow.connect(self.__menuAboutToShow)
+
+        # Menu SETTINGS
+        # ----------------------------------------------------------------------
+        self.actionSettingsPreferences.triggered.connect(self.__uiController.commandSettingsOpen)
+
+        self.menuSettings.aboutToShow.connect(self.__menuAboutToShow)
+        self.menuSettingsToolbars.aboutToShow.connect(self.__menuSettingsToolbarsShow)
+
+        # Menu HELP
+        # ----------------------------------------------------------------------
+        self.actionHelpAboutBP.triggered.connect(self.__uiController.commandAboutBp)
 
     def getWidgets(self):
         """Return a list of ALL widgets"""

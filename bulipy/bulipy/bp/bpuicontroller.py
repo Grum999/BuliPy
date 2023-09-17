@@ -46,21 +46,14 @@ from .bpwopensavedialog import BPWOpenSave
 from .bppyrunner import (BPPyRunner, BPLogger)
 from .bpdocument import (WBPDocument, BPDocuments)
 from .bphistory import BPHistory
-from .bplanguagedef import (
-        BPLanguageDefPython,
-        BPLanguageDefText,
-        BPLanguageDefUnmanaged
-    )
 from .bpmainwindow import BPMainWindow
+from .bpthemes import BPThemes
 from .bpsettings import (
         BPSettings,
-        BPSettingsKey
+        BPSettingsKey,
+        BPSettingsDialogBox
     )
 
-from ..pktk.modules.languagedef import (
-        LanguageDefXML,
-        LanguageDefJSON
-    )
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.utils import (
@@ -72,6 +65,7 @@ from ..pktk.widgets.wabout import WAboutWindow
 from ..pktk.widgets.wconsole import WConsoleType
 from ..pktk.widgets.wiodialog import (
         WDialogBooleanInput,
+        WDialogIntInput,
         WDialogRadioButtonChoiceInput
     )
 
@@ -90,24 +84,26 @@ class BPUIController(QObject):
     def __init__(self, bpName="BuliPy", bpVersion="testing", kritaIsStarting=False):
         super(BPUIController, self).__init__(None)
 
-        self.__pbStarted = False
-        self.__pbStarting = False
+        self.__bpStarted = False
+        self.__bpStarting = False
 
         self.__window = None
         self.__bpName = bpName
         self.__bpVersion = bpVersion
-        self.__pbTitle = "{0} - {1}".format(bpName, bpVersion)
+        self.__bpTitle = "{0} - {1}".format(bpName, bpVersion)
 
-        self.__languageDefPython = BPLanguageDefPython()
-        self.__languageDefXml = LanguageDefXML()
-        self.__languageDefJson = LanguageDefJSON()
-        self.__languageDefText = BPLanguageDefText()
-        self.__languageDefUnmanaged = BPLanguageDefUnmanaged()
+        # cache directory
+        self.__bpCachePath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.CacheLocation), "bulipy")
+        try:
+            os.makedirs(self.__bpCachePath, exist_ok=True)
+            for subDirectory in ['documents', 'themes']:
+                os.makedirs(self.cachePath(subDirectory), exist_ok=True)
+        except Exception as e:
+            Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
 
         BPSettings.load()
-
         UITheme.load()
-        # BP theme must be loaded before systray is initialized
+        BPThemes.load()
 
         # store a global reference to activeWindow to be able to work with
         # activeWindow signals
@@ -125,16 +121,10 @@ class BPUIController(QObject):
         self.__clipboard = QGuiApplication.clipboard()
         self.__clipboard.changed.connect(self.__updateMenuEditPaste)
 
-        # cache directory
-        self.__pbCachePath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.CacheLocation), "bulipy")
-        try:
-            os.makedirs(self.__pbCachePath, exist_ok=True)
-            for subDirectory in ['documents']:
-                os.makedirs(self.cachePath(subDirectory), exist_ok=True)
-        except Exception as e:
-            Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
+        # toolbars
+        self.__toolbarsTmpSession = []
 
-        # document manager
+        # document manager, initialised when starting plugin UI
         self.__documents = BPDocuments(self)
         self.__documents.documentAdded.connect(self.__documentAdded)
         self.__documents.documentRemoved.connect(self.__documentRemoved)
@@ -151,6 +141,7 @@ class BPUIController(QObject):
         self.__documents.selectionChanged.connect(self.__delayedDocumentSaveCache)
         self.__documents.copyAvailable.connect(self.__invalidateMenu)
         self.__documents.languageDefChanged.connect(self.__documentLanguageDefChanged)
+        self.__documents.fontSizeChanged.connect(self.__documentFontSizeChanged)
 
         # current active document
         self.__currentDocument = None
@@ -170,27 +161,26 @@ class BPUIController(QObject):
         # editor/syntax theme
         self.__theme = ''
 
-        # flag to determinate if menu has to be updated or not
-        self.__menuInvalidated = True
-
         # to save session
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveSettings())
 
-        if kritaIsStarting and BPSettings.get(BPSettingsKey.CONFIG_OPEN_ATSTARTUP):
-            self.start()
+        # When invalidated, update of menu is delayed after a short time to avoid multiple call of menu update
+        # otherwise if need and immediate update, call updateMenu() method directly
+        self.__delayedUpdateMenu = QTimer()
+        self.__delayedUpdateMenu.timeout.connect(lambda: self.updateMenu())
 
     def start(self):
         """Start plugin interface"""
-        if self.__pbStarted:
+        if self.__bpStarted:
             # user interface is already started, bring to front and exit
             self.commandViewBringToFront()
             return
-        elif self.__pbStarting:
+        elif self.__bpStarting:
             # user interface is already starting, exit
             return
 
-        self.__pbStarting = True
+        self.__bpStarting = True
 
         # Check if windows are opened and then, connect signal if needed
         self.__checkKritaWindows()
@@ -205,13 +195,13 @@ class BPUIController(QObject):
         self.__dwConsoleOutputAction = self.__dwConsoleOutput.toggleViewAction()
         self.__dwConsoleOutputAction.setText(i18n("Console output"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwConsoleOutput)
-        self.__dwConsoleOutput.sourceRefClicked.connect(lambda source, fromPosition, toPosition: self.commandScriptGoToLine(fromPosition, toPosition, source, True))
+        self.__dwConsoleOutput.sourceRefClicked.connect(lambda source, fromPosition, toPosition: self.commandEditGoToLine(fromPosition.y(), source, True))
         self.__dwConsoleOutput.consoleClear.connect(self.commandToolsShowVersion)
 
         self.__dwColorPicker = BPDockWidgetColorPicker(self.__window, self.__documents)
         self.__dwColorPicker.setObjectName('__dwColorPicker')
         self.__dwColorPicker.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        self.__dwColorPicker.apply.connect(self.commandColorCodeInsert)
+        self.__dwColorPicker.apply.connect(self.commandToolsColorCodeInsert)
         self.__dwColorPickerAction = self.__dwColorPicker.toggleViewAction()
         self.__dwColorPickerAction.setText(i18n("Color picker"))
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwColorPicker)
@@ -223,22 +213,25 @@ class BPUIController(QObject):
         self.__dwSearchReplaceAction.setText(i18n("Search & Replace"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwSearchReplace)
 
-        self.__window.setWindowTitle(self.__pbTitle)
+        self.__window.setWindowTitle(self.__bpTitle)
         self.__window.show()
         self.__window.activateWindow()
 
         # after window is visible to let switch automatically to the tab
-        self.commandViewDockConsoleOutputVisible(True)
+        self.commandScriptDockOutputConsoleVisible(True)
 
     def __initSettings(self):
         """There's some visual settings that need to have the window visible
         (ie: the widget size are known) to be applied
         """
         if self.__initialised:
-            self.__pbStarted = True
+            self.__bpStarted = True
             self.bpWindowShown.emit()
             # already initialised, do nothing
             return
+
+        # avoid multiple update of opened documents during initialisation
+        self.__documents.setMassUpdate(True)
 
         # Here we know we have an active window
         if self.__kraActiveWindow is None:
@@ -256,11 +249,18 @@ class BPUIController(QObject):
         # reload
         BPSettings.load()
 
-        self.commandSettingsSaveSessionOnExit(BPSettings.get(BPSettingsKey.CONFIG_SESSION_SAVE))
-        self.commandSettingsOpenAtStartup(BPSettings.get(BPSettingsKey.CONFIG_OPEN_ATSTARTUP))
-
         self.commandViewMainWindowGeometry(BPSettings.get(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_GEOMETRY))
         self.commandViewMainWindowMaximized(BPSettings.get(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_MAXIMIZED))
+
+        # initialise toolbar reset checked values?
+        # - initialise option after toolbar...
+        self.commandViewWrapLines(BPSettings.get(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE))
+        self.commandViewShowRightLimit(BPSettings.get(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE))
+        self.commandViewShowLineNumber(BPSettings.get(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE))
+        self.commandViewShowSpaces(BPSettings.get(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE))
+        self.commandViewShowIndent(BPSettings.get(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE))
+        self.commandViewHighlightClassesFunctionDeclaration(BPSettings.get(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE))
+        self.commandViewSetFontSize(BPSettings.get(BPSettingsKey.SESSION_EDITOR_FONT_SIZE))
 
         qtlayoutNfoB64 = BPSettings.get(BPSettingsKey.SESSION_MAINWINDOW_VIEW_DOCKERS_LAYOUT)
         if qtlayoutNfoB64 != '':
@@ -308,22 +308,39 @@ class BPUIController(QObject):
 
         self.__window.initMenu()
 
+        # toolbar settings MUST be initialized after menu :-)
+        self.__toolbarsTmpSession = BPSettings.get(BPSettingsKey.SESSION_TOOLBARS)
+        self.commandSettingsToolbars(BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS), self.__toolbarsTmpSession)
+
         self.__initialised = True
-        self.__pbStarted = True
-        self.__pbStarting = False
+        self.__bpStarted = True
+        self.__bpStarting = False
 
         self.bpWindowShown.emit()
 
         self.__currentDocument = self.__documents.document()
-        self.__invalidateMenu()
+
+        self.__updateUiFromSettings()
+        self.__documents.setMassUpdate(False)
+        self.updateMenu()
 
     def __themeChanged(self):
         """Theme has been changed, reload resources"""
         UITheme.reloadResources()
 
+    def __updateUiFromSettings(self):
+        """Update UI from settings"""
+        self.__documents.updateSettings(True)
+
+        # use same font than one choosen for editor
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
+
     def __invalidateMenu(self):
         """Invalidate menu..."""
-        self.__menuInvalidated = True
+        # When invalidated, update of menu is delayed after a short time to avoid multiple call of menu update
+        # otherwise if need and immediate update, call updateMenu() method directly
+        self.__delayedUpdateMenu.start(25)
 
     def __documentChanged(self, document):
         """Current active document has been changed"""
@@ -391,6 +408,10 @@ class BPUIController(QObject):
         self.__updateStatusUiLanguageDef(document)
         self.__delayedDocumentSaveCache(document)
 
+    def __documentFontSizeChanged(self, document):
+        """A document font size definition has been changed"""
+        self.commandViewSetFontSize(document.codeEditor().optionFontSize())
+
     def __checkKritaWindows(self):
         """Check if windows signal windowClosed() is already defined and, if not,
         define it
@@ -425,8 +446,7 @@ class BPUIController(QObject):
     def __updateMenuEditPaste(self):
         """Update menu Edit > Paste according to clipboard content"""
         if self.__currentDocument:
-            scriptIsRunning = False
-            self.__window.actionEditPaste.setEnabled(self.__currentDocument.codeEditor().canPaste() and not (scriptIsRunning or self.__currentDocument.readOnly()))
+            self.__window.actionEditPaste.setEnabled(self.__currentDocument.codeEditor().canPaste() and not (self.scriptIsRunning() or self.__currentDocument.readOnly()))
 
     def __updateDockersContent(self, document):
         """Update docker content according to given document"""
@@ -500,9 +520,32 @@ class BPUIController(QObject):
 
     def __delayedDocumentSaveCache(self, document):
         self.__invalidateMenu()
-        if BPSettings.get(BPSettingsKey.CONFIG_SESSION_SAVE):
-            document.saveCache(delayedSave=BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
-            self.saveSettings(BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
+        document.saveCache(delayedSave=BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
+        self.saveSettings(BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
+
+    def __updateToolbarTmpSession(self):
+        """Update current toolbar temporary session variable from current toolbars state"""
+        if self.__bpStarted:
+            # update toolbars session only if self.__bpStarted is True (BC is started)
+            # if not True this means main window is closed and then, toolbar are not visible
+            # in this case we don't want to save toolbar status/visiblity are they're not
+            # representative of real state
+
+            # get current toolbar configuration from settings as dict for which key is toolbar id
+            toolbarSettings = {toolbar['id']: toolbar for toolbar in BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS)}
+            self.__toolbarsTmpSession = []
+            # loop over toolbar to update settings: visibility, area, position
+            for toolbar in self.__window.toolbarList():
+                id = toolbar.objectName()
+                if id in toolbarSettings:
+                    geometry = toolbar.geometry()
+                    self.__toolbarsTmpSession.append({
+                            'id': id,
+                            'visible': toolbar.isVisible(),
+                            'area': self.__window.toolBarArea(toolbar),
+                            'break': self.__window.toolBarBreak(toolbar),
+                            'rect': [geometry.left(), geometry.top(), geometry.width(), geometry.height()]
+                        })
 
     def updateMenu(self):
         """Update menu for current active document"""
@@ -510,26 +553,27 @@ class BPUIController(QObject):
             # no active document? does nothing
             return
 
-        if not self.__menuInvalidated:
-            # menu already up-to-date
-            return
-
-        # TODO: need to check if script is running
-        scriptIsRunning = False
+        scriptIsRunning = self.scriptIsRunning()
         cursor = self.__currentDocument.codeEditor().cursorPosition()
+
+        extensions = self.__currentDocument.languageDefinition().extensions()
 
         # Menu FILE
         # ----------------------------------------------------------------------
         self.__window.actionFileNew.setEnabled(not scriptIsRunning)
+
         self.__window.actionFileOpen.setEnabled(not scriptIsRunning)
-
         self.__window.actionFileReload.setEnabled(not (scriptIsRunning or self.__currentDocument.fileName() is None) and os.path.isfile(self.__currentDocument.fileName()))
-        self.__window.actionFileSave.setEnabled(self.__currentDocument.modified() and not(scriptIsRunning or self.__currentDocument.readOnly()))
 
+        self.__window.actionFileSave.setEnabled(self.__currentDocument.modified() and not(scriptIsRunning or self.__currentDocument.readOnly()))
         self.__window.actionFileSaveAs.setEnabled(not scriptIsRunning)
         self.__window.actionFileSaveAll.setEnabled(not scriptIsRunning)
+
         self.__window.actionFileClose.setEnabled(not scriptIsRunning)
         self.__window.actionFileCloseAll.setEnabled(not scriptIsRunning)
+
+        self.__window.menuFileRecent.setEnabled(not scriptIsRunning)
+        self.__window.actionFileQuit.setEnabled(not scriptIsRunning)
 
         # Menu EDIT
         # ----------------------------------------------------------------------
@@ -539,18 +583,48 @@ class BPUIController(QObject):
         self.__window.actionEditCopy.setEnabled(cursor[3] > 0 and not (scriptIsRunning or self.__currentDocument.readOnly()))
         self.__updateMenuEditPaste()
 
+        self.__window.actionEditSelectAll.setEnabled(not scriptIsRunning)
+        self.__window.actionEditSearchReplace.setEnabled(not scriptIsRunning)
+
+        self.__window.actionEditCodeComment.setEnabled(not scriptIsRunning and '.py' in extensions)
+        self.__window.actionEditCodeIndent.setEnabled(not scriptIsRunning)
+        self.__window.actionEditCodeDedent.setEnabled(not scriptIsRunning)
+        self.__window.actionEditDeleteLine.setEnabled(not scriptIsRunning)
+        self.__window.actionEditDuplicateLine.setEnabled(not scriptIsRunning)
+
+        self.__window.actionEditReadOnlyMode.setChecked(self.__currentDocument.codeEditor().overwriteMode())
+        self.__window.actionEditOverwriteMode.setEnabled(not scriptIsRunning)
+
+        self.__window.actionEditReadOnlyMode.setChecked(self.__currentDocument.readOnly())
+        self.__window.actionEditReadOnlyMode.setEnabled(self.__currentDocument.writeable() and not scriptIsRunning)
+
+        # Menu VIEW
+        # ----------------------------------------------------------------------
+        self.__window.actionViewHighlightClassesFunctionDeclaration.setEnabled('.py' in extensions)
+
         # Menu SCRIPT
         # ----------------------------------------------------------------------
-        self.__window.actionScriptExecute.setEnabled(not scriptIsRunning)
+        self.__window.actionScriptExecute.setEnabled(not scriptIsRunning and '.py' in extensions)
+        self.__window.actionScriptBreakPause.setEnabled(scriptIsRunning)
+        self.__window.actionScriptStop.setEnabled(scriptIsRunning)
 
         # Menu TOOLS
         # ----------------------------------------------------------------------
+        self.__window.actionToolsCopyFullPathFileName.setEnabled(self.__currentDocument.fileName() is not None)
+        self.__window.actionToolsCopyPathName.setEnabled(self.__currentDocument.fileName() is not None)
+        self.__window.actionToolsCopyFileName.setEnabled(self.__currentDocument.fileName() is not None)
+
+        self.__window.actionToolsMDocSortAscending.setEnabled(len(extensions) == 0 or '.txt' in extensions)
+        self.__window.actionToolsMDocSortDescending.setEnabled(len(extensions) == 0 or '.txt' in extensions)
+        self.__window.actionToolsMDocRemoveDuplicateLines.setEnabled(len(extensions) == 0 or '.txt' in extensions)
+        self.__window.actionToolsMDocRemoveEmptyLines.setEnabled(len(extensions) == 0 or '.txt' in extensions)
+        self.__window.actionToolsMDocTrimSpaces.setEnabled('.py' not in extensions)
+        self.__window.actionToolsMDocTrimLeadingSpaces.setEnabled('.py' not in extensions)
+        self.__window.actionToolsMDocPrettify.setEnabled('.json' in extensions or '.xml' in extensions)
 
         # Menu SETTINGS
         # ----------------------------------------------------------------------
         self.__window.actionSettingsPreferences.setEnabled(not scriptIsRunning)
-
-        self.__menuInvalidated = False
 
     def buildmenuFileRecent(self, menu):
         """Menu for 'file recent' is about to be displayed
@@ -581,7 +655,7 @@ class BPUIController(QObject):
 
     def started(self):
         """Return True if BuliPy interface is started"""
-        return self.__pbStarted
+        return self.__bpStarted
 
     def version(self):
         """Return BuliPy plugin version"""
@@ -589,20 +663,17 @@ class BPUIController(QObject):
 
     def title(self):
         """Return BuliPy plugin title"""
-        return self.__pbTitle
+        return self.__bpTitle
+
+    def window(self):
+        """Return main window attached to uiController"""
+        return self.__window
 
     def languageDef(self, extension=None):
         """Return BuliPy language definition"""
-        if extension is None or extension in self.__languageDefPython.extensions():
-            return self.__languageDefPython
-        elif extension in self.__languageDefXml.extensions():
-            return self.__languageDefXml
-        elif extension in self.__languageDefJson.extensions():
-            return self.__languageDefJson
-        elif extension in self.__languageDefText.extensions():
-            return self.__languageDefText
-        else:
-            return self.__languageDefUnmanaged
+        if extension is None:
+            extension = '.py'
+        return BPThemes.languageDef(extension)
 
     def cachePath(self, subDirectory=None):
         """Return BuliPy cache directory
@@ -610,9 +681,9 @@ class BPUIController(QObject):
         If a `subDirectory` name is provided, return cache path for subdirectory
         """
         if subDirectory is None or subDirectory == '':
-            return self.__pbCachePath
+            return self.__bpCachePath
         elif isinstance(subDirectory, str):
-            return os.path.join(self.__pbCachePath, subDirectory)
+            return os.path.join(self.__bpCachePath, subDirectory)
         else:
             raise EInvalidType('Given `subDirectory` must be None or <str > ')
 
@@ -626,7 +697,6 @@ class BPUIController(QObject):
 
     def saveSettings(self, delayedSave=0):
         """Save the current settings"""
-        BPSettings.set(BPSettingsKey.CONFIG_SESSION_SAVE, self.__window.actionSettingsSaveSessionOnExit.isChecked())
 
         if delayedSave > 0:
             self.__delayedSaveTimer.start(delayedSave)
@@ -634,57 +704,62 @@ class BPUIController(QObject):
             # if save immediately, cancel any delayedSave
             self.__delayedSaveTimer.stop()
 
-        if BPSettings.get(BPSettingsKey.CONFIG_SESSION_SAVE):
-            # save current session properties only if allowed
-            BPSettings.set(BPSettingsKey.SESSION_PATH_LASTOPENED, self.__lastDocumentDirectoryOpen)
-            BPSettings.set(BPSettingsKey.SESSION_PATH_LASTSAVED, self.__lastDocumentDirectorySave)
+        BPSettings.set(BPSettingsKey.SESSION_PATH_LASTOPENED, self.__lastDocumentDirectoryOpen)
+        BPSettings.set(BPSettingsKey.SESSION_PATH_LASTSAVED, self.__lastDocumentDirectorySave)
 
-            BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_RECENTS, self.__historyFiles.list())
+        BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_RECENTS, self.__historyFiles.list())
 
-            tmpList = []
-            for document in self.__documents.documents():
-                tmpList.append(f"@{document.cacheUuid()}")
+        tmpList = []
+        for document in self.__documents.documents():
+            tmpList.append(f"@{document.cacheUuid()}")
 
-            BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_OPENED, tmpList)
-            BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_ACTIVE, self.__documents.document().cacheUuid())
+        BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_OPENED, tmpList)
+        BPSettings.set(BPSettingsKey.SESSION_DOCUMENTS_ACTIVE, self.__documents.document().cacheUuid())
 
-            qtlayoutNfoB64 = self.__window.saveState()
-            BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_VIEW_DOCKERS_LAYOUT, base64.b64encode(qtlayoutNfoB64).decode())
+        qtlayoutNfoB64 = self.__window.saveState()
+        BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_VIEW_DOCKERS_LAYOUT, base64.b64encode(qtlayoutNfoB64).decode())
 
-            BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_MAXIMIZED, self.__window.isMaximized())
-            if not self.__window.isMaximized():
-                # when maximized geometry is full screen geometry, then do it only if no in maximized
-                BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_GEOMETRY, [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()])
+        BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_MAXIMIZED, self.__window.isMaximized())
+        if not self.__window.isMaximized():
+            # when maximized geometry is full screen geometry, then do it only if no in maximized
+            BPSettings.set(BPSettingsKey.SESSION_MAINWINDOW_WINDOW_GEOMETRY, [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()])
 
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_VISIBLE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_REGEX_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_TEXT, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_TYPES, [WConsoleType.toStr(type) for type in self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES)])
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_SEARCH, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_AUTOCLEAR, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OUTPUT_FONT_SIZE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FONTSIZE))
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE, self.__window.actionViewWrapLines.isChecked())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE, self.__window.actionViewShowRightLimit.isChecked())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE, self.__window.actionViewShowLineNumber.isChecked())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE, self.__window.actionViewShowSpaces.isChecked())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE, self.__window.actionViewShowIndent.isChecked())
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
 
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED, self.__dwColorPicker.options())
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_VISIBLE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_REGEX_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_TEXT, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_TYPES, [WConsoleType.toStr(type) for type in self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES)])
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_SEARCH, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_AUTOCLEAR, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OUTPUT_FONT_SIZE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FONTSIZE))
 
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_REGEX))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_BACKWARD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_REPLACE_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE))
-            BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_FONTSIZE))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED, self.__dwColorPicker.options())
+
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_BACKWARD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_REPLACE_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE))
+        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_FONTSIZE))
 
         return BPSettings.save()
 
     def close(self):
         """When window is about to be closed, execute some cleanup/backup/stuff before exiting BuliPy"""
         # save current settings
-        if not self.__pbStarted:
+        if not self.__bpStarted:
             return
 
         for document in self.__documents.documents():
@@ -702,16 +777,33 @@ class BPUIController(QObject):
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
 
-        self.__pbStarted = False
+        self.__documents.cleanup()
+
+        self.__bpStarted = False
+        self.__bpStarting = False
+        self.__initialised = False
+        self.__window = None
+
+        self.__toolbarsTmpSession = []
+
+        self.__currentDocument = None
+
         self.bpWindowClosed.emit()
 
     def optionIsMaximized(self):
         """Return current option value"""
         return self.__window.isMaximized()
 
+    def scriptIsRunning(self):
+        """Return is script is running"""
+        if self.__dwConsoleOutput:
+            return self.__dwConsoleOutput.scriptIsRunning()
+        return False
+
     def commandQuit(self):
         """Close BuliPy"""
-        self.__window.close()
+        if self.__window:
+            self.__window.close()
 
     def commandFileNew(self):
         """Create a new empty document"""
@@ -982,12 +1074,141 @@ class BPUIController(QObject):
         if self.__currentDocument:
             self.__currentDocument.codeEditor().selectAll()
 
+    def commandEditComment(self):
+        """Comment selected lines or current line from active document"""
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doToggleComment()
+
+    def commandEditIndent(self):
+        """Indent selected lines or current line from active document"""
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doIndent()
+
+    def commandEditDedent(self):
+        """Dedent selected lines or current line from active document"""
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doDedent()
+
+    def commandEditDeleteLine(self):
+        """Delete selected lines or current line from active document"""
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doDeleteLine()
+
+    def commandEditDuplicateLine(self):
+        """Duplicate selected lines or current line from active document"""
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doDuplicateLine()
+
+    def commandEditOverwriteMode(self, value=None):
+        """Set document in overwrite/insert mode
+
+        If `value` is None, invert current state
+        """
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().doOverwriteMode(value)
+            self.__invalidateMenu()
+
+    def commandEditReadOnlyMode(self, value=None):
+        """set/unset active document as read-only
+
+        If `value` is None, invert current state
+        """
+        if self.__currentDocument and not self.scriptIsRunning():
+            self.__currentDocument.setReadOnly(value)
+            self.__invalidateMenu()
+
+    def commandEditDockSearchAndReplaceVisible(self, visible=True):
+        """Display search and replace docker"""
+        if not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwSearchReplace:
+            if visible:
+                self.__dwSearchReplace.show()
+                self.__dwSearchReplace.setActive()
+            else:
+                self.__dwSearchReplace.hide()
+
+    def commandEditGoToLine(self, toLine=None, document=None, setFocus=False):
+        """Scroll to line number of given document
+
+        Note: given `toLine` start from 1 (not from 0)
+        """
+        if isinstance(document, WBPDocument):
+            self.__documents.setActiveDocument(document)
+
+        if toLine is None:
+            toLine = WDialogIntInput.display(i18n("Go to line"), minValue=1, maxValue=self.__currentDocument.codeEditor().blockCount(), minSize=QSize(450, 0))
+            if toLine is None:
+                return
+
+        if not isinstance(toLine, int):
+            raise EInvalidType("Given `toLine` must be <int>")
+
+        if toLine < 1:
+            toLine = 1
+        if toLine > self.__currentDocument.codeEditor().blockCount():
+            toLine = self.__currentDocument.codeEditor().blockCount()
+
+        if self.__currentDocument:
+            self.__currentDocument.codeEditor().scrollToLine(toLine)
+            cursor = self.__currentDocument.codeEditor().textCursor()
+            cursor.movePosition(QTextCursor.Start, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, toLine - 1)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            self.__currentDocument.codeEditor().setTextCursor(cursor)
+            if setFocus:
+                self.__currentDocument.setFocus()
+
+    def commandViewWrapLines(self, active):
+        """Set/unset wrap mode for ALL documents"""
+        self.__window.actionViewWrapLines.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE, self.__window.actionViewWrapLines.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewShowRightLimit(self, active):
+        """Set/unset right  mode for ALL documents"""
+        self.__window.actionViewShowRightLimit.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE, self.__window.actionViewShowRightLimit.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewShowLineNumber(self, active):
+        """show/hide lines number for ALL documents"""
+        self.__window.actionViewShowLineNumber.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE, self.__window.actionViewShowLineNumber.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewShowSpaces(self, active):
+        """show/hide spaces for ALL documents"""
+        self.__window.actionViewShowSpaces.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE, self.__window.actionViewShowSpaces.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewShowIndent(self, active):
+        """show/hide indents for ALL documents"""
+        self.__window.actionViewShowIndent.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE, self.__window.actionViewShowIndent.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewHighlightClassesFunctionDeclaration(self, active):
+        """show/hide class/function definition for ALL Python documents"""
+        self.__window.actionViewHighlightClassesFunctionDeclaration.setChecked(active)
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
+        self.__documents.updateSettings()
+
+    def commandViewSetFontSize(self, size):
+        """Set font size for ALL document"""
+        BPSettings.set(BPSettingsKey.SESSION_EDITOR_FONT_SIZE, size)
+        self.__documents.updateSettings()
+
     def commandScriptExecute(self):
         """Execute script"""
         if self.__currentDocument:
             if self.__dwConsoleOutput:
+                self.__invalidateMenu()
                 runner = BPPyRunner(self.__currentDocument, self.__dwConsoleOutput)
                 runner.run()
+                self.__invalidateMenu()
 
     def commandScriptBreakPause(self):
         """Made Break/Pause in script execution"""
@@ -997,25 +1218,48 @@ class BPUIController(QObject):
         """Stop script execution"""
         print("TODO: implement commandScriptStop")
 
-    def commandScriptGoToLine(self, fromPosition, toPosition, document=None, setFocus=False):
-        """Scroll to line number"""
-        if isinstance(document, WBPDocument):
-            self.__documents.setActiveDocument(document)
+    def commandScriptDockOutputConsoleVisible(self, visible=True):
+        """Display/Hide Console output docker"""
+        if not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
 
-        if self.__currentDocument:
-            self.__currentDocument.codeEditor().scrollToLine(fromPosition.y())
-            cursor = self.__currentDocument.codeEditor().textCursor()
-            cursor.movePosition(QTextCursor.Start, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, fromPosition.y() - 1)
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            self.__currentDocument.codeEditor().setTextCursor(cursor)
-            if setFocus:
-                self.__currentDocument.setFocus()
+        if self.__dwConsoleOutput:
+            if visible:
+                self.__dwConsoleOutput.show()
+                self.__dwConsoleOutput.setActive()
+            else:
+                self.__dwConsoleOutput.hide()
+
+    def commandToolsDockColorPickerVisible(self, visible=None):
+        """Display/Hide Color Picker docker"""
+        if visible is None:
+            visible = self.__dwColorPickerAction.isChecked()
+        elif not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwColorPicker:
+            if visible:
+                self.__dwColorPicker.show()
+            else:
+                self.__dwColorPicker.hide()
+
+    def commandToolsDockColorPickerSetColor(self, color):
+        """Set color for color picker
+
+        Given `color` can be a QColor or a string
+        """
+        if self.__dwColorPicker:
+            self.__dwColorPicker.setColor(color)
+
+    def commandToolsDockColorPickerSetMode(self, mode=BPDockWidgetColorPicker.MODE_INSERT):
+        """Set mode for color picker"""
+        if self.__dwColorPicker:
+            self.__dwColorPicker.setMode(mode)
 
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""
         if forceDisplayConsole:
-            self.commandViewDockConsoleOutputVisible(True)
+            self.commandScriptDockOutputConsoleVisible(True)
 
         bpVersion = f"{self.__bpName} v{self.__bpVersion}"
         bpVersionSep = "=" * len(bpVersion)
@@ -1031,8 +1275,8 @@ class BPUIController(QObject):
 
         self.__dwConsoleOutput.setActive()
 
-    def commandLanguageInsert(self, text, setFocus=True):
-        """Insert given `text` at current position in document
+    def commandToolsTextInsert(self, text, setFocus=True):
+        """Insert given `text` at current position in active document
 
         If `setFocus` is True, current document got focus
         """
@@ -1041,7 +1285,7 @@ class BPUIController(QObject):
             if setFocus:
                 self.__currentDocument.codeEditor().setFocus()
 
-    def commandColorCodeInsert(self, color, mode=BPDockWidgetColorPicker.MODE_INSERT, setFocus=True):
+    def commandToolsColorCodeInsert(self, color, mode=BPDockWidgetColorPicker.MODE_INSERT, setFocus=True):
         """According to `mode
             - Insert given `color` at current position in document
             - Update color at current position in document with given `color`
@@ -1068,6 +1312,64 @@ class BPUIController(QObject):
 
             if setFocus:
                 self.__currentDocument.codeEditor().setFocus()
+
+    def commandToolsDockIconSelectorVisible(self, visible=None):
+        """Display/Hide Icon Selector docker"""
+        pass
+
+    def commandToolsDockDocumentsVisible(self, visible=None):
+        """Display/Hide Documents docker"""
+        pass
+
+    def commandToolsCopyFullPathFileName(self):
+        """Copy current document full/path file name in clipboard
+
+        If document don't have path/file defined, does nothing
+        """
+        pass
+
+    def commandToolsCopyPathName(self):
+        """Copy current document path name in clipboard
+
+        If document don't have path/file defined, does nothing
+        """
+        pass
+
+    def commandToolsCopyFileName(self):
+        """Copy current document file name in clipboard"""
+        pass
+
+    def commandToolsMDocSortAscending(self):
+        """Sort current document lines ascending"""
+        pass
+
+    def commandToolsMDocSortDescending(self):
+        """Sort current document lines descending"""
+        pass
+
+    def commandToolsMDocRemoveDuplicateLines(self):
+        """Remove all duplicates lines"""
+        pass
+
+    def commandToolsMDocRemoveEmptyLines(self):
+        """Remove all empty lines (even lines with only spaces)"""
+        pass
+
+    def commandToolsMDocTrimSpaces(self):
+        """Remove all leading&trailing spaces"""
+        pass
+
+    def commandToolsMDocTrimLeadingSpaces(self):
+        """Remove all leading spaces"""
+        pass
+
+    def commandToolsMDocTrimTrailingSpaces(self):
+        """Remove all trailing spaces"""
+        pass
+
+    def commandToolsMDocPrettify(self):
+        """Prettify current JSON/XML document"""
+        pass
 
     def commandViewBringToFront(self):
         """Bring main window to front"""
@@ -1118,79 +1420,32 @@ class BPUIController(QObject):
 
         return [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()]
 
-    def commandViewDockConsoleOutputVisible(self, visible=None):
-        """Display/Hide Console output docker"""
-        if visible is None:
-            visible = self.__dwConsoleOutputAction.isChecked()
-        elif not isinstance(visible, bool):
-            raise EInvalidValue('Given `visible` must be a <bool>')
-
-        if self.__dwConsoleOutput:
-            if visible:
-                self.__dwConsoleOutput.show()
-            else:
-                self.__dwConsoleOutput.hide()
-
-    def commandViewDockColorPickerVisible(self, visible=None):
-        """Display/Hide Color Picker docker"""
-        if visible is None:
-            visible = self.__dwColorPickerAction.isChecked()
-        elif not isinstance(visible, bool):
-            raise EInvalidValue('Given `visible` must be a <bool>')
-
-        if self.__dwColorPicker:
-            if visible:
-                self.__dwColorPicker.show()
-            else:
-                self.__dwColorPicker.hide()
-
-    def commandViewDockSearchAndReplaceVisible(self, visible=True):
-        """Display search and replace docker"""
-        if not isinstance(visible, bool):
-            raise EInvalidValue('Given `visible` must be a <bool>')
-
-        if self.__dwSearchReplace:
-            if visible:
-                self.__dwSearchReplace.show()
-                self.__dwSearchReplace.setActive()
-            else:
-                self.__dwSearchReplace.hide()
-
-    def commandDockColorPickerSetColor(self, color):
-        """Set color for color picker
-
-        Given `color` can be a QColor or a string
-        """
-        if self.__dwColorPicker:
-            self.__dwColorPicker.setColor(color)
-
-    def commandDockColorPickerSetMode(self, mode=BPDockWidgetColorPicker.MODE_INSERT):
-        """Set mode for color picker"""
-        if self.__dwColorPicker:
-            self.__dwColorPicker.setMode(mode)
-
-    def commandSettingsSaveSessionOnExit(self, saveSession=None):
-        """Define if current session properties have to be save or not"""
-        if saveSession is None:
-            saveSession = self.__window.actionSettingsSaveSessionOnExit.isChecked()
-        elif isinstance(saveSession, bool):
-            self.__window.actionSettingsSaveSessionOnExit.setChecked(saveSession)
-        else:
-            raise EInvalidValue('Given `visible` must be a <bool>')
-
-    def commandSettingsOpenAtStartup(self, value=False):
-        """Set option to start BP at Krita's startup"""
-        BPSettings.set(BPSettingsKey.CONFIG_OPEN_ATSTARTUP, value)
-
     def commandSettingsOpen(self):
         """Open dialog box settings"""
-        # if BPSettingsDialogBox.open(f'{self.__bpName}::Settings', self):
-        #    self.saveSettings()
-        print("TODO: implement commandSettingsOpen")
+        self.__updateToolbarTmpSession()
+        if BPSettingsDialogBox.open(f'{self.__bpName}::Settings', self):
+            self.__updateUiFromSettings()
+            self.saveSettings()
+
+    def commandSettingsToolbars(self, config=None, session=None):
+        """Set toolbars definition"""
+        if config is None:
+            return (BPSettings.get(BPSettingsKey.CONFIG_TOOLBARS), BPSettings.get(BPSettingsKey.SESSION_TOOLBARS))
+        else:
+            BPSettings.set(BPSettingsKey.CONFIG_TOOLBARS, config)
+            if session is not None:
+                BPSettings.set(BPSettingsKey.SESSION_TOOLBARS, session)
+                self.__toolbarsTmpSession = session
+            self.__window.initToolbar(config, self.__toolbarsTmpSession)
 
     def commandAboutBp(self):
         """Display 'About BuliPy' dialog box"""
-        WAboutWindow(self.__bpName, self.__bpVersion, os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'), None, ':BuliPy')
+        WAboutWindow(self.__bpName,
+                     self.__bpVersion,
+                     os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'),
+                     None,
+                     ':BuliPy',
+                     icon=buildIcon([(':/bp/images/normal/bulipy', QIcon.Normal)]))
 
 
-Debug.setEnabled(True)
+# Debug.setEnabled(True)
