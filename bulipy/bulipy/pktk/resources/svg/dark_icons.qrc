@@ -65,10 +65,14 @@
     <file alias="draw">dark/32dp/draw.svg</file>
     <file alias="draw_r90">dark/32dp/draw_r90.svg</file>
     <file alias="edit">dark/32dp/edit.svg</file>
+    <file alias="edit_over">dark/32dp/edit_over.svg</file>
+    <file alias="edit_readonly">dark/32dp/edit_readonly.svg</file>
     <file alias="edit_redo">dark/32dp/edit_redo.svg</file>
     <file alias="edit_text_clear">dark/32dp/edit_text_clear.svg</file>
     <file alias="edit_text_line_delete">dark/32dp/edit_text_line_delete.svg</file>
     <file alias="edit_text_line_duplicate">dark/32dp/edit_text_line_duplicate.svg</file>
+    <file alias="edit_text_line_duplicate_remove">dark/32dp/edit_text_line_duplicate_remove.svg</file>
+    <file alias="edit_text_line_empty_remove">dark/32dp/edit_text_line_empty_remove.svg</file>
     <file alias="edit_text_trim">dark/32dp/edit_text_trim.svg</file>
     <file alias="edit_text_trim_leading">dark/32dp/edit_text_trim_leading.svg</file>
     <file alias="edit_text_trim_trailing">dark/32dp/edit_text_trim_trailing.svg</file>
@@ -107,6 +111,7 @@
     <file alias="folder_open">dark/32dp/folder_open.svg</file>
     <file alias="folder_open_add">dark/32dp/folder_open_add.svg</file>
     <file alias="folder_open_cache">dark/32dp/folder_open_cache.svg</file>
+    <file alias="folder_open_document">dark/32dp/folder_open_document.svg</file>
     <file alias="folder_open_dots">dark/32dp/folder_open_dots.svg</file>
     <file alias="folder_open_layers">dark/32dp/folder_open_layers.svg</file>
     <file alias="folder_open_link">dark/32dp/folder_open_link.svg</file>
@@ -235,6 +240,7 @@
     <file alias="url">dark/32dp/url.svg</file>
     <file alias="url_downloadstart">dark/32dp/url_downloadstart.svg</file>
     <file alias="url_downloadstop">dark/32dp/url_downloadstop.svg</file>
+    <file alias="view_goto_linenumber">dark/32dp/view_goto_linenumber.svg</file>
     <file alias="view_text_highlight">dark/32dp/view_text_highlight.svg</file>
     <file alias="view_text_indent">dark/32dp/view_text_indent.svg</file>
     <file alias="view_text_linenumber">dark/32dp/view_text_linenumber.svg</file>
@@ -313,10 +319,14 @@
     <file alias="draw">dark/32dp-disabled/draw.svg</file>
     <file alias="draw_r90">dark/32dp-disabled/draw_r90.svg</file>
     <file alias="edit">dark/32dp-disabled/edit.svg</file>
+    <file alias="edit_over">dark/32dp-disabled/edit_over.svg</file>
+    <file alias="edit_readonly">dark/32dp-disabled/edit_readonly.svg</file>
     <file alias="edit_redo">dark/32dp-disabled/edit_redo.svg</file>
     <file alias="edit_text_clear">dark/32dp-disabled/edit_text_clear.svg</file>
     <file alias="edit_text_line_delete">dark/32dp-disabled/edit_text_line_delete.svg</file>
     <file alias="edit_text_line_duplicate">dark/32dp-disabled/edit_text_line_duplicate.svg</file>
+    <file alias="edit_text_line_duplicate_remove">dark/32dp-disabled/edit_text_line_duplicate_remove.svg</file>
+    <file alias="edit_text_line_empty_remove">dark/32dp-disabled/edit_text_line_empty_remove.svg</file>
     <file alias="edit_text_trim">dark/32dp-disabled/edit_text_trim.svg</file>
     <file alias="edit_text_trim_leading">dark/32dp-disabled/edit_text_trim_leading.svg</file>
     <file alias="edit_text_trim_trailing">dark/32dp-disabled/edit_text_trim_trailing.svg</file>
@@ -355,6 +365,7 @@
     <file alias="folder_open">dark/32dp-disabled/folder_open.svg</file>
     <file alias="folder_open_add">dark/32dp-disabled/folder_open_add.svg</file>
     <file alias="folder_open_cache">dark/32dp-disabled/folder_open_cache.svg</file>
+    <file alias="folder_open_document">dark/32dp-disabled/folder_open_document.svg</file>
     <file alias="folder_open_dots">dark/32dp-disabled/folder_open_dots.svg</file>
     <file alias="folder_open_layers">dark/32dp-disabled/folder_open_layers.svg</file>
     <file alias="folder_open_link">dark/32dp-disabled/folder_open_link.svg</file>
@@ -483,6 +494,7 @@
     <file alias="url">dark/32dp-disabled/url.svg</file>
     <file alias="url_downloadstart">dark/32dp-disabled/url_downloadstart.svg</file>
     <file alias="url_downloadstop">dark/32dp-disabled/url_downloadstop.svg</file>
+    <file alias="view_goto_linenumber">dark/32dp-disabled/view_goto_linenumber.svg</file>
     <file alias="view_text_highlight">dark/32dp-disabled/view_text_highlight.svg</file>
     <file alias="view_text_indent">dark/32dp-disabled/view_text_indent.svg</file>
     <file alias="view_text_linenumber">dark/32dp-disabled/view_text_linenumber.svg</file>
