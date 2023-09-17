@@ -170,15 +170,18 @@ class BPDockWidgetSearchReplace(WDockWidget):
                     selStart = occurence.cursor.selectionStart()-occurence.cursor.block().position()
                     selEnd = occurence.cursor.selectionEnd()-occurence.cursor.block().position()
 
-                    replaceWithValue = replaceWith
-                    if replaceRegEx:
-                        if reResult := re.search(self.__siSearch.searchText(), text[selStart:selEnd]):
-                            for index, replace in enumerate(reResult.groups()):
-                                replaceWithValue = replaceWithValue.replace(f'${index+1}', replace)
+                    if replaceWith:
+                        replaceWithValue = replaceWith
+                        if replaceRegEx:
+                            if reResult := re.search(self.__siSearch.searchText(), text[selStart:selEnd]):
+                                for index, replace in enumerate(reResult.groups()):
+                                    replaceWithValue = replaceWithValue.replace(f'${index+1}', replace)
+                    else:
+                        replaceWithValue = ''
 
-                    text = WConsole.escape(text[:selStart]) + '*##g#**' + WConsole.escape(text[selStart:selEnd]) + replaceWithValue + '**##lk#*' + WConsole.escape(text[selEnd:])
+                    text = f'#lk#*{WConsole.escape(text[:selStart])}*##g#**{WConsole.escape(text[selStart:selEnd])}{replaceWithValue}**##lk#*{WConsole.escape(text[selEnd:])}*#'
 
-                    self.__cResults.appendLine(f"{i18n('Line')} #y#**{occurence.cursor.blockNumber()+1}**#, #lk#*{text}*#", WConsoleType.NORMAL, {'row': occurence.cursor.blockNumber()+1})
+                    self.__cResults.appendLine(f"{i18n('Line')} #y#**{occurence.cursor.blockNumber()+1}**#, {text}", WConsoleType.NORMAL, {'row': occurence.cursor.blockNumber()+1})
 
             cursor = self.__cResults.textCursor()
             cursor.setPosition(0, QTextCursor.MoveAnchor)
