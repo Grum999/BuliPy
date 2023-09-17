@@ -175,6 +175,11 @@
      <property name="title">
       <string>Manipulate document</string>
      </property>
+     <property name="icon">
+      <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+       <normaloff>:/pktk/images/normal/file_batch</normaloff>
+       <disabledoff>:/pktk/images/disabled/file_batch</disabledoff>:/pktk/images/normal/file_batch</iconset>
+     </property>
      <addaction name="actionToolsMDocSortAscending"/>
      <addaction name="actionToolsMDocSortDescending"/>
      <addaction name="separator"/>
@@ -671,6 +676,11 @@
    </property>
   </action>
   <action name="actionEditGoToLine">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/view_goto_linenumber</normaloff>
+     <disabledoff>:/pktk/images/disabled/view_goto_linenumber</disabledoff>:/pktk/images/normal/view_goto_linenumber</iconset>
+   </property>
    <property name="text">
     <string>Go to line...</string>
    </property>
@@ -682,6 +692,11 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_readonly</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_readonly</disabledoff>:/pktk/images/normal/edit_readonly</iconset>
+   </property>
    <property name="text">
     <string>Read-only mode</string>
    </property>
@@ -692,6 +707,11 @@
   <action name="actionEditOverwriteMode">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_over</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_over</disabledoff>:/pktk/images/normal/edit_over</iconset>
    </property>
    <property name="text">
     <string>Overwrite mode</string>
@@ -816,16 +836,31 @@
    </property>
   </action>
   <action name="actionToolsCopyFullPathFileName">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/folder_open_document</normaloff>
+     <disabledoff>:/pktk/images/disabled/folder_open_document</disabledoff>:/pktk/images/normal/folder_open_document</iconset>
+   </property>
    <property name="text">
     <string>Full path file name</string>
    </property>
   </action>
   <action name="actionToolsCopyPathName">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/folder_open</normaloff>
+     <disabledoff>:/pktk/images/disabled/folder_open</disabledoff>:/pktk/images/normal/folder_open</iconset>
+   </property>
    <property name="text">
     <string>Path name</string>
    </property>
   </action>
   <action name="actionToolsCopyFileName">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/file</normaloff>
+     <disabledoff>:/pktk/images/disabled/file</disabledoff>:/pktk/images/normal/file</iconset>
+   </property>
    <property name="text">
     <string>File name</string>
    </property>
@@ -851,11 +886,21 @@
    </property>
   </action>
   <action name="actionToolsMDocRemoveDuplicateLines">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_line_duplicate_remove</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_line_duplicate_remove</disabledoff>:/pktk/images/normal/edit_text_line_duplicate_remove</iconset>
+   </property>
    <property name="text">
     <string>Remove duplicate lines</string>
    </property>
   </action>
   <action name="actionToolsMDocRemoveEmptyLines">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/edit_text_line_empty_remove</normaloff>
+     <disabledoff>:/pktk/images/disabled/edit_text_line_empty_remove</disabledoff>:/pktk/images/normal/edit_text_line_empty_remove</iconset>
+   </property>
    <property name="text">
     <string>Remove empty lines</string>
    </property>
