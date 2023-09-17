@@ -22,7 +22,7 @@ from krita import (
     )
 
 from PyQt5.Qt import *
-from PyQt5 import QtCore
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import (
         pyqtSlot
     )
@@ -39,6 +39,8 @@ if __name__ != '__main__':
         )
 
     from .bp.bpuicontroller import BPUIController
+    from bulipy.pktk.modules.imgutils import buildIcon
+    from bulipy.pktk.modules.uitheme import UITheme
     from bulipy.pktk.modules.utils import checkKritaVersion
 else:
     # Execution from 'Scripter' plugin?
@@ -62,6 +64,8 @@ else:
         )
 
     from bulipy.bp.bpuicontroller import BPUIController
+    from bulipy.pktk.modules.imgutils import buildIcon
+    from bulipy.pktk.modules.uitheme import UITheme
     from bulipy.pktk.modules.utils import checkKritaVersion
 
     print("======================================")
@@ -117,9 +121,14 @@ class BuliPy(Extension):
             Krita.instance().notifier().setActive(True)
             Krita.instance().notifier().windowCreated.connect(windowCreated)
 
+        UITheme.load()
+        UITheme.load(os.path.join(os.path.dirname(__file__), 'bp', 'resources'))
+
     def createActions(self, window):
         action = window.createAction(EXTENSION_ID, PLUGIN_MENU_ENTRY, "tools")
         action.triggered.connect(self.start)
+        action.setIcon(buildIcon([(':/bp/images/normal/bulipy', QIcon.Normal),
+                                  (':/bp/images/disabled/compositionhelper', QIcon.Disabled)]))
 
     def start(self):
         """Execute BuliPy"""

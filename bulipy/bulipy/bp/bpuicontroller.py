@@ -1440,7 +1440,12 @@ class BPUIController(QObject):
 
     def commandAboutBp(self):
         """Display 'About BuliPy' dialog box"""
-        WAboutWindow(self.__bpName, self.__bpVersion, os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'), None, ':BuliPy')
+        WAboutWindow(self.__bpName,
+                     self.__bpVersion,
+                     os.path.join(os.path.dirname(__file__), 'resources', 'png', 'buli-powered-big.png'),
+                     None,
+                     ':BuliPy',
+                     icon=buildIcon([(':/bp/images/normal/bulipy', QIcon.Normal)]))
 
 
 # Debug.setEnabled(True)
