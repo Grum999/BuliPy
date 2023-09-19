@@ -40,6 +40,7 @@ from PyQt5.QtWidgets import QWidget
 
 from .bpdwconsole import BPDockWidgetConsoleOutput
 from .bpdwcolorpicker import BPDockWidgetColorPicker
+from .bpdwiconselector import BPDockWidgetIconSelector
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
 from .bpwopensavedialog import BPWOpenSave
 
@@ -65,8 +66,12 @@ from ..pktk.modules.utils import (
         checkKritaVersion,
         Debug
     )
-from ..pktk.modules.imgutils import buildIcon
+from ..pktk.modules.imgutils import (
+        buildIcon,
+        getIconList
+    )
 from ..pktk.widgets.wabout import WAboutWindow
+from ..pktk.widgets.wiconselector import WIconSelector
 from ..pktk.widgets.wconsole import WConsoleType
 from ..pktk.widgets.wiodialog import (
         WDialogBooleanInput,
@@ -212,6 +217,20 @@ class BPUIController(QObject):
         self.__dwColorPickerAction.toggled.connect(self.commandToolsDockColorPickerVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwColorPicker)
 
+        # mode can be set only when initialised
+        if BPSettings.get(BPSettingsKey.CONFIG_TOOLS_DOCKERS_ICONSELECTOR_MODE) == 0:
+            iconSelectorConfig = WIconSelector.OPTIONS_SHOW_SOURCE_KRITA
+        else:
+            iconSelectorConfig = WIconSelector.OPTIONS_SHOW_SOURCE_KRITA | WIconSelector.OPTIONS_SHOW_SOURCE_PKTK
+        self.__dwIconSelector = BPDockWidgetIconSelector(self.__window, self.__documents, iconSelectorConfig)
+        self.__dwIconSelector.setObjectName('__dwIconSelector')
+        self.__dwIconSelector.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.__dwIconSelector.apply.connect(self.commandToolsIconCodeInsert)
+        self.__dwIconSelectorAction = self.__dwIconSelector.toggleViewAction()
+        self.__dwIconSelectorAction.setText(i18n("Icon selector"))
+        self.__dwIconSelectorAction.toggled.connect(self.commandToolsDockIconSelectorVisible)
+        self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwIconSelector)
+
         self.__dwSearchReplace = BPDockWidgetSearchReplace(self.__window, self.__documents)
         self.__dwSearchReplace.setObjectName('__dwSearchReplace')
         # self.__dwSearchReplace.setAllowedAreas(Qt.BottomDockWidgetArea | Qt.TopDockWidgetArea)
@@ -277,31 +296,34 @@ class BPUIController(QObject):
         self.__lastDocumentDirectorySave = BPSettings.get(BPSettingsKey.SESSION_PATH_LASTSAVED)
 
         # no ui controller command for dockers
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_VISIBLE))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_REGEX_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_TEXT))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES, [WConsoleType.fromStr(type) for type in BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_TYPES)])
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_SEARCH))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_AUTOCLEAR))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_CONSOLE_OUTPUT_FONT_SIZE))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_VISIBLE))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_TEXT))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES, [WConsoleType.fromStr(type) for type in BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_TYPES)])
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_SEARCH))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_AUTOCLEAR))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OUTPUT_FONT_SIZE))
 
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE, BPSettings.get(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE))
 
-        self.__dwColorPicker.setOptions(BPSettings.get(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED))
+        self.__dwColorPicker.setOptions(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_COLORPICKER_MENU_SELECTED))
         self.__dwColorPicker.setColor('#ffffffff')
 
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_WHOLEWORD_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_BACKWARD_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_TEXT))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_REPLACE_TEXT))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE))
+        self.__dwIconSelector.setIconSizeIndex(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_ICONSIZE))
+        self.__dwIconSelector.setViewMode(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_VIEWMODE))
+
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_WHOLEWORD_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_BACKWARD_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE))
 
         # do not load from here, already loaded from BPDocuments() initialisation
         # for fileName in BPSettings.get(BPSettingsKey.SESSION_DOCUMENTS_OPENED):
@@ -407,23 +429,49 @@ class BPUIController(QObject):
 
         currentToken = document.codeEditor().cursorToken()
         if currentToken:
-            if (document.languageDefinition().name() == 'Python' and
-                currentToken.type() in (BPLanguageDefPython.ITokenType.STRING,
-                                        BPLanguageDefPython.ITokenType.BSTRING,
-                                        BPLanguageDefPython.ITokenType.STRING_LONG_S,
-                                        BPLanguageDefPython.ITokenType.STRING_LONG_D,
-                                        BPLanguageDefPython.ITokenType.FSTRING_LONG_S,
-                                        BPLanguageDefPython.ITokenType.FSTRING_LONG_D,
-                                        BPLanguageDefPython.ITokenType.BSTRING_LONG_S,
-                                        BPLanguageDefPython.ITokenType.BSTRING_LONG_D) or
-               document.languageDefinition().name() == 'XML' and currentToken.type() == LanguageDefXML.ITokenType.STRING or
-               document.languageDefinition().name() == 'JSON' and currentToken.type() == LanguageDefJSON.ITokenType.STRING):
+            if document.languageDefinition().name() == 'Python':
+                if currentToken.type() in (BPLanguageDefPython.ITokenType.STRING,
+                                           BPLanguageDefPython.ITokenType.BSTRING,
+                                           BPLanguageDefPython.ITokenType.STRING_LONG_S,
+                                           BPLanguageDefPython.ITokenType.STRING_LONG_D,
+                                           BPLanguageDefPython.ITokenType.FSTRING_LONG_S,
+                                           BPLanguageDefPython.ITokenType.FSTRING_LONG_D,
+                                           BPLanguageDefPython.ITokenType.BSTRING_LONG_S,
+                                           BPLanguageDefPython.ITokenType.BSTRING_LONG_D):
+                    if results := re.search(r'''^(["'])(#(?:[A-F0-9]{6}|[A-F0-9]{8}))(\1)$''', currentToken.value(), flags=re.I):
+                        # color code
+                        self.__dwColorPicker.setColor(results.groups()[1])
+                        self.__dwColorPicker.setMode(BPDockWidgetColorPicker.MODE_UPDATE)
+                        return
+                    elif previous := currentToken.previous():
+                        # icon reference?
+                        if previous.type() == BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_OPEN:
+                            if previousFct := previous.previous():
+                                if previousFct.type() == BPLanguageDefPython.ITokenType.IDENTIFIER:
+                                    if previousFct.value() == 'icon':
+                                        # probably from Krita.instance().icon()
+                                        if results := re.search(r'''^(["'])([^\1]+)(\1)$''', currentToken.value(), flags=re.I):
+                                            value = f'krita:{results.groups()[1]}'
+                                            if value in getIconList(['krita']):
+                                                self.__dwIconSelector.setIcon(value)
+                                                self.__dwIconSelector.setMode(BPDockWidgetIconSelector.MODE_UPDATE)
+                                                return
+                                    elif previousFct.value() == 'buildIcon':
+                                        # a buildIcon use a "pktk:" or "krita:" uri
+                                        if results := re.search(r'''^(["'])((?:pktk|krita):[^\1]+)(\1)$''', currentToken.value(), flags=re.I):
+                                            self.__dwIconSelector.setIcon(results.groups()[1])
+                                            self.__dwIconSelector.setMode(BPDockWidgetIconSelector.MODE_UPDATE)
+                                            return
+
+            elif (document.languageDefinition().name() == 'XML' and currentToken.type() == LanguageDefXML.ITokenType.STRING or
+                  document.languageDefinition().name() == 'JSON' and currentToken.type() == LanguageDefJSON.ITokenType.STRING):
                 if results := re.search(r'''^(["'])(#(?:[A-F0-9]{6}|[A-F0-9]{8}))(\1)$''', currentToken.value(), flags=re.I):
                     self.__dwColorPicker.setColor(results.groups()[1])
                     self.__dwColorPicker.setMode(BPDockWidgetColorPicker.MODE_UPDATE)
                     return
 
         self.__dwColorPicker.setMode(BPDockWidgetColorPicker.MODE_INSERT)
+        self.__dwIconSelector.setMode(BPDockWidgetIconSelector.MODE_INSERT)
 
     def __documentModificationChanged(self, document):
         """A document status has been changed"""
@@ -758,28 +806,31 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE, self.__window.actionViewShowIndent.isChecked())
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
 
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_VISIBLE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_REGEX_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_SEARCH_TEXT, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_TYPES, [WConsoleType.toStr(type) for type in self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES)])
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_FILTER_SEARCH, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OPTIONS_AUTOCLEAR, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_CONSOLE_OUTPUT_FONT_SIZE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FONTSIZE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_VISIBLE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_REGEX_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_TEXT, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_TYPES, [WConsoleType.toStr(type) for type in self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES)])
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_SEARCH, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_AUTOCLEAR, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OUTPUT_FONT_SIZE, self.__dwConsoleOutput.option(BPDockWidgetConsoleOutput.OPTION_FONTSIZE))
 
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_COLORPICKER_MENU_SELECTED, self.__dwColorPicker.options())
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_COLORPICKER_MENU_SELECTED, self.__dwColorPicker.options())
 
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_REGEX_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_REGEX))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_BACKWARD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_SEARCH_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_REPLACE_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE))
-        BPSettings.set(BPSettingsKey.SESSION_DOCKER_SAR_OUTPUT_FONT_SIZE, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_FONTSIZE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_ICONSIZE, self.__dwIconSelector.iconSizeIndex())
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_VIEWMODE, self.__dwIconSelector.viewMode())
+
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_REGEX_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_BACKWARD_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_FONTSIZE))
 
         return BPSettings.save()
 
@@ -1269,7 +1320,8 @@ class BPUIController(QObject):
                 self.__dwColorPicker.show()
             else:
                 self.__dwColorPicker.hide()
-        self.__window.actionToolsColorPicker.setChecked(visible)
+        if self.__window:
+            self.__window.actionToolsColorPicker.setChecked(visible)
 
     def commandToolsDockColorPickerSetColor(self, color):
         """Set color for color picker
@@ -1283,6 +1335,22 @@ class BPUIController(QObject):
         """Set mode for color picker"""
         if self.__dwColorPicker:
             self.__dwColorPicker.setMode(mode)
+
+    def commandToolsDockIconSelectorVisible(self, visible=None):
+        """Display/Hide Icon Selector docker"""
+        if visible is None:
+            visible = self.__dwIconSelectorAction.isChecked()
+        elif not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwIconSelector:
+            if visible:
+                self.__dwIconSelector.show()
+            else:
+                self.__dwIconSelector.hide()
+        print("commandToolsDockIconSelectorVisible", self.__window)
+        if self.__window:
+            self.__window.actionToolsIconsSelector.setChecked(visible)
 
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""
@@ -1341,9 +1409,42 @@ class BPUIController(QObject):
             if setFocus:
                 self.__currentDocument.codeEditor().setFocus()
 
-    def commandToolsDockIconSelectorVisible(self, visible=None):
-        """Display/Hide Icon Selector docker"""
-        pass
+    def commandToolsIconCodeInsert(self, icon, mode=BPDockWidgetIconSelector.MODE_INSERT, setFocus=True):
+        """According to `mode
+            - Insert given `icon` at current position in document
+            - Update icon at current position in document with given `icon`
+
+        If `setFocus` is True, current document got focus
+        """
+        if self.__currentDocument:
+            if not isinstance(icon, str):
+                raise EInvalidType("Given `icon` must be a <str>")
+
+            # need to determinate what to insert
+            # - if in udpate mode: update icon uri for str token
+            #   otherwsise insert function to call
+            #   . Krita.instance().icon("xxxxxx")   ==> if Krita mode set (default, BPSettingsKey.CONFIG_TOOLS_DOCKERS_ICONSELECTOR_MODE == 0)
+            #   . buildIcon("xxx:xxxxxx")           ==> if PkTk mode set (default, BPSettingsKey.CONFIG_TOOLS_DOCKERS_ICONSELECTOR_MODE == 1)
+
+            if mode == BPDockWidgetIconSelector.MODE_INSERT:
+                if BPSettings.get(BPSettingsKey.CONFIG_TOOLS_DOCKERS_ICONSELECTOR_MODE) == 0:
+                    text = f'''Krita.instance().icon("{icon.replace('krita:', '')}")'''
+                else:
+                    text = f'''buidIcon("{icon}")'''
+                self.__currentDocument.codeEditor().insertLanguageText(text)
+            elif mode == BPDockWidgetIconSelector.MODE_UPDATE:
+                currentToken = self.__currentDocument.codeEditor().cursorToken()
+                charQuote = currentToken.value()[0]
+                if BPSettings.get(BPSettingsKey.CONFIG_TOOLS_DOCKERS_ICONSELECTOR_MODE) == 0:
+                    text = icon.replace('krita:', '')
+                else:
+                    text = icon
+                self.__currentDocument.codeEditor().replaceTokenText(f"{charQuote}{text}{charQuote}")
+            else:
+                raise EInvalidValue("Given `mode` value is not valid")
+
+            if setFocus:
+                self.__currentDocument.codeEditor().setFocus()
 
     def commandToolsDockDocumentsVisible(self, visible=None):
         """Display/Hide Documents docker"""
