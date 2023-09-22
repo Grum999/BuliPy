@@ -25,7 +25,8 @@ from pathlib import Path
 from PyQt5.Qt import *
 from PyQt5.QtGui import (
         QFont,
-        QTextCursor
+        QTextCursor,
+        QColor
     )
 from PyQt5.QtCore import (
         pyqtSignal as Signal,
@@ -47,10 +48,12 @@ from .bpsettings import (
 from ..pktk.modules.languagedef import LanguageDef
 from ..pktk.modules.tokenizer import TokenizerRule
 from ..pktk.modules.utils import Debug
+from ..pktk.modules.timeutils import tsToStr
 from ..pktk.modules.strutils import (
         strDefault,
         trimLinesRight
     )
+from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.bytesrw import BytesRW
 from ..pktk.widgets.wtabbar import WTabBar
 from ..pktk.widgets.wcodeeditor import WCodeEditor
@@ -83,19 +86,21 @@ class WBPDocument(WBPDocumentBase):
     copyAvailable = Signal(WBPDocumentBase)
     languageDefChanged = Signal(WBPDocumentBase)
     fontSizeChanged = Signal(WBPDocumentBase)
+    fileExternallyChanged = Signal(WBPDocumentBase)
 
-    ALERT_FILE_DELETED =    0x01
-    ALERT_FILE_MODIFIED =   0x02
-    ALERT_FILE_TIMESTAMP =  0x03
-    ALERT_FILE_CANTOPEN =   0x04
-    ALERT_FILE_CANTSAVE =   0x05
+    ALERT_FILE_DELETED =        0x01
+    ALERT_FILE_MODIFIED =       0x02
+    ALERT_FILE_TIMESTAMP =      0x03
+    ALERT_FILE_CANTOPEN =       0x04
+    ALERT_FILE_CANTSAVE =       0x05
 
-    ACTION_CLOSE =          0x01
-    ACTION_SAVE =           0x02
-    ACTION_SAVEAS =         0x03
-    ACTION_CANCEL =         0x04
-    ACTION_RELOAD =         0x05
-    ACTION_RELOADAUTO =     0x06
+    ACTION_CLOSE =              0x01
+    ACTION_SAVE =               0x02
+    ACTION_SAVEAS =             0x03
+    ACTION_CANCEL =             0x04
+    ACTION_RELOAD =             0x05
+    ACTION_RELOADAUTO =         0x06
+    ACTION_RELOADAUTO_STOP =    0x07
 
     def __init__(self, parent=None, languageDef=None, uiController=None):
         def emitFontSizeChanged():
@@ -114,8 +119,11 @@ class WBPDocument(WBPDocumentBase):
         self.__layout.addWidget(self.__codeEditor)
 
         self.__msgButtonBar.buttonClicked.connect(self.__msgAlertBtnClicked)
+        self.setStyleSheet(f".bg {{ {UITheme.style('warning-box')} }}")
 
         self.__highlightLinesRule = None
+        self.__lastUpdateTime = None
+        self.__lastSavedTime = None
 
         # code editor properties
         self.__codeEditor.setLanguageDefinition(languageDef)
@@ -129,8 +137,8 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.readOnlyModeChanged.connect(lambda: self.readOnlyModeChanged.emit(self))
         self.__codeEditor.overwriteModeChanged.connect(lambda: self.overwriteModeChanged.emit(self))
         self.__codeEditor.cursorCoordinatesChanged.connect(lambda: self.cursorCoordinatesChanged.emit(self))
-        self.__codeEditor.modificationChanged.connect(lambda: self.modificationChanged.emit(self))
-        self.__codeEditor.textChanged.connect(lambda: self.textChanged.emit(self))
+        self.__codeEditor.modificationChanged.connect(self.__modificationChanged)
+        self.__codeEditor.textChanged.connect(self.__textChanged)
         self.__codeEditor.redoAvailable.connect(lambda: self.redoAvailable.emit(self))
         self.__codeEditor.undoAvailable.connect(lambda: self.undoAvailable.emit(self))
         self.__codeEditor.selectionChanged.connect(lambda: self.selectionChanged.emit(self))
@@ -140,6 +148,9 @@ class WBPDocument(WBPDocumentBase):
         # File watcher on document; allows to check if file is modified outside editor
         self.__fsWatcher = QFileSystemWatcher()
         self.__fsWatcher.fileChanged.connect(self.__externalFileModification)
+        self.__delayedFsWatcherTimer = QTimer()
+        self.__delayedFsWatcherTimer.timeout.connect(self.__externalFileModificationApply)
+        self.__delayedFsWatcherList = []
 
         self.__alerts = []
         self.__currentAlert = None
@@ -148,6 +159,9 @@ class WBPDocument(WBPDocumentBase):
         self.__documentFileName = None
         self.__documentCacheUuid = str(uuid.uuid4())
         self.__autoReload = False
+        self.__autoReloadCount = 0
+        self.__fileExternallyModified = False
+
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveCache())
 
@@ -187,20 +201,28 @@ class WBPDocument(WBPDocumentBase):
         # watched in this case
         QTimer.singleShot(250, init)
 
-    def __externalFileModification(self, fileName):
-        """File has been modified by an external process"""
-        Debug.print('[WBPDocument.__externalFileModification] File has been modified {0}', fileName)
-
+    def __externalFileModificationApply(self):
+        """File has been modified by an external process, apply change"""
+        self.__delayedFsWatcherTimer.stop()
         self.__checkFileIsReadOnly()
-        if os.path.isfile(fileName):
+        if os.path.isfile(self.__documentFileName):
             # file still exists, then modified alert
             self.__addAlert(WBPDocument.ALERT_FILE_MODIFIED)
         else:
-            # file still exists, then deleted alert
+            # file doesn't exists anymore, then deleted alert
             self.__addAlert(WBPDocument.ALERT_FILE_DELETED)
 
         # reinitialise watcher to be sure watch is not lost in case file has been deleted/recreated
         self.__initWatcher()
+
+        self.fileExternallyChanged.emit(self)
+
+    def __externalFileModification(self, fileName):
+        """File has been modified by an external process"""
+        Debug.print('[WBPDocument.__externalFileModification] File has been modified {0}', fileName)
+        self.__fileExternallyModified = True
+        # delayed update, in case file has been deleted/recreated (2 event may occurs)
+        self.__delayedFsWatcherTimer.start(125)
 
     def __addAlert(self, alertCode):
         """Add alert to list, update alert messages"""
@@ -249,12 +271,23 @@ class WBPDocument(WBPDocumentBase):
                                                 )
             elif self.__currentAlert == WBPDocument.ALERT_FILE_MODIFIED:
                 # document is open in editor, and version on disk has been modified
-                self.setReadOnly(True)
-
                 if self.__autoReload:
                     # auto reload active for document, then reload without asking
+                    self.__autoReloadCount += 1
+                    autoReloadCount = self.__autoReloadCount
                     self.__msgAlertBtnClicked(WBPDocument.ACTION_RELOAD)
+
+                    self.__msgButtonBar.message(formatMessage(i18n('File has been reloaded automatically')+' '+i18n(f'({autoReloadCount} times)'),
+                                                              f"{i18n('Last automatically reloaded at:')} {tsToStr(time.time(), 'full')}"
+                                                              ),
+                                                WMessageButton(i18n('Stop Auto-Reload'),
+                                                               WBPDocument.ACTION_RELOADAUTO_STOP,
+                                                               i18n('Stop Automatic reload of document from disk when modified')
+                                                               )
+                                                )
                     return
+
+                self.setReadOnly(True)
 
                 if self.modified():
                     self.__msgButtonBar.message(formatMessage(i18n("File has been modified outside editor!"), i18n("Reload document?")),
@@ -312,8 +345,12 @@ class WBPDocument(WBPDocumentBase):
         manage action to execute
         """
         if len(self.__alerts) == 0:
-            # normally shoulnd't occurs
             self.__currentAlert = None
+            self.__fileExternallyModified = False
+
+            if value == WBPDocument.ACTION_RELOADAUTO_STOP:
+                self.__autoReload = False
+                self.__autoReloadCount = 0
             return
         elif self.__currentAlert is not None:
             # remove waiting action from alerts
@@ -351,12 +388,38 @@ class WBPDocument(WBPDocumentBase):
                     self.__fileIsReadOnly = True
                     self.__codeEditor.setReadOnly(True)
 
+    def __textChanged(self):
+        """Text has been changed, update dates, emit signal"""
+        self.__lastUpdateTime = time.time()
+        self.textChanged.emit(self)
+
+    def __modificationChanged(self, changed):
+        """Status has been changed, update dates, emit signal"""
+        if changed is False:
+            # last saved version
+            self.__lastUpdateTime = self.__lastSavedTime
+
+        self.modificationChanged.emit(self)
+
+    def __fileTimeStamp(self):
+        """Return timestamp of file
+
+        If file hasn't been saved yet, return None
+        """
+        if self.__documentFileName is not None:
+            try:
+                return os.path.getmtime(self.__documentFileName)
+            except Exception:
+                return None
+        return None
+
     def applySettings(self, includeConfig=False):
         """Apply global BuliPy editor settings
 
         If `includeConfig`, will apply ALL settings (ie: take in account change from BuliPy configuration)
         Otherwise only session settings are taken in account
         """
+        lastUpdateTime = self.__lastUpdateTime
         self.__codeEditor.setUpdatesEnabled(False)
 
         font = QFont()
@@ -395,6 +458,7 @@ class WBPDocument(WBPDocumentBase):
             self.__codeEditor.setHighlightedLineRule(self.__highlightLinesRule)
 
         self.__codeEditor.setUpdatesEnabled(True)
+        self.__lastUpdateTime = lastUpdateTime
 
     def modified(self):
         """Return if document is modified or not"""
@@ -403,6 +467,10 @@ class WBPDocument(WBPDocumentBase):
     def setModified(self, value):
         """Set if document is modified or not"""
         return self.__codeEditor.document().setModified(value)
+
+    def modifiedExternally(self):
+        """Return if document is externally modifiedf or not"""
+        return self.__fileExternallyModified
 
     def writeable(self):
         """Return if document (file on disk) is writeable
@@ -458,6 +526,9 @@ class WBPDocument(WBPDocumentBase):
                 self.__codeEditor.setPlainText(fHandle.read())
             self.setModified(False)
             self.__checkFileIsReadOnly()
+            self.__lastSavedTime = self.__fileTimeStamp()
+            self.__lastUpdateTime = self.__lastSavedTime
+            self.__fileExternallyModified = False
             self.__initWatcher()
         except Exception as e:
             self.__addAlert(WBPDocument.ALERT_FILE_CANTOPEN)
@@ -499,12 +570,17 @@ class WBPDocument(WBPDocumentBase):
         if self.modified() or forceSave:
             # save only if has been modified
             try:
+                # as the file will be modified, stop to watch on it
                 self.__stopWatcher()
                 with open(self.__documentFileName, "w") as fHandle:
                     fHandle.write(docText)
+                self.__fileExternallyModified = False
                 self.setModified(False)
-                self.saveCache()
+                # now can watch it again
                 self.__initWatcher()
+
+                self.saveCache()
+                self.__lastSavedTime = self.__fileTimeStamp()
             except Exception as e:
                 self.__addAlert(WBPDocument.ALERT_FILE_CANTSAVE)
                 Debug.print('[WBPDocument.save] unable to save file {0}: {1}', self.__documentFileName, str(e))
@@ -572,7 +648,7 @@ class WBPDocument(WBPDocumentBase):
         """Return document uuid"""
         return self.__documentCacheUuid
 
-    def saveCache(self, stopWatch=True, delayedSave=0):
+    def saveCache(self, delayedSave=0):
         """Save current content to cache
 
         A cache file is a binary file made of:
@@ -589,8 +665,9 @@ class WBPDocument(WBPDocumentBase):
             . a UInt4 integer (contains selection position start, from cursor in document)
             . a UInt4 integer (contains selection position end, from cursor in document; 0 if no selection)
             . a PStr2 string (contains full path/name of original document, empty if none)
-            . a Float8 timestamp (contain timestamp of last file modification, 0 if no file)
+            . a Float8 timestamp (contain timestamp of last *file* modification, 0 if no file)
             . a PStr4 string (contains document content, empty if not modified)
+            . a Float8 timestamp (contain timestamp of last *document* modification)
 
         The `delayedSave` value is provided in milliseconds
         If `delayedSave` equal 0, save cache immediately
@@ -603,9 +680,6 @@ class WBPDocument(WBPDocumentBase):
         else:
             # if save immediately, cancel any delayedSave
             self.__delayedSaveTimer.stop()
-
-        if stopWatch:
-            self.__stopWatcher()
 
         cursor = self.__codeEditor.textCursor()
         dataWrite = BytesRW()
@@ -653,6 +727,8 @@ class WBPDocument(WBPDocumentBase):
         else:
             dataWrite.writePStr4('')
 
+        dataWrite.writeFloat8(self.__lastUpdateTime)
+
         try:
             with open(self.cacheFileName(), "wb") as fHandle:
                 fHandle.write(dataWrite.getvalue())
@@ -694,16 +770,18 @@ class WBPDocument(WBPDocumentBase):
         fullPathFileName = dataRead.readPStr2()
         timestamp = dataRead.readFloat8()
         docContent = dataRead.readPStr4()
+        lastUpdateTime = dataRead.readFloat8()
 
         dataRead.close()
 
         if flags & 0b0000_0100 == 0b0000_0100 and fullPathFileName != '':
-            # file name provided, read file content
+            # document name a file name, read file content
             newDocNumber = 0
             if not self.open(fullPathFileName):
                 # force document to keep file name
                 self.__documentFileName = fullPathFileName
                 # alert already defined by open() method, so none to add here
+                self.__initWatcher()
             else:
                 if os.path.getmtime(self.__documentFileName) != timestamp:
                     self.__addAlert(WBPDocument.ALERT_FILE_TIMESTAMP)
@@ -739,6 +817,7 @@ class WBPDocument(WBPDocumentBase):
             self.__codeEditor.setOverwriteMode(True)
 
         self.__updateAlerts()
+        self.__lastUpdateTime = lastUpdateTime
         return True
 
     def deleteCache(self):
@@ -784,8 +863,24 @@ class WBPDocument(WBPDocumentBase):
             raise EInvalidType("Given `languageDef` must be a <LanguageDef>")
 
         if self.__codeEditor.languageDefinition() is None or self.__codeEditor.languageDefinition().name() != languageDef.name():
+            # changing language def use cursor and seems to trigger 'textChanged' signal
+            # in this case don't want to change the last updateTime of document
+            lastUpdateTime = self.__lastUpdateTime
             self.__codeEditor.setLanguageDefinition(languageDef)
+            self.__lastUpdateTime = lastUpdateTime
             self.languageDefChanged.emit(self)
+
+    def lastModificationTime(self):
+        """Return last modification time"""
+        return self.__lastUpdateTime
+
+    def lastSavedTime(self):
+        """Return last file save time"""
+        return self.__lastSavedTime
+
+    def alerts(self):
+        """Return alerts list, mostly contains alert related to external file modifications"""
+        return self.__alerts
 
 
 class BPDocuments(QObject):
@@ -828,6 +923,7 @@ class BPDocuments(QObject):
     copyAvailable = Signal(WBPDocument)
     languageDefChanged = Signal(WBPDocument)
     fontSizeChanged = Signal(WBPDocument)
+    fileExternallyChanged = Signal(WBPDocumentBase)
 
     def __init__(self, uiController, parent=None):
         super(BPDocuments, self).__init__(parent)
@@ -889,6 +985,10 @@ class BPDocuments(QObject):
         """font size of document changed"""
         self.fontSizeChanged.emit(document)
 
+    def __fileExternallyChanged(self, document):
+        """file has been modified outside bulipy"""
+        self.fileExternallyChanged.emit(document)
+
     def __addDocument(self, document, counterNewDocument=0):
         """Add a new document"""
         # append new document to document list
@@ -911,6 +1011,7 @@ class BPDocuments(QObject):
         document.copyAvailable.connect(self.__copyAvailable)
         document.languageDefChanged.connect(self.__languageDefChanged)
         document.fontSizeChanged.connect(self.__fontSizeChanged)
+        document.fileExternallyChanged.connect(self.__fileExternallyChanged)
 
         document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
 
@@ -946,6 +1047,7 @@ class BPDocuments(QObject):
             document.overwriteModeChanged.disconnect()
             document.cursorCoordinatesChanged.disconnect()
             document.modificationChanged.disconnect()
+            document.fileExternallyChanged.disconnect()
             document.textChanged.disconnect()
             document.redoAvailable.disconnect()
             document.undoAvailable.disconnect()
@@ -1116,6 +1218,7 @@ class BPDocuments(QObject):
                     document.overwriteModeChanged.disconnect()
                     document.cursorCoordinatesChanged.disconnect()
                     document.modificationChanged.disconnect()
+                    document.fileExternallyChanged.disconnect()
                     document.textChanged.disconnect()
                     document.redoAvailable.disconnect()
                     document.undoAvailable.disconnect()
@@ -1271,7 +1374,15 @@ class WBPDocumentTabs(QTabWidget):
             index = self.indexOf(document)
             if index > -1:
                 self.setTabText(index, document.tabName())
-                self.__tabBar.setTabModified(index, document.modified())
+
+                isModified = document.modified()
+                if document.modifiedExternally():
+                    color = QColor("#d02f3a")
+                    isModified = True
+                else:
+                    color = None
+
+                self.__tabBar.setTabModified(index, isModified, color)
                 return True
         return False
 

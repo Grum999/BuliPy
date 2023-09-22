@@ -134,6 +134,10 @@ class BPSettingsKey(SettingsKey):
     SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT =                          'session.tools.dockers.searchAndReplace.replace.text'
     SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE =                      'session.tools.dockers.searchAndReplace.output.fontSize'
 
+    # docker "documents"
+    SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN =                     'session.tools.dockers.documents.sort.column'
+    SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER =                      'session.tools.dockers.documents.sort.order'
+
 
 class BPSettings(Settings):
     """Manage all BuliPy settings with open&save options
@@ -213,7 +217,7 @@ class BPSettings(Settings):
                                                                                                                              SettingsFmt(list)),  # list is not fixed as palette names are not known
 
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_ICONSIZE,                3,                        SettingsFmt(int, [0, 1, 2, 3, 4, 5, 6])),
-            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_VIEWMODE,                0,                        SettingsFmt(int, [QListView.IconMode, QListView.ListMode])),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_VIEWMODE,                QListView.ListMode,       SettingsFmt(int, [QListView.ListMode, QListView.IconMode])),
 
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_REGEX_CHECKED,         False,                    SettingsFmt(bool)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED, False,                    SettingsFmt(bool)),
@@ -223,6 +227,9 @@ class BPSettings(Settings):
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT,                      '',                       SettingsFmt(str)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT,                     '',                       SettingsFmt(str)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE,                 12,                       SettingsFmt(int)),
+
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN,                0,                        SettingsFmt(int, [0, 1, 2, 3])),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER,                 Qt.AscendingOrder,        SettingsFmt(int, [Qt.AscendingOrder, Qt.DescendingOrder])),
 
             SettingsRule(BPSettingsKey.CONFIG_TOOLBARS,                                            [],                       SettingsFmt(list, dict)),
             SettingsRule(BPSettingsKey.SESSION_TOOLBARS,                                           [],                       SettingsFmt(list, dict))

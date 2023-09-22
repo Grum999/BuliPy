@@ -42,6 +42,7 @@ from .bpdwconsole import BPDockWidgetConsoleOutput
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 from .bpdwiconselector import BPDockWidgetIconSelector
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
+from .bpdwdocuments import BPDockWidgetDocuments
 from .bpwopensavedialog import BPWOpenSave
 
 from .bplanguagedef import BPLanguageDefPython
@@ -145,6 +146,7 @@ class BPUIController(QObject):
         self.__documents.overwriteModeChanged.connect(self.__documentOverwriteModeChanged)
         self.__documents.cursorCoordinatesChanged.connect(self.__documentCursorCoordinatesChanged)
         self.__documents.modificationChanged.connect(self.__documentModificationChanged)
+        self.__documents.fileExternallyChanged.connect(self.__documentModificationChanged)
         self.__documents.textChanged.connect(self.__delayedDocumentSaveCache)
         self.__documents.redoAvailable.connect(self.__invalidateMenu)
         self.__documents.undoAvailable.connect(self.__invalidateMenu)
@@ -162,10 +164,12 @@ class BPUIController(QObject):
         self.__dwConsoleOutput = None
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
+        self.__dwDocuments = None
 
         self.__dwConsoleOutputAction = None
         self.__dwColorPickerAction = None
         self.__dwSearchReplaceAction = None
+        self.__dwDocumentsAction = None
 
         # -- misc
         # editor/syntax theme
@@ -233,10 +237,15 @@ class BPUIController(QObject):
 
         self.__dwSearchReplace = BPDockWidgetSearchReplace(self.__window, self.__documents)
         self.__dwSearchReplace.setObjectName('__dwSearchReplace')
-        # self.__dwSearchReplace.setAllowedAreas(Qt.BottomDockWidgetArea | Qt.TopDockWidgetArea)
         self.__dwSearchReplaceAction = self.__dwSearchReplace.toggleViewAction()
         self.__dwSearchReplaceAction.setText(i18n("Search & Replace"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwSearchReplace)
+
+        self.__dwDocuments = BPDockWidgetDocuments(self.__window, self.__documents)
+        self.__dwDocuments.setObjectName('__dwDocuments')
+        self.__dwDocumentsAction = self.__dwDocuments.toggleViewAction()
+        self.__dwDocumentsAction.setText(i18n("Documents"))
+        self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwDocuments)
 
         self.__window.setWindowTitle(self.__bpTitle)
         self.__window.show()
@@ -308,7 +317,7 @@ class BPUIController(QObject):
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_AUTOCLEAR))
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OUTPUT_FONT_SIZE))
 
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE, BPSettings.get(BPSettingsKey.CONFIG_DOCKER_CONSOLE_BUFFERSIZE))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE, BPSettings.get(BPSettingsKey.CONFIG_TOOLS_DOCKERS_CONSOLE_BUFFERSIZE))
 
         self.__dwColorPicker.setOptions(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_COLORPICKER_MENU_SELECTED))
         self.__dwColorPicker.setColor('#ffffffff')
@@ -324,6 +333,9 @@ class BPUIController(QObject):
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT))
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT))
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE))
+
+        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_COLUMN, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN))
+        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_ORDER, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER))
 
         # do not load from here, already loaded from BPDocuments() initialisation
         # for fileName in BPSettings.get(BPSettingsKey.SESSION_DOCUMENTS_OPENED):
@@ -590,7 +602,13 @@ class BPUIController(QObject):
     def __updateStatusUiModified(self, document):
         """Update UI to take in account modified status of document"""
         self.__window.msDocuments.updateDocument(document)
-        self.__window.setStatusBarText(self.__window.STATUSBAR_MODIFICATIONSTATUS, self.__currentDocument.modified())
+
+        if self.__currentDocument.modifiedExternally():
+            self.__window.setStatusBarText(self.__window.STATUSBAR_MODIFICATIONSTATUS, 'E')
+        elif self.__currentDocument.modified():
+            self.__window.setStatusBarText(self.__window.STATUSBAR_MODIFICATIONSTATUS, 'I')
+        else:
+            self.__window.setStatusBarText(self.__window.STATUSBAR_MODIFICATIONSTATUS, 'N')
         self.__invalidateMenu()
 
     def __delayedDocumentSaveCache(self, document):
@@ -831,6 +849,9 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE, self.__dwSearchReplace.option(BPDockWidgetSearchReplace.OPTION_FONTSIZE))
+
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN, self.__dwDocuments.option(BPDockWidgetDocuments.OPTION_SORT_COLUMN))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER, self.__dwDocuments.option(BPDockWidgetDocuments.OPTION_SORT_ORDER))
 
         return BPSettings.save()
 
@@ -1318,6 +1339,7 @@ class BPUIController(QObject):
         if self.__dwColorPicker:
             if visible:
                 self.__dwColorPicker.show()
+                self.__dwColorPicker.setActive()
             else:
                 self.__dwColorPicker.hide()
         if self.__window:
@@ -1346,11 +1368,29 @@ class BPUIController(QObject):
         if self.__dwIconSelector:
             if visible:
                 self.__dwIconSelector.show()
+                self.__dwIconSelector.setActive()
             else:
                 self.__dwIconSelector.hide()
-        print("commandToolsDockIconSelectorVisible", self.__window)
+
         if self.__window:
             self.__window.actionToolsIconsSelector.setChecked(visible)
+
+    def commandToolsDockDocumentsVisible(self, visible=None):
+        """Display/Hide Documents docker"""
+        if visible is None:
+            visible = self.__dwDocumentsAction.isChecked()
+        elif not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwDocuments:
+            if visible:
+                self.__dwDocuments.show()
+                self.__dwDocuments.setActive()
+            else:
+                self.__dwDocuments.hide()
+
+        if self.__window:
+            self.__window.actionToolsDocuments.setChecked(visible)
 
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""
@@ -1369,7 +1409,8 @@ class BPUIController(QObject):
         self.__dwConsoleOutput.append(f"#lc#**OS:**#     #c#{platform.system()} {platform.release()}#", WConsoleType.INFO)
         self.__dwConsoleOutput.append(f"#lc#**Arch.:**#  #c#{platform.machine()}{' ('+'-'.join(platform.architecture())+')' if platform.architecture()[1]!='' else ''}#", WConsoleType.INFO)
 
-        self.__dwConsoleOutput.setActive()
+        if forceDisplayConsole:
+            self.__dwConsoleOutput.setActive()
 
     def commandToolsTextInsert(self, text, setFocus=True):
         """Insert given `text` at current position in active document
@@ -1445,10 +1486,6 @@ class BPUIController(QObject):
 
             if setFocus:
                 self.__currentDocument.codeEditor().setFocus()
-
-    def commandToolsDockDocumentsVisible(self, visible=None):
-        """Display/Hide Documents docker"""
-        pass
 
     def commandToolsCopyFullPathFileName(self):
         """Copy current document full/path file name in clipboard

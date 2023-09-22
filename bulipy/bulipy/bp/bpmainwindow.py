@@ -81,7 +81,8 @@ class BPMainWindow(QMainWindow):
         self.__uiController = uiController
         self.__eventCallBack = {}
 
-        self.__pixmapBullet = None
+        self.__pixmapBulletE = None
+        self.__pixmapBulletI = None
 
         self.__toolbars = []
 
@@ -231,11 +232,18 @@ class BPMainWindow(QMainWindow):
         """
         super(BPMainWindow, self).showEvent(event)
 
-        pixmapBullet = bullet(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].height()//2, self.palette().color(QPalette.Active, QPalette.Highlight), 'circle')
-        self.__pixmapBullet = QPixmap(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].size())
-        self.__pixmapBullet.fill(Qt.transparent)
-        painter = QPainter(self.__pixmapBullet)
-        painter.drawPixmap((self.__pixmapBullet.width() - pixmapBullet.width())//2, (self.__pixmapBullet.height() - pixmapBullet.height())//2, pixmapBullet)
+        pixmapBulletE = bullet(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].height()//2, QColor("#d02f3a"), 'circle')
+        self.__pixmapBulletE = QPixmap(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].size())
+        self.__pixmapBulletE.fill(Qt.transparent)
+        painter = QPainter(self.__pixmapBulletE)
+        painter.drawPixmap((self.__pixmapBulletE.width() - pixmapBulletE.width())//2, (self.__pixmapBulletE.height() - pixmapBulletE.height())//2, pixmapBulletE)
+        painter.end()
+
+        pixmapBulletI = bullet(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].height()//2, self.palette().color(QPalette.Active, QPalette.Highlight), 'circle')
+        self.__pixmapBulletI = QPixmap(self.__statusBarWidgets[BPMainWindow.STATUSBAR_MODIFICATIONSTATUS].size())
+        self.__pixmapBulletI.fill(Qt.transparent)
+        painter = QPainter(self.__pixmapBulletI)
+        painter.drawPixmap((self.__pixmapBulletI.width() - pixmapBulletI.width())//2, (self.__pixmapBulletI.height() - pixmapBulletI.height())//2, pixmapBulletI)
         painter.end()
 
         self.dialogShown.emit()
@@ -479,8 +487,11 @@ class BPMainWindow(QMainWindow):
             raise EInvalidValue(f"Given `index` must be between 0 and {BPMainWindow.STATUSBAR_LASTSECTION}")
 
         if index == BPMainWindow.STATUSBAR_MODIFICATIONSTATUS:
-            if text is True and self.__pixmapBullet:
-                self.__statusBarWidgets[index].setPixmap(self.__pixmapBullet)
+            if text == 'E' and self.__pixmapBulletE:
+                self.__statusBarWidgets[index].setPixmap(self.__pixmapBulletE)
+                self.__statusBarWidgets[index].setToolTip(i18n("File has been modified by an external process"))
+            elif text == 'I' and self.__pixmapBulletI:
+                self.__statusBarWidgets[index].setPixmap(self.__pixmapBulletI)
                 self.__statusBarWidgets[index].setToolTip(i18n("Modified file not saved"))
             else:
                 self.__statusBarWidgets[index].setText(' ')

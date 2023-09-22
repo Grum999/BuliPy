@@ -41,6 +41,7 @@ from ..pktk.pktk import *
 
 # -----------------------------------------------------------------------------
 
+
 class BPThemes:
     """Manage all BuliPy settings with open&save options
 
