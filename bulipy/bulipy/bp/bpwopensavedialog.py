@@ -57,21 +57,16 @@ class WBuliPyOpenSavePreview(WDialogFile.WSubWidget):
             return False
         else:
             try:
-                print("setFile--1", fileName)
                 with open(fileName, 'r', encoding='utf-8') as fhandle:
                     content = fhandle.read()
                     self.__codeEditor.setPlainText(content)
 
-                print("setFile--2")
                 if fileExtension := re.search(r"(\.[^\.]*)$", fileName):
-                    print("setFile--3", fileExtension.groups()[0])
                     if self.__uiController:
                         languageDef = self.__uiController.languageDef(fileExtension.groups()[0])
-                        print("setFile--4", languageDef)
                         self.__codeEditor.setLanguageDefinition(languageDef)
 
             except Exception as e:
-                print(fileName, e)
                 Debug.print("Unable to read file content:", fileName, e)
                 self.__codeEditor.setPlainText(i18n("Can't read file!"))
                 return False

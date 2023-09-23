@@ -853,6 +853,21 @@ class WBPDocument(WBPDocumentBase):
         """Return document content"""
         return self.__codeEditor.toPlainText()
 
+    def setContent(self, content, undoable=True):
+        """Return document content"""
+        if isinstance(content, list):
+            content = os.linesep.join(content)
+        if undoable:
+            cursor = self.__codeEditor.textCursor()
+            cursor.movePosition(QTextCursor.Start, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.End, QTextCursor.KeepAnchor)
+            cursor.beginEditBlock()
+            cursor.removeSelectedText()
+            cursor.insertText(content)
+            cursor.endEditBlock()
+        else:
+            self.__codeEditor.setPlainText(content)
+
     def languageDefinition(self):
         """return document languageDef"""
         return self.__codeEditor.languageDefinition()

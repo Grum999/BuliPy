@@ -26,7 +26,8 @@ from PyQt5.Qt import *
 from PyQt5.QtGui import (
         QColor,
         QGuiApplication,
-        QTextCursor
+        QTextCursor,
+        QClipboard
     )
 from PyQt5.QtCore import (
         pyqtSignal as Signal,
@@ -66,6 +67,11 @@ from ..pktk.modules.uitheme import UITheme
 from ..pktk.modules.utils import (
         checkKritaVersion,
         Debug
+    )
+from ..pktk.modules.strutils import (
+        trimLines,
+        trimLinesLeft,
+        trimLinesRight
     )
 from ..pktk.modules.imgutils import (
         buildIcon,
@@ -713,7 +719,7 @@ class BPUIController(QObject):
         self.__window.actionToolsMDocRemoveEmptyLines.setEnabled(len(extensions) == 0 or '.txt' in extensions)
         self.__window.actionToolsMDocTrimSpaces.setEnabled('.py' not in extensions)
         self.__window.actionToolsMDocTrimLeadingSpaces.setEnabled('.py' not in extensions)
-        self.__window.actionToolsMDocPrettify.setEnabled('.json' in extensions or '.xml' in extensions)
+        # self.__window.actionToolsMDocPrettify.setEnabled('.json' in extensions or '.xml' in extensions)
 
         # Menu SETTINGS
         # ----------------------------------------------------------------------
@@ -1492,46 +1498,96 @@ class BPUIController(QObject):
 
         If document don't have path/file defined, does nothing
         """
-        pass
+        if self.__currentDocument:
+            fullPathFileName = self.__currentDocument.fileName()
+            if fullPathFileName:
+                mimeData = QMimeData()
+                mimeData.setData('text/uri-list', fullPathFileName.encode())
+                mimeData.setData('text/plain', fullPathFileName.encode())
+                clipBoard = QApplication.clipboard()
+                clipBoard.setMimeData(mimeData, QClipboard.Clipboard)
 
     def commandToolsCopyPathName(self):
         """Copy current document path name in clipboard
 
         If document don't have path/file defined, does nothing
         """
-        pass
+        if self.__currentDocument:
+            fullPathFileName = self.__currentDocument.fileName()
+            if fullPathFileName:
+                mimeData = QMimeData()
+                mimeData.setData('text/plain', os.path.dirname(fullPathFileName).encode())
+                clipBoard = QApplication.clipboard()
+                clipBoard.setMimeData(mimeData, QClipboard.Clipboard)
 
     def commandToolsCopyFileName(self):
         """Copy current document file name in clipboard"""
-        pass
+        if self.__currentDocument:
+            fullPathFileName = self.__currentDocument.fileName()
+            if fullPathFileName:
+                mimeData = QMimeData()
+                mimeData.setData('text/plain', os.path.basename(fullPathFileName).encode())
+                clipBoard = QApplication.clipboard()
+                clipBoard.setMimeData(mimeData, QClipboard.Clipboard)
 
     def commandToolsMDocSortAscending(self):
         """Sort current document lines ascending"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = self.__currentDocument.content().split(os.linesep)
+            content.sort()
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocSortDescending(self):
         """Sort current document lines descending"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = self.__currentDocument.content().split(os.linesep)
+            content.sort(reverse=True)
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocRemoveDuplicateLines(self):
         """Remove all duplicates lines"""
-        pass
+        if self.__currentDocument:
+            content = []
+            for line in self.__currentDocument.content().split(os.linesep):
+                if line not in content:
+                    content.append(line)
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocRemoveEmptyLines(self):
         """Remove all empty lines (even lines with only spaces)"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = [line for line in self.__currentDocument.content().split(os.linesep) if not re.match(r"\s*$", line)]
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocTrimSpaces(self):
         """Remove all leading&trailing spaces"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = [trimLines(line) for line in self.__currentDocument.content().split(os.linesep)]
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocTrimLeadingSpaces(self):
         """Remove all leading spaces"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = [trimLinesLeft(line) for line in self.__currentDocument.content().split(os.linesep)]
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocTrimTrailingSpaces(self):
         """Remove all trailing spaces"""
-        pass
+        # no control about file type!!
+        # access is managed through menu, enabled/disbaled
+        if self.__currentDocument:
+            content = [trimLinesRight(line) for line in self.__currentDocument.content().split(os.linesep)]
+            self.__currentDocument.setContent(content)
 
     def commandToolsMDocPrettify(self):
         """Prettify current JSON/XML document"""

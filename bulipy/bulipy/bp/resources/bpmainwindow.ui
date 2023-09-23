@@ -189,8 +189,6 @@
      <addaction name="actionToolsMDocTrimSpaces"/>
      <addaction name="actionToolsMDocTrimLeadingSpaces"/>
      <addaction name="actionToolsMDocTrimTrailingSpaces"/>
-     <addaction name="separator"/>
-     <addaction name="actionToolsMDocPrettify"/>
     </widget>
     <addaction name="separator"/>
     <addaction name="actionToolsColorPicker"/>
@@ -933,11 +931,6 @@
    </property>
    <property name="text">
     <string>Trim trailing spaces </string>
-   </property>
-  </action>
-  <action name="actionToolsMDocPrettify">
-   <property name="text">
-    <string>Prettify</string>
    </property>
   </action>
   <action name="actionViewShowRightLimit">

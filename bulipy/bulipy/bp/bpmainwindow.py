@@ -446,7 +446,7 @@ class BPMainWindow(QMainWindow):
         self.actionToolsMDocTrimSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimSpaces)
         self.actionToolsMDocTrimLeadingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimLeadingSpaces)
         self.actionToolsMDocTrimTrailingSpaces.triggered.connect(self.__uiController.commandToolsMDocTrimTrailingSpaces)
-        self.actionToolsMDocPrettify.triggered.connect(self.__uiController.commandToolsMDocPrettify)
+        # self.actionToolsMDocPrettify.triggered.connect(self.__uiController.commandToolsMDocPrettify)
 
         self.menuTools.aboutToShow.connect(self.__menuAboutToShow)
 

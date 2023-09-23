@@ -555,7 +555,6 @@ Vote Buli!'''}
 
     def __updateCEAppearancePreviewFontSizeChanged(self, value):
         """Font size has been modified from editor preview, update spinbox"""
-        print("__updateCEAppearancePreviewFontSizeChanged", value)
         self.sbCEAppearanceFontSize.setValue(value)
 
     def __updateCEAppearanceFontSizeChanged(self, value):
