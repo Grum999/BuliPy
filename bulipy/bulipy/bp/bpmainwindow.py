@@ -154,6 +154,7 @@ class BPMainWindow(QMainWindow):
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].setCursor(Qt.PointingHandCursor)
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].setCursor(Qt.PointingHandCursor)
 
+        self.__statusBarWidgets[BPMainWindow.STATUSBAR_FILENAME].mousePressEvent = lambda e: self.__uiController.commandToolsCopyFullPathFileName()
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_RO].mousePressEvent = lambda e: self.__uiController.commandEditReadOnlyMode()
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_POS].mousePressEvent = lambda e: self.__uiController.commandEditGoToLine()
         self.__statusBarWidgets[BPMainWindow.STATUSBAR_INSOVR_MODE].mousePressEvent = lambda e: self.__uiController.commandEditOverwriteMode()
