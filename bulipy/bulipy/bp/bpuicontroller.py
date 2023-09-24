@@ -172,12 +172,14 @@ class BPUIController(QObject):
         self.__dwConsoleOutput = None
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
+        self.__dwIconSelector = None
         self.__dwDocuments = None
         self.__dwClipboard = None
 
         self.__dwConsoleOutputAction = None
         self.__dwColorPickerAction = None
         self.__dwSearchReplaceAction = None
+        self.__dwIconSelectorAction = None
         self.__dwDocumentsAction = None
         self.__dwClipboardAction = None
 
@@ -255,12 +257,14 @@ class BPUIController(QObject):
         self.__dwDocuments.setObjectName('__dwDocuments')
         self.__dwDocumentsAction = self.__dwDocuments.toggleViewAction()
         self.__dwDocumentsAction.setText(i18n("Documents"))
+        self.__dwDocumentsAction.toggled.connect(self.commandToolsDockDocumentsVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwDocuments)
 
         self.__dwClipboard = BPDockWidgetClipboard(self.__window, self.__documents, i18n('Clipboard'))
         self.__dwClipboard.setObjectName('__dwClipboard')
         self.__dwClipboardAction = self.__dwClipboard.toggleViewAction()
         self.__dwClipboardAction.setText(i18n("Clipboard"))
+        self.__dwClipboardAction.toggled.connect(self.commandToolsDockClipboardVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwClipboard)
 
         self.__window.setWindowTitle(self.__bpTitle)
