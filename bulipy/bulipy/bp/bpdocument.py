@@ -87,6 +87,8 @@ class WBPDocument(WBPDocumentBase):
     languageDefChanged = Signal(WBPDocumentBase)
     fontSizeChanged = Signal(WBPDocumentBase)
     fileExternallyChanged = Signal(WBPDocumentBase)
+    textCopyToClipboard = Signal(WBPDocumentBase, str)
+    textCutToClipboard = Signal(WBPDocumentBase, str)
 
     ALERT_FILE_DELETED =        0x01
     ALERT_FILE_MODIFIED =       0x02
@@ -143,7 +145,9 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.undoAvailable.connect(lambda: self.undoAvailable.emit(self))
         self.__codeEditor.selectionChanged.connect(lambda: self.selectionChanged.emit(self))
         self.__codeEditor.copyAvailable.connect(lambda: self.copyAvailable.emit(self))
-        self.__codeEditor.fontSizeChanged.connect(lambda: self.__delayedFontSizeTimer.start(150))
+        self.__codeEditor.fontSizeChanged.connect(lambda: self.__delayedFontSizeTimer.start(75))
+        self.__codeEditor.textCopyToClipboard.connect(lambda text: self.textCopyToClipboard.emit(self, text))
+        self.__codeEditor.textCutToClipboard.connect(lambda text: self.textCutToClipboard.emit(self, text))
 
         # File watcher on document; allows to check if file is modified outside editor
         self.__fsWatcher = QFileSystemWatcher()
@@ -161,6 +165,7 @@ class WBPDocument(WBPDocumentBase):
         self.__autoReload = False
         self.__autoReloadCount = 0
         self.__fileExternallyModified = False
+        self.__invalidate = 0
 
         self.__delayedSaveTimer = QTimer()
         self.__delayedSaveTimer.timeout.connect(lambda: self.saveCache())
@@ -413,12 +418,24 @@ class WBPDocument(WBPDocumentBase):
                 return None
         return None
 
+    def showEvent(self, event):
+        """Widget become visible, need updates?"""
+        if self.__invalidate:
+            self.applySettings(self.__invalidate == 2)
+
     def applySettings(self, includeConfig=False):
         """Apply global BuliPy editor settings
 
         If `includeConfig`, will apply ALL settings (ie: take in account change from BuliPy configuration)
         Otherwise only session settings are taken in account
         """
+        if not self.isVisible():
+            if includeConfig:
+                self.__invalidate = 2
+            else:
+                self.__invalidate = 1
+            return
+
         lastUpdateTime = self.__lastUpdateTime
         self.__codeEditor.setUpdatesEnabled(False)
 
@@ -459,6 +476,7 @@ class WBPDocument(WBPDocumentBase):
 
         self.__codeEditor.setUpdatesEnabled(True)
         self.__lastUpdateTime = lastUpdateTime
+        self.__invalidate = 0
 
     def modified(self):
         """Return if document is modified or not"""
@@ -510,6 +528,8 @@ class WBPDocument(WBPDocumentBase):
         self.__codeEditor.selectionChanged.disconnect()
         self.__codeEditor.copyAvailable.disconnect()
         self.__codeEditor.fontSizeChanged.disconnect()
+        self.__codeEditor.textCopyToClipboard.disconnect()
+        self.__codeEditor.textCutToClipboard.disconnect()
 
         if deleteCache:
             self.deleteCache()
@@ -939,6 +959,8 @@ class BPDocuments(QObject):
     languageDefChanged = Signal(WBPDocument)
     fontSizeChanged = Signal(WBPDocument)
     fileExternallyChanged = Signal(WBPDocumentBase)
+    textCopyToClipboard = Signal(WBPDocumentBase, str)
+    textCutToClipboard = Signal(WBPDocumentBase, str)
 
     def __init__(self, uiController, parent=None):
         super(BPDocuments, self).__init__(parent)
@@ -1004,6 +1026,14 @@ class BPDocuments(QObject):
         """file has been modified outside bulipy"""
         self.fileExternallyChanged.emit(document)
 
+    def __textCopyToClipboard(self, document, text):
+        """text from document has been copied to clipboard"""
+        self.textCopyToClipboard.emit(document, text)
+
+    def __textCutToClipboard(self, document, text):
+        """text from document has been cut to clipboard"""
+        self.textCutToClipboard.emit(document, text)
+
     def __addDocument(self, document, counterNewDocument=0):
         """Add a new document"""
         # append new document to document list
@@ -1027,6 +1057,8 @@ class BPDocuments(QObject):
         document.languageDefChanged.connect(self.__languageDefChanged)
         document.fontSizeChanged.connect(self.__fontSizeChanged)
         document.fileExternallyChanged.connect(self.__fileExternallyChanged)
+        document.textCopyToClipboard.connect(self.__textCopyToClipboard)
+        document.textCutToClipboard.connect(self.__textCutToClipboard)
 
         document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
 
@@ -1070,6 +1102,8 @@ class BPDocuments(QObject):
             document.copyAvailable.disconnect()
             document.languageDefChanged.disconnect()
             document.fontSizeChanged.disconnect()
+            document.textCopyToClipboard.disconnect()
+            document.textCutToClipboard.disconnect()
             document.close(False)
 
         self.__currentDocument = None
@@ -1241,6 +1275,8 @@ class BPDocuments(QObject):
                     document.copyAvailable.disconnect()
                     document.languageDefChanged.disconnect()
                     document.fontSizeChanged.disconnect()
+                    document.textCopyToClipboard.disconnect()
+                    document.textCutToClipboard.disconnect()
                     document.close()
                     self.documentRemoved.emit(document)
 

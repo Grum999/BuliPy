@@ -194,6 +194,7 @@
     <addaction name="actionToolsColorPicker"/>
     <addaction name="actionToolsIconsSelector"/>
     <addaction name="actionToolsDocuments"/>
+    <addaction name="actionToolsClipboard"/>
     <addaction name="separator"/>
     <addaction name="menuToolsCopyToClipboard"/>
     <addaction name="menuToolsManipulateDoc"/>
@@ -944,6 +945,19 @@
    </property>
    <property name="text">
     <string>Show right limit</string>
+   </property>
+  </action>
+  <action name="actionToolsClipboard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/clipboard_pinned</normaloff>
+     <disabledoff>:/pktk/images/disabled/clipboard_pinned</disabledoff>:/pktk/images/normal/clipboard_pinned</iconset>
+   </property>
+   <property name="text">
+    <string>Clipboard</string>
    </property>
   </action>
  </widget>

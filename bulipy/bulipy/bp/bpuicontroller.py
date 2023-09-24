@@ -44,6 +44,7 @@ from .bpdwcolorpicker import BPDockWidgetColorPicker
 from .bpdwiconselector import BPDockWidgetIconSelector
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
 from .bpdwdocuments import BPDockWidgetDocuments
+from .bpdwclipboard import BPDockWidgetClipboard
 from .bpwopensavedialog import BPWOpenSave
 
 from .bplanguagedef import BPLanguageDefPython
@@ -113,7 +114,7 @@ class BPUIController(QObject):
         self.__bpCachePath = os.path.join(QStandardPaths.writableLocation(QStandardPaths.CacheLocation), "bulipy")
         try:
             os.makedirs(self.__bpCachePath, exist_ok=True)
-            for subDirectory in ['documents', 'themes']:
+            for subDirectory in ['documents', 'themes', 'clipboard']:
                 os.makedirs(self.cachePath(subDirectory), exist_ok=True)
         except Exception as e:
             Debug.print('[BPUIController.__init__] Unable to create directory {0}: {1}', self.cachePath(subDirectory), str(e))
@@ -171,11 +172,13 @@ class BPUIController(QObject):
         self.__dwColorPicker = None
         self.__dwSearchReplace = None
         self.__dwDocuments = None
+        self.__dwClipboard = None
 
         self.__dwConsoleOutputAction = None
         self.__dwColorPickerAction = None
         self.__dwSearchReplaceAction = None
         self.__dwDocumentsAction = None
+        self.__dwClipboardAction = None
 
         # -- misc
         # editor/syntax theme
@@ -210,7 +213,7 @@ class BPUIController(QObject):
         self.__window.dialogShown.connect(self.__initSettings)
 
         # initialise docker widgets
-        self.__dwConsoleOutput = BPDockWidgetConsoleOutput(self.__window, self.__documents)
+        self.__dwConsoleOutput = BPDockWidgetConsoleOutput(self.__window, self.__documents, i18n('Console output'))
         self.__dwConsoleOutput.setObjectName('__dwConsoleOutput')
         self.__dwConsoleOutputAction = self.__dwConsoleOutput.toggleViewAction()
         self.__dwConsoleOutputAction.setText(i18n("Console output"))
@@ -218,7 +221,7 @@ class BPUIController(QObject):
         self.__dwConsoleOutput.sourceRefClicked.connect(lambda source, fromPosition, toPosition: self.commandEditGoToLine(fromPosition.y(), source, True))
         self.__dwConsoleOutput.consoleClear.connect(self.commandToolsShowVersion)
 
-        self.__dwColorPicker = BPDockWidgetColorPicker(self.__window, self.__documents)
+        self.__dwColorPicker = BPDockWidgetColorPicker(self.__window, self.__documents, i18n('Color picker'))
         self.__dwColorPicker.setObjectName('__dwColorPicker')
         self.__dwColorPicker.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self.__dwColorPicker.apply.connect(self.commandToolsColorCodeInsert)
@@ -232,7 +235,7 @@ class BPUIController(QObject):
             iconSelectorConfig = WIconSelector.OPTIONS_SHOW_SOURCE_KRITA
         else:
             iconSelectorConfig = WIconSelector.OPTIONS_SHOW_SOURCE_KRITA | WIconSelector.OPTIONS_SHOW_SOURCE_PKTK
-        self.__dwIconSelector = BPDockWidgetIconSelector(self.__window, self.__documents, iconSelectorConfig)
+        self.__dwIconSelector = BPDockWidgetIconSelector(self.__window, self.__documents, iconSelectorConfig, i18n('Icon selector'))
         self.__dwIconSelector.setObjectName('__dwIconSelector')
         self.__dwIconSelector.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self.__dwIconSelector.apply.connect(self.commandToolsIconCodeInsert)
@@ -241,17 +244,23 @@ class BPUIController(QObject):
         self.__dwIconSelectorAction.toggled.connect(self.commandToolsDockIconSelectorVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwIconSelector)
 
-        self.__dwSearchReplace = BPDockWidgetSearchReplace(self.__window, self.__documents)
+        self.__dwSearchReplace = BPDockWidgetSearchReplace(self.__window, self.__documents, i18n('Search & Replace'))
         self.__dwSearchReplace.setObjectName('__dwSearchReplace')
         self.__dwSearchReplaceAction = self.__dwSearchReplace.toggleViewAction()
         self.__dwSearchReplaceAction.setText(i18n("Search & Replace"))
         self.__window.addDockWidget(Qt.BottomDockWidgetArea, self.__dwSearchReplace)
 
-        self.__dwDocuments = BPDockWidgetDocuments(self.__window, self.__documents)
+        self.__dwDocuments = BPDockWidgetDocuments(self.__window, self.__documents, i18n('Documents'))
         self.__dwDocuments.setObjectName('__dwDocuments')
         self.__dwDocumentsAction = self.__dwDocuments.toggleViewAction()
         self.__dwDocumentsAction.setText(i18n("Documents"))
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwDocuments)
+
+        self.__dwClipboard = BPDockWidgetClipboard(self.__window, self.__documents, i18n('Clipboard'))
+        self.__dwClipboard.setObjectName('__dwClipboard')
+        self.__dwClipboardAction = self.__dwClipboard.toggleViewAction()
+        self.__dwClipboardAction.setText(i18n("Clipboard"))
+        self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwClipboard)
 
         self.__window.setWindowTitle(self.__bpTitle)
         self.__window.show()
@@ -311,17 +320,17 @@ class BPUIController(QObject):
         self.__lastDocumentDirectorySave = BPSettings.get(BPSettingsKey.SESSION_PATH_LASTSAVED)
 
         # no ui controller command for dockers
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_VISIBLE))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_REGEX_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_TEXT))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES, [WConsoleType.fromStr(type) for type in BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_TYPES)])
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_SEARCH))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_AUTOCLEAR))
-        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OUTPUT_FONT_SIZE))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BUTTONSHOW,       BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_VISIBLE))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_REGEX,            BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_CASESENSITIVE,    BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_WHOLEWORD,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_WHOLEWORD_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_BACKWARD,         BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_BACKWARD_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BTN_HIGHLIGHT,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_TXT_SEARCH,           BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_SEARCH_TEXT))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_TYPES,         [WConsoleType.fromStr(type) for type in BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_TYPES)])
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FILTER_SEARCH,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_FILTER_SEARCH))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_AUTOCLEAR,            BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OPTIONS_AUTOCLEAR))
+        self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTSIZE,             BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CONSOLE_OUTPUT_FONT_SIZE))
 
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_BUFFER_SIZE, BPSettings.get(BPSettingsKey.CONFIG_TOOLS_DOCKERS_CONSOLE_BUFFERSIZE))
 
@@ -331,17 +340,25 @@ class BPUIController(QObject):
         self.__dwIconSelector.setIconSizeIndex(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_ICONSIZE))
         self.__dwIconSelector.setViewMode(BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_ICONSELECTOR_VIEWMODE))
 
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_REGEX, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_REGEX_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_WHOLEWORD_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_BACKWARD_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT))
-        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTSIZE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_REGEX,            BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_CASESENSITIVE,    BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_WHOLEWORD,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_WHOLEWORD_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_BACKWARD,         BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_BACKWARD_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_BTN_HIGHLIGHT,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_BTN_HIGHLIGHTALL_CHECKED))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_SEARCH,           BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_SEARCH_TEXT))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_TXT_REPLACE,          BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_REPLACE_TEXT))
+        self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTSIZE,             BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_SAR_OUTPUT_FONT_SIZE))
 
-        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_COLUMN, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN))
-        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_ORDER, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER))
+        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_COLUMN,  BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN))
+        self.__dwDocuments.setOption(BPDockWidgetDocuments.OPTION_SORT_ORDER,   BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER))
+
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_BTN_REGEX,         BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_BTN_WHOLEWORD,     BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_WHOLEWORD_CHECKED))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_TXT_SEARCH,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_TEXT))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTSIZE,          BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_COLUMN,       BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_ORDER,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER))
 
         # do not load from here, already loaded from BPDocuments() initialisation
         # for fileName in BPSettings.get(BPSettingsKey.SESSION_DOCUMENTS_OPENED):
@@ -382,6 +399,7 @@ class BPUIController(QObject):
         # use same font than one choosen for editor
         self.__dwConsoleOutput.setOption(BPDockWidgetConsoleOutput.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
         self.__dwSearchReplace.setOption(BPDockWidgetSearchReplace.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTNAME, BPSettings.get(BPSettingsKey.CONFIG_EDITOR_FONT_NAME))
 
     def __invalidateMenu(self):
         """Invalidate menu..."""
@@ -620,7 +638,6 @@ class BPUIController(QObject):
     def __delayedDocumentSaveCache(self, document):
         self.__invalidateMenu()
         document.saveCache(delayedSave=BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
-        self.saveSettings(BPUIController.__DELAYED_SAVECACHE_TIMEOUT)
 
     def __updateToolbarTmpSession(self):
         """Update current toolbar temporary session variable from current toolbars state"""
@@ -796,12 +813,17 @@ class BPUIController(QObject):
 
     def saveSettings(self, delayedSave=0):
         """Save the current settings"""
+        if not self.__initialised:
+            return False
 
         if delayedSave > 0:
             self.__delayedSaveTimer.start(delayedSave)
+            return
         else:
             # if save immediately, cancel any delayedSave
             self.__delayedSaveTimer.stop()
+
+        ts = time.time()
 
         BPSettings.set(BPSettingsKey.SESSION_PATH_LASTOPENED, self.__lastDocumentDirectoryOpen)
         BPSettings.set(BPSettingsKey.SESSION_PATH_LASTSAVED, self.__lastDocumentDirectorySave)
@@ -859,7 +881,22 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_COLUMN, self.__dwDocuments.option(BPDockWidgetDocuments.OPTION_SORT_COLUMN))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_DOCUMENTS_SORT_ORDER, self.__dwDocuments.option(BPDockWidgetDocuments.OPTION_SORT_ORDER))
 
-        return BPSettings.save()
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_REGEX_CHECKED, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_BTN_WHOLEWORD_CHECKED, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_BTN_WHOLEWORD))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SEARCH_TEXT, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_FONTSIZE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_COLUMN))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_ORDER))
+
+        print("saveSettings--1", time.time() - ts)
+        ts = time.time()
+
+        returned = BPSettings.save()
+        print("saveSettings--2", time.time() - ts)
+        print("")
+
+        return returned
 
     def close(self):
         """When window is about to be closed, execute some cleanup/backup/stuff before exiting BuliPy"""
@@ -1304,6 +1341,7 @@ class BPUIController(QObject):
     def commandViewSetFontSize(self, size):
         """Set font size for ALL document"""
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_FONT_SIZE, size)
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTSIZE, size)
         self.__documents.updateSettings()
 
     def commandScriptExecute(self):
@@ -1397,6 +1435,23 @@ class BPUIController(QObject):
 
         if self.__window:
             self.__window.actionToolsDocuments.setChecked(visible)
+
+    def commandToolsDockClipboardVisible(self, visible=None):
+        """Display/Hide Clipboard docker"""
+        if visible is None:
+            visible = self.__dwClipboardAction.isChecked()
+        elif not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwClipboard:
+            if visible:
+                self.__dwClipboard.show()
+                self.__dwClipboard.setActive()
+            else:
+                self.__dwClipboard.hide()
+
+        if self.__window:
+            self.__window.actionToolsClipboard.setChecked(visible)
 
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""

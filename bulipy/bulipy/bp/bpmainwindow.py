@@ -21,7 +21,8 @@ from PyQt5.Qt import *
 from PyQt5.QtGui import (
         QPalette,
         QPixmap,
-        QPainter
+        QPainter,
+        QColor
     )
 from PyQt5.QtCore import (
         pyqtSignal as Signal
@@ -435,6 +436,7 @@ class BPMainWindow(QMainWindow):
         self.actionToolsColorPicker.triggered.connect(self.__uiController.commandToolsDockColorPickerVisible)
         self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandToolsDockIconSelectorVisible)
         self.actionToolsDocuments.triggered.connect(self.__uiController.commandToolsDockDocumentsVisible)
+        self.actionToolsClipboard.triggered.connect(self.__uiController.commandToolsDockClipboardVisible)
 
         self.actionToolsCopyFullPathFileName.triggered.connect(self.__uiController.commandToolsCopyFullPathFileName)
         self.actionToolsCopyPathName.triggered.connect(self.__uiController.commandToolsCopyPathName)
@@ -515,3 +517,7 @@ class BPMainWindow(QMainWindow):
                 self.__statusBarWidgets[index].setToolTipDuration(1)
             else:
                 self.__statusBarWidgets[index].setToolTipDuration(30)
+
+    def uiController(self):
+        """Return uiController"""
+        return self.__uiController
