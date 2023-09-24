@@ -456,12 +456,11 @@ class BPCodeEditorHighlightLineRulePython(WCodeEditorHighlightLineRule):
         """Return rule identifier"""
         return BPCodeEditorHighlightLineRulePython.RULEID_PYFCTCLASS
 
-    def highlight(self, block, text, tokens, lineNumber, isCurrentLine):
+    def highlight(self, block, tokens, lineNumber, isCurrentLine):
         """Return highlight properties, or None
 
         When called, are provided:
         - text `block` (QTextBlock)
-        - `text` (str)
         - `tokens` list (Tokens)
         - `lineNumber` (int)
         - is the current line (bool)

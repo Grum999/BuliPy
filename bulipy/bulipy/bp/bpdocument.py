@@ -466,13 +466,13 @@ class WBPDocument(WBPDocumentBase):
         else:
             self.__codeEditor.setLineWrapMode(QPlainTextEdit.NoWrap)
 
-        if self.__highlightLinesRule:
+        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE):
+            if self.__highlightLinesRule is None:
+                self.__highlightLinesRule = BPCodeEditorHighlightLineRulePython(None)
+                self.__codeEditor.setHighlightedLineRule(self.__highlightLinesRule)
+        else:
             self.__codeEditor.delHighlightedLineRule(self.__highlightLinesRule)
             self.__highlightLinesRule = None
-
-        if BPSettings.get(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE):
-            self.__highlightLinesRule = BPCodeEditorHighlightLineRulePython(None)
-            self.__codeEditor.setHighlightedLineRule(self.__highlightLinesRule)
 
         self.__codeEditor.setUpdatesEnabled(True)
         self.__lastUpdateTime = lastUpdateTime
