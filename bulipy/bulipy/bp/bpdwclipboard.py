@@ -95,9 +95,14 @@ class BPDockWidgetClipboard(WDockWidget):
         if tokens and languageDef:
             tokens.resetIndex()
             while not (token := tokens.next()) is None:
-                cursor.setPosition(token.positionStart(), QTextCursor.MoveAnchor)
-                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, token.length())
-                cursor.setCharFormat(languageDef.style(token))
+                pStart = token.positionStart()
+                if pStart <= len(text):
+                    cursor.setPosition(pStart, QTextCursor.MoveAnchor)
+                    cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, token.length())
+                    cursor.setCharFormat(languageDef.style(token))
+                else:
+                    # no need to continue as outside visible text
+                    break
 
         if foundText:
             for found in foundText:
@@ -209,15 +214,11 @@ class BPDockWidgetClipboard(WDockWidget):
         """calculate hash for given text"""
         return hashlib.sha256(text.encode()).digest()
 
-    def __buildTooltip(self, text, languageDef, foundText, foundTextFmt):
+    def __buildTooltip(self, text, languageDef, tokens, foundText, foundTextFmt):
         """Build tooltip"""
         ttFont = self.__twClipboard.font()
         ttFont.setPointSize(9)
 
-        tokens = None
-        if isinstance(languageDef, LanguageDef) and len(languageDef.tokenizer().rules()) > 0:
-            # tokenization is possible
-            tokens = languageDef.tokenizer().tokenize(text)
         tooltipDoc = BPDockWidgetClipboard.asDocument(text, languageDef, tokens, foundText, foundTextFmt)
         tooltipDoc.setDefaultFont(ttFont)
         if tooltipDoc.blockCount() > 1:
@@ -330,7 +331,11 @@ class BPDockWidgetClipboard(WDockWidget):
                 if len(foundText):
                     self.__filteredFound += 1
                     item.setHidden(False)
-                    item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text, item.data(0, BPDockWidgetClipboard.ROLE_LANGUAGE), foundText, self.__foundTextFmt))
+                    item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text,
+                                                                        item.data(0, BPDockWidgetClipboard.ROLE_LANGUAGE),
+                                                                        item.data(0, BPDockWidgetClipboard.ROLE_TOKENS),
+                                                                        foundText,
+                                                                        self.__foundTextFmt))
                     item.setData(0, BPDockWidgetClipboard.ROLE_FOUNDTEXT, foundText)
                 else:
                     item.setHidden(True)
@@ -340,7 +345,11 @@ class BPDockWidgetClipboard(WDockWidget):
             self.__filteredFound = None
             for index in range(self.__twClipboard.topLevelItemCount()):
                 item = self.__twClipboard.topLevelItem(index)
-                item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text, item.data(0, BPDockWidgetClipboard.ROLE_LANGUAGE), None, None))
+                item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text,
+                                                                    item.data(0, BPDockWidgetClipboard.ROLE_LANGUAGE),
+                                                                    item.data(0, BPDockWidgetClipboard.ROLE_TOKENS),
+                                                                    None,
+                                                                    None))
                 item.setData(0, BPDockWidgetClipboard.ROLE_FOUNDTEXT, None)
                 item.setHidden(False)
 
@@ -406,10 +415,8 @@ class BPDockWidgetClipboard(WDockWidget):
 
             # Keep only lines visible
             visibleText = "\n".join(splittedText[0:BPDockWidgetClipboard.SIZE_MAXLINES])
-            if visibleText != '':
-                if isinstance(languageDef, LanguageDef) and len(languageDef.tokenizer().rules()) > 0:
-                    # tokenization is possible, reduce it to visible text
-                    tokens = languageDef.tokenizer().tokenize(visibleText)
+
+            tokens = languageDef.tokenizer().tokenize(text)
 
             # determinate geometries
             sizeText = self.__buildSize(text)
@@ -420,7 +427,7 @@ class BPDockWidgetClipboard(WDockWidget):
             if dateTime is None:
                 dateTime = tsToStr(time.time(), 'full')
             item = QTreeWidgetItem(None, [visibleText, dateTime])
-            item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text, languageDef, None, None))
+            item.setData(0, Qt.ToolTipRole, self.__buildTooltip(text, languageDef, tokens, None, None))
             item.setData(0, BPDockWidgetClipboard.ROLE_HASH, textHash)
             item.setData(0, BPDockWidgetClipboard.ROLE_TOKENS, tokens)
             item.setData(0, BPDockWidgetClipboard.ROLE_SIZE, sizeText + BPDockWidgetClipboard.SIZE_MARGINS)
