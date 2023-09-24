@@ -98,6 +98,7 @@ class BPUIController(QObject):
 
     # set a timeout of 250ms for default delayed cache save
     __DELAYED_SAVECACHE_TIMEOUT = 250
+    __DELAYED_SAVESETTINGS_TIMEOUT = 125
 
     def __init__(self, bpName="BuliPy", bpVersion="testing", kritaIsStarting=False):
         super(BPUIController, self).__init__(None)
@@ -428,6 +429,7 @@ class BPUIController(QObject):
         # then __documentChanged() already executed
         # need to update UI to add document
         self.__window.msDocuments.addDocument(document)
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def __documentRemoved(self, document):
         """A document has been closed"""
@@ -435,12 +437,14 @@ class BPUIController(QObject):
         # then __documentChanged() already executed
         # need to update UI to remove document
         self.__window.msDocuments.removeDocument(document)
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def __documentSaved(self, document):
         """A document has been saved"""
         # need to update UI
         self.__updateStatusUiFileName(document)
         self.__updateStatusUiModified(document)
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def __documentReloaded(self, document):
         """A document has been reloaded"""
@@ -522,6 +526,7 @@ class BPUIController(QObject):
     def __documentFontSizeChanged(self, document):
         """A document font size definition has been changed"""
         self.commandViewSetFontSize(document.codeEditor().optionFontSize())
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def __checkKritaWindows(self):
         """Check if windows signal windowClosed() is already defined and, if not,
@@ -889,14 +894,7 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_COLUMN))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_ORDER))
 
-        print("saveSettings--1", time.time() - ts)
-        ts = time.time()
-
-        returned = BPSettings.save()
-        print("saveSettings--2", time.time() - ts)
-        print("")
-
-        return returned
+        return BPSettings.save()
 
     def close(self):
         """When window is about to be closed, execute some cleanup/backup/stuff before exiting BuliPy"""
@@ -1270,6 +1268,7 @@ class BPUIController(QObject):
                 self.__dwSearchReplace.setActive()
             else:
                 self.__dwSearchReplace.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandEditGoToLine(self, toLine=None, document=None, setFocus=False):
         """Scroll to line number of given document
@@ -1307,47 +1306,55 @@ class BPUIController(QObject):
         self.__window.actionViewWrapLines.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_WRAPLINES_ACTIVE, self.__window.actionViewWrapLines.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewShowRightLimit(self, active):
         """Set/unset right  mode for ALL documents"""
         self.__window.actionViewShowRightLimit.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_RIGHTLIMIT_VISIBLE, self.__window.actionViewShowRightLimit.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewShowLineNumber(self, active):
         """show/hide lines number for ALL documents"""
         self.__window.actionViewShowLineNumber.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_LINE_NUMBER_VISIBLE, self.__window.actionViewShowLineNumber.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewShowSpaces(self, active):
         """show/hide spaces for ALL documents"""
         self.__window.actionViewShowSpaces.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_SPACES_VISIBLE, self.__window.actionViewShowSpaces.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewShowIndent(self, active):
         """show/hide indents for ALL documents"""
         self.__window.actionViewShowIndent.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_INDENT_VISIBLE, self.__window.actionViewShowIndent.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewHighlightClassesFunctionDeclaration(self, active):
         """show/hide class/function definition for ALL Python documents"""
         self.__window.actionViewHighlightClassesFunctionDeclaration.setChecked(active)
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandViewSetFontSize(self, size):
         """Set font size for ALL document"""
         BPSettings.set(BPSettingsKey.SESSION_EDITOR_FONT_SIZE, size)
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTSIZE, size)
         self.__documents.updateSettings()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandScriptExecute(self):
         """Execute script"""
         if self.__currentDocument:
             if self.__dwConsoleOutput:
+                self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
                 self.__invalidateMenu()
                 runner = BPPyRunner(self.__currentDocument, self.__dwConsoleOutput)
                 runner.run()
@@ -1372,6 +1379,7 @@ class BPUIController(QObject):
                 self.__dwConsoleOutput.setActive()
             else:
                 self.__dwConsoleOutput.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
     def commandToolsDockColorPickerVisible(self, visible=None):
         """Display/Hide Color Picker docker"""
@@ -1386,6 +1394,8 @@ class BPUIController(QObject):
                 self.__dwColorPicker.setActive()
             else:
                 self.__dwColorPicker.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
+
         if self.__window:
             self.__window.actionToolsColorPicker.setChecked(visible)
 
@@ -1415,6 +1425,7 @@ class BPUIController(QObject):
                 self.__dwIconSelector.setActive()
             else:
                 self.__dwIconSelector.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
         if self.__window:
             self.__window.actionToolsIconsSelector.setChecked(visible)
@@ -1432,6 +1443,7 @@ class BPUIController(QObject):
                 self.__dwDocuments.setActive()
             else:
                 self.__dwDocuments.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
         if self.__window:
             self.__window.actionToolsDocuments.setChecked(visible)
@@ -1449,6 +1461,7 @@ class BPUIController(QObject):
                 self.__dwClipboard.setActive()
             else:
                 self.__dwClipboard.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
         if self.__window:
             self.__window.actionToolsClipboard.setChecked(visible)
@@ -1665,6 +1678,7 @@ class BPUIController(QObject):
             self.__window.showMaximized()
         else:
             self.__window.showNormal()
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
         return maximized
 
@@ -1694,6 +1708,7 @@ class BPUIController(QObject):
             rect.setHeight(geometry[3])
 
         self.__window.setGeometry(rect)
+        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
 
         return [self.__window.geometry().x(), self.__window.geometry().y(), self.__window.geometry().width(), self.__window.geometry().height()]
 
