@@ -170,6 +170,9 @@ class WCodeEditor(QPlainTextEdit):
 
     styleChanged = Signal(str)              # style has been modified (style Id provided by signal)
 
+    textCopyToClipboard = Signal(str)
+    textCutToClipboard = Signal(str)
+
     KEY_INDENT = 'indent'
     KEY_DEDENT = 'dedent'
     KEY_TOGGLE_COMMENT = 'toggleComment'
@@ -178,6 +181,8 @@ class WCodeEditor(QPlainTextEdit):
     KEY_INSERTOVERWRITE_MODE = 'insertOverwriteMode'
     KEY_DELETE_LINE = 'deleteLine'
     KEY_IGNORE = 'ignore'
+    KEY_COPY_SELECTION = 'copy'
+    KEY_CUT_SELECTION = 'cut'
 
     # define base themes for color editor
     DEFAULT_DARK = WCodeEditorTheme(UITheme.DARK_THEME,
@@ -292,6 +297,8 @@ class WCodeEditor(QPlainTextEdit):
             QKeySequence(Qt.Key_Space + Qt.CTRL): WCodeEditor.KEY_COMPLETION,
             QKeySequence(Qt.Key_Insert): WCodeEditor.KEY_INSERTOVERWRITE_MODE,
             QKeySequence(Qt.Key_Delete + Qt.SHIFT): WCodeEditor.KEY_DELETE_LINE,
+            QKeySequence(Qt.Key_C + Qt.CTRL): WCodeEditor.KEY_COPY_SELECTION,
+            QKeySequence(Qt.Key_X + Qt.CTRL): WCodeEditor.KEY_CUT_SELECTION,
             # disable some default shortcuts
             # -- Ctrl+Insert: Copy the selected text to the clipboard.
             QKeySequence(Qt.Key_Insert + Qt.CTRL): WCodeEditor.KEY_IGNORE,
@@ -885,6 +892,10 @@ class WCodeEditor(QPlainTextEdit):
             self.doCompletionPopup()
         elif action == WCodeEditor.KEY_INSERTOVERWRITE_MODE:
             self.doOverwriteMode()
+        elif action == WCodeEditor.KEY_COPY_SELECTION:
+            self.copy()
+        elif action == WCodeEditor.KEY_CUT_SELECTION:
+            self.cut()
         return True
 
     def shortCut(self, key, modifiers):
@@ -1899,7 +1910,7 @@ class WCodeEditor(QPlainTextEdit):
         if not replaceSelection and selectedText != '':
             cursor.insertText(selectedText)
 
-        if len(texts) >= 1:
+        if len(texts) > 1:
             p = cursor.anchor()
             cursor.insertText(texts[1])
             cursor.setPosition(p, QTextCursor.MoveAnchor)
@@ -2141,6 +2152,20 @@ class WCodeEditor(QPlainTextEdit):
             cursor.movePosition(QTextCursor.Right, anchorMode, colNumber)
 
         self.setTextCursor(cursor)
+
+    def copy(self):
+        """Copy text to clipboard, and emit signal textCopyToClipboard"""
+        text = self.textCursor().selectedText()
+        if text:
+            super(WCodeEditor, self).copy()
+            self.textCopyToClipboard.emit(text.replace('\u2029', '\n'))
+
+    def cut(self):
+        """Cut text to clipboard, and emit signal textCutToClipboard"""
+        text = self.textCursor().selectedText()
+        if text:
+            super(WCodeEditor, self).cut()
+            self.textCutToClipboard.emit(text.replace('\u2029', '\n'))
 
 
 class WCELineNumberArea(QWidget):
