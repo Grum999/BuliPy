@@ -461,7 +461,9 @@ class BPMainWindow(QMainWindow):
 
         # Menu HELP
         # ----------------------------------------------------------------------
-        self.actionHelpAboutBP.triggered.connect(self.__uiController.commandAboutBp)
+        self.actionHelpAboutBP.triggered.connect(self.__uiController.commandHelpAboutBp)
+        self.actionHelpPyKritaAPI.triggered.connect(self.__uiController.commandHelpPyKritaAPI)
+        self.actionHelpKritaScriptingSchool.triggered.connect(self.__uiController.commandHelpKritaScriptingSchool)
 
     def getWidgets(self):
         """Return a list of ALL widgets"""

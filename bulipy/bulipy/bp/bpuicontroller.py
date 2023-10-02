@@ -19,6 +19,7 @@ import base64
 import traceback
 import platform
 import time
+import webbrowser
 
 from krita import Krita
 
@@ -27,7 +28,8 @@ from PyQt5.QtGui import (
         QColor,
         QGuiApplication,
         QTextCursor,
-        QClipboard
+        QClipboard,
+        QIcon
     )
 from PyQt5.QtCore import (
         pyqtSignal as Signal,
@@ -1734,7 +1736,7 @@ class BPUIController(QObject):
                 self.__toolbarsTmpSession = session
             self.__window.initToolbar(config, self.__toolbarsTmpSession)
 
-    def commandAboutBp(self):
+    def commandHelpAboutBp(self):
         """Display 'About BuliPy' dialog box"""
         WAboutWindow(self.__bpName,
                      self.__bpVersion,
@@ -1742,6 +1744,14 @@ class BPUIController(QObject):
                      None,
                      ':BuliPy',
                      icon=buildIcon([(':/bp/images/normal/bulipy', QIcon.Normal)]))
+
+    def commandHelpPyKritaAPI(self):
+        """Display internal PyKrita API in default browser"""
+        webbrowser.open(os.path.join(os.path.dirname(__file__), 'resources', 'docs', 'kritaDoc_Classes-Index.html'))
+
+    def commandHelpKritaScriptingSchool(self):
+        """Display Krita Scripting School in default browser"""
+        webbrowser.open('https://scripting.krita.org')
 
 
 # Debug.setEnabled(True)

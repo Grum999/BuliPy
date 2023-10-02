@@ -1,0 +1,1578 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="generator" content="BuliPy/build_docs.py"/>
+        <meta name="buildDoc:git:tagName" content="5.1.6"/>
+        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
+        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+
+        <title>Krita 5.1.6 API - Class Node</title>
+        <style>
+        :root {
+--blue: #007bff;
+--indigo: #6610f2;
+--purple: #6f42c1;
+--pink: #e83e8c;
+--red: #dc3545;
+--orange: #fd7e14;
+--yellow: #ffc107;
+--green: #28a745;
+--teal: #20c997;
+--cyan: #17a2b8;
+--white: #fff;
+--gray: #bdc3c7;
+--gray-dark: #343a40;
+--primary: #54a3d8;
+--secondary: #bdc3c7;
+--success: #28a745;
+--info: #17a2b8;
+--warning: #ffc107;
+--danger: #dc3545;
+--light: #f8f9fa;
+--dark: #343a40;
+
+--body-color: #eff0f1;
+--body-bg: #232629;
+--border-color: #16181b;
+        }
+
+        body {
+color: var(--body-color);
+background-color: var(--body-bg);
+font-family: sans-serif;
+        }
+
+        body.index {
+margin: 0;
+        }
+
+        body.class {
+margin: 0.5em;
+        }
+
+        a {
+text-decoration: none;
+color: var(--primary);
+        }
+
+        a:visited {
+color: var(--orange);
+        }
+
+        body h1:first-child {
+margin-top: 0;
+        }
+
+        h1, h2, h3 {
+background-color: rgba(255,255,255,0.125);
+padding: 0.15em 0.25em;
+border-radius: 0.1em;
+        }
+
+        div.methodList span.methodList:first-child {
+border-top: 1px dotted rgba(128,128,128,0.25);
+        }
+        div.methodList span.methodList {
+display: block;
+margin-left: 1em;
+line-height: 1.5em;
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+font-family: monospace;
+        }
+        div.methodList span.methodList:hover {
+background-color: var(--dark);
+        }
+
+        .className {
+font-weight: bold;
+font-family: monospace;
+        }
+        .buildFrom a {
+font-family: monospace;
+        }
+        .docRefTags {
+padding: 0.15em;
+        }
+        .refTag::after {
+content: "";
+white-space: pre;
+        }
+        .refTag {
+background-color: rgba(84, 163, 216, 0.25);
+font-size: 85%;
+border-radius: 0.2em;
+margin-right: 0.25em;
+overflow: hidden;
+display: inline-block;
+line-height: 1.5em;
+        }
+        .refTag .refTagTag {
+font-weight: bold;
+padding: 0.15em 0.35em;
+        }
+        .refTag .refTagSymbol {
+padding: 0.15em;
+background: rgba(84, 163, 216, 0.5);
+        }
+        .methodDef {
+margin-left: 1em;
+background-color: rgba(128,128,128,0.05);
+margin-bottom: 2em;
+border-radius: 0.15em;
+overflow: hidden;
+        }
+        .methodDef:hover {
+background-color: rgba(255,255,255,0.05);
+        }
+        .methodDef .def {
+font-family: monospace;
+font-size: 110%;
+background-color: rgba(255,255,255,0.075);
+padding: 0.15em;
+        }
+        .methodSep {
+color: var(--pink);
+        }
+        .methodParameterType {
+color: var(--teal);
+        }
+        .methodParameterDefault {
+color: var(--cyan);
+        }
+        .methodParamName {
+color: var(--gray);
+        }
+        .rightTag::after {
+float: right;
+display: block;
+font-size: 70%;
+padding: 0.15em;
+border-radius: 0.15em;
+line-height: 1em;
+margin: 2px 2px 2px 0px;
+        }
+        .rightTag.isStatic::after {
+background-color: var(--green);
+content: "Static";
+        }
+        .rightTag.isSignal::after {
+background-color: var(--pink);
+content: "Signal";
+        }
+        .rightTag.isVirtual::after {
+background-color: var(--blue);
+content: "Virtual";
+        }
+        .docString {
+padding: 0.5em 0.5em 0.5em 2em;
+        }
+        .docString p {
+margin: 0;
+        }
+        .docString p + p,
+        .docString p + h3,
+        .docString table + h3 {
+margin-top: 0.5em;
+        }
+        .docString h3 {
+margin: 0;
+max-width: 150px;
+background-color: rgba(128,128,128,0.1);
+        }
+        .docString ul {
+margin-top: 0.25em;
+margin-bottom: 0.25em;
+        }
+        table.paramList {
+border: 1px solid rgba(128,128,128,0.1);
+width: 100%;
+border-collapse: collapse;
+        }
+        table.paramList tr {
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+vertical-align: top;
+        }
+        table td.paramName {
+font-family: monospace;
+width: 250px;
+        }
+
+        .noDescriptionProvided {
+font-style: italic;
+opacity: 0.35;
+        }
+
+        .code {
+font-family: mono;
+border: 2px dashed rgba(128,128,128,0.45);
+padding: 0.5em;
+margin: 0.5em 0;
+        }
+        .code p {
+white-space: pre;
+        }
+
+        .leftMenu {
+display: inline-block;
+position: absolute;
+width: 16vw;
+background: var(--dark);
+height: 100vh;
+        }
+        .leftMenu ul {
+padding: 0 1.25em;
+margin: 0.25em 0;
+        }
+        .leftMenu ul li {
+list-style-type: disclosure-closed;
+        }
+        .frameContent {
+width: 84vw;
+height: 100vh;
+display: block;
+padding: 0;
+margin: 0 0 0 16vw;
+border: none;
+        }
+        .leftMenu h3 {
+margin: 0;
+        }
+
+        .bulipy {
+font-size: 65%;
+display: block;
+text-align: right;
+font-style: italic;
+        }
+    </style>
+    </head>
+    <body class='class'>
+        <h1>Class description - <span class='className'>Node</span></h1>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/Node.h'>Node.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'><p>Node represents a layer or mask in a Krita image's Node hierarchy. Group layers can contain other layers and masks; layers can contain masks.</p></div>
+        
+        <h2>Methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#addChildNode'>
+                                <span class='methodName'>addChildNode</span><span class='methodSep'>(</span><span class='methodParamName'>child</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>above</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#alphaLocked'>
+                                <span class='methodName'>alphaLocked</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#animated'>
+                                <span class='methodName'>animated</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#blendingMode'>
+                                <span class='methodName'>blendingMode</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#bounds'>
+                                <span class='methodName'>bounds</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QRect</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#channels'>
+                                <span class='methodName'>channels</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Channel]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#childNodes'>
+                                <span class='methodName'>childNodes</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Node]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#clone'>
+                                <span class='methodName'>clone</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#collapsed'>
+                                <span class='methodName'>collapsed</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorDepth'>
+                                <span class='methodName'>colorDepth</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorLabel'>
+                                <span class='methodName'>colorLabel</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorModel'>
+                                <span class='methodName'>colorModel</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorProfile'>
+                                <span class='methodName'>colorProfile</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#cropNode'>
+                                <span class='methodName'>cropNode</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#duplicate'>
+                                <span class='methodName'>duplicate</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#enableAnimation'>
+                                <span class='methodName'>enableAnimation</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#hasExtents'>
+                                <span class='methodName'>hasExtents</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#hasKeyframeAtTime'>
+                                <span class='methodName'>hasKeyframeAtTime</span><span class='methodSep'>(</span><span class='methodParamName'>frameNumber</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#icon'>
+                                <span class='methodName'>icon</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QIcon</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#index'>
+                                <span class='methodName'>index</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#inheritAlpha'>
+                                <span class='methodName'>inheritAlpha</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#isPinnedToTimeline'>
+                                <span class='methodName'>isPinnedToTimeline</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#layerStyleToAsl'>
+                                <span class='methodName'>layerStyleToAsl</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#locked'>
+                                <span class='methodName'>locked</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#mergeDown'>
+                                <span class='methodName'>mergeDown</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#move'>
+                                <span class='methodName'>move</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#name'>
+                                <span class='methodName'>name</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#opacity'>
+                                <span class='methodName'>opacity</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#parentNode'>
+                                <span class='methodName'>parentNode</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#pixelData'>
+                                <span class='methodName'>pixelData</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#pixelDataAtTime'>
+                                <span class='methodName'>pixelDataAtTime</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>time</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#position'>
+                                <span class='methodName'>position</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QPoint</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#projectionPixelData'>
+                                <span class='methodName'>projectionPixelData</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#remove'>
+                                <span class='methodName'>remove</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#removeChildNode'>
+                                <span class='methodName'>removeChildNode</span><span class='methodSep'>(</span><span class='methodParamName'>child</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#rotateNode'>
+                                <span class='methodName'>rotateNode</span><span class='methodSep'>(</span><span class='methodParamName'>radians</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#save'>
+                                <span class='methodName'>save</span><span class='methodSep'>(</span><span class='methodParamName'>filename</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>xRes</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>yRes</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>exportConfiguration</span><span class='methodSep'>: </span><span class='methodParameterType'>InfoObject</span><span class="methodSep">, </span><span class='methodParamName'>exportRect</span><span class='methodSep'>: </span><span class='methodParameterType'>QRect</span><span class='methodSep'> = </span><span class='methodParameterDefault'>QRect()</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#scaleNode'>
+                                <span class='methodName'>scaleNode</span><span class='methodSep'>(</span><span class='methodParamName'>origin</span><span class='methodSep'>: </span><span class='methodParameterType'>QPointF</span><span class="methodSep">, </span><span class='methodParamName'>width</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>height</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>strategy</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setAlphaLocked'>
+                                <span class='methodName'>setAlphaLocked</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setBlendingMode'>
+                                <span class='methodName'>setBlendingMode</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setChildNodes'>
+                                <span class='methodName'>setChildNodes</span><span class='methodSep'>(</span><span class='methodParamName'>nodes</span><span class='methodSep'>: </span><span class='methodParameterType'>list[Node]</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setCollapsed'>
+                                <span class='methodName'>setCollapsed</span><span class='methodSep'>(</span><span class='methodParamName'>collapsed</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setColorLabel'>
+                                <span class='methodName'>setColorLabel</span><span class='methodSep'>(</span><span class='methodParamName'>index</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setColorProfile'>
+                                <span class='methodName'>setColorProfile</span><span class='methodSep'>(</span><span class='methodParamName'>colorProfile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setColorSpace'>
+                                <span class='methodName'>setColorSpace</span><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorProfile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setInheritAlpha'>
+                                <span class='methodName'>setInheritAlpha</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setLayerStyleFromAsl'>
+                                <span class='methodName'>setLayerStyleFromAsl</span><span class='methodSep'>(</span><span class='methodParamName'>asl</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setLocked'>
+                                <span class='methodName'>setLocked</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setName'>
+                                <span class='methodName'>setName</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setOpacity'>
+                                <span class='methodName'>setOpacity</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setPinnedToTimeline'>
+                                <span class='methodName'>setPinnedToTimeline</span><span class='methodSep'>(</span><span class='methodParamName'>pinned</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setPixelData'>
+                                <span class='methodName'>setPixelData</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setShowInTimeline'>
+                                <span class='methodName'>setShowInTimeline</span><span class='methodSep'>(</span><span class='methodParamName'>showInTimeline</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setVisible'>
+                                <span class='methodName'>setVisible</span><span class='methodSep'>(</span><span class='methodParamName'>visible</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#shearNode'>
+                                <span class='methodName'>shearNode</span><span class='methodSep'>(</span><span class='methodParamName'>angleX</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>angleY</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#showInTimeline'>
+                                <span class='methodName'>showInTimeline</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#thumbnail'>
+                                <span class='methodName'>thumbnail</span><span class='methodSep'>(</span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QImage</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#uniqueId'>
+                                <span class='methodName'>uniqueId</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QUuid</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#visible'>
+                                <span class='methodName'>visible</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+    </div>
+    
+        <h2>Re-implemented methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#type'>
+                                <span class='methodName'>type</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+    </div>
+    
+        
+        <h1>Member documentation</h1>
+        <div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="addChildNode">addChildNode</a><span class='methodSep'>(</span><span class='methodParamName'>child</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>above</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>adds the given node in the list of children.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>child</span></td><td><p>the node to be added</p></td></tr><tr><td class='paramName'><span class='methodParamName'>above</span></td><td><p>the node above which this node will be placed</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>false if adding the node failed</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="alphaLocked">alphaLocked</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>checks whether the node is a paint layer and returns whether it is alpha locked</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>whether the paint layer is alpha locked, or false if the node is not a paint layer</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="animated">animated</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Krita layers can be animated, i.e., have frames.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>return true if the layer has frames. Currently, the scripting framework does not give access to the animation features.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="blendingMode">blendingMode</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the blending mode of the layer. The values of the blending modes are defined in @see KoCompositeOpRegistry.h</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="bounds">bounds</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QRect</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>return the exact bounds of the node's paint device</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the bounds, or an empty QRect if the node has no paint device or is empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="channels">channels</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Channel]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>creates a list of Channel objects that can be used individually to show or hide certain channels, and to retrieve the contents of each channel in a node separately.</p><p></p><p>Only layers have channels, masks do not, and calling channels on a Node that is a mask will return an empty list.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the list of channels ordered in by position of the channels in pixel position</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="childNodes">childNodes</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Node]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Return a list of child nodes of the current node. The nodes are ordered from the bottommost up. The function is not recursive.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="clone">clone</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>clone the current node. The node is not associated with any image.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="collapsed">collapsed</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>returns the collapsed state of this node</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorDepth">colorDepth</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>colorDepth A string describing the color depth of the image: <ul> <li>U8: unsigned 8 bits integer, the most common type</li> <li>U16: unsigned 16 bits integer</li> <li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li> <li>F32: 32 bits floating point</li> </ul></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the color depth.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorLabel">colorLabel</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Sets a color label index associated to the layer.  The actual color of the label and the number of available colors is defined by Krita GUI configuration.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorModel">colorModel</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>retrieve the current color model of this document: <ul> <li>A: Alpha mask</li> <li>RGBA: RGB with alpha channel (The actual order of channels is most often BGR!)</li> <li>XYZA: XYZ with alpha channel</li> <li>LABA: LAB with alpha channel</li> <li>CMYKA: CMYK with alpha channel</li> <li>GRAYA: Gray with alpha channel</li> <li>YCbCrA: YCbCr with alpha channel</li> </ul></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the internal color model string.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorProfile">colorProfile</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the name of the current color profile</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="cropNode">cropNode</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>crop this layer.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>the left edge of the cropping rectangle.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>the top edge of the cropping rectangle</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>the right edge of the cropping rectangle</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>the bottom edge of the cropping rectangle</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="duplicate">duplicate</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>returns a full copy of the current node. The node is not inserted in the graphic</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a valid Node object or 0 if the node couldn't be duplicated.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="enableAnimation">enableAnimation</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>make the current layer animated, so it can have frames.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="hasExtents">hasExtents</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.1.0</span></span></div>
+        <div class='docString'>
+            <p>does the node have any content in it?</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>if node has any content in it</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="hasKeyframeAtTime">hasKeyframeAtTime</a><span class='methodSep'>(</span><span class='methodParamName'>frameNumber</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>Check to see if frame number on layer is a keyframe</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>frameNumber</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="icon">icon</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QIcon</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the icon associated with the layer.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="index">index</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>the index of the node inside the parent</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>an integer representing the node's index inside the parent</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="inheritAlpha">inheritAlpha</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>checks whether this node has the inherits alpha flag set</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if the Inherit Alpha is set</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="isPinnedToTimeline">isPinnedToTimeline</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>Returns true if node is pinned to the Timeline Docker or false if it is not.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="layerStyleToAsl">layerStyleToAsl</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>retreive the current layer's style in ASL format.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QString in ASL format representing the layer style.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="locked">locked</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>checks whether the Node is locked. A locked node cannot be changed.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if the Node is locked, false if it hasn't been locked.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="mergeDown">mergeDown</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.1.2</span></span></div>
+        <div class='docString'>
+            <p>merges the given node with the first visible node underneath this node in the layerstack. This will drop all per-layer metadata.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="move">move</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>move the pixels to the given x, y location in the image coordinate space.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="name">name</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the user-visible name of this node.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="opacity">opacity</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>return the opacity of the Node. The opacity is a value between 0 and 255.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="parentNode">parentNode</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>return the Node that is the parent of the current Node, or 0 if this is the root Node.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="pixelData">pixelData</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>reads the given rectangle from the Node's paintable pixels, if those exist, and returns it as a byte array. The pixel data starts top-left, and is ordered row-first.</p><p></p><p>The byte array can be interpreted as follows: 8 bits images have one byte per channel, and as many bytes as there are channels. 16 bits integer images have two bytes per channel, representing an unsigned short. 16 bits float images have two bytes per channel, representing a half, or 16 bits float. 32 bits float images have four bytes per channel, representing a float.</p><p></p><p>You can read outside the node boundaries; those pixels will be transparent black.</p><p></p><p>The order of channels is:</p><p></p><p><ul> <li>Integer RGBA: Blue, Green, Red, Alpha <li>Float RGBA: Red, Green, Blue, Alpha <li>GrayA: Gray, Alpha <li>Selection: selectedness <li>LabA: L, a, b, Alpha <li>CMYKA: Cyan, Magenta, Yellow, Key, Alpha <li>XYZA: X, Y, Z, A <li>YCbCrA: Y, Cb, Cr, Alpha </ul></p><p></p><p>The byte array is a copy of the original node data. In Python, you can use bytes, bytearray and the struct module to interpret the data and construct, for instance, a Pillow Image object.</p><p></p><p>If you read the pixeldata of a mask, a filter or generator layer, you get the selection bytes, which is one channel with values in the range from 0..255.</p><p></p><p>If you want to change the pixels of a node you can write the pixels back after manipulation with setPixelData(). This will only succeed on nodes with writable pixel data, e.g not on groups or file layers.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>x position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>y position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>row length to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>number of rows to read</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QByteArray with the pixel data. The byte array may be empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="pixelDataAtTime">pixelDataAtTime</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>time</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>a basic function to get pixeldata from an animated node at a given time.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>the position from the left to start reading.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>the position from the top to start reader</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>the row length to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>the number of rows to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>time</span></td><td><p>the frame number</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QByteArray with the pixel data. The byte array may be empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="position">position</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QPoint</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.1.2</span></span></div>
+        <div class='docString'>
+            <p>returns the position of the paint device of this node. The position is always 0,0 unless the layer has been moved. If you want to know the topleft position of the rectangle around the actual non-transparent pixels in the node, use bounds().</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the top-left position of the node</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="projectionPixelData">projectionPixelData</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>reads the given rectangle from the Node's projection (that is, what the node looks like after all sub-Nodes (like layers in a group or masks on a layer) have been applied, and returns it as a byte array. The pixel data starts top-left, and is ordered row-first.</p><p></p><p>The byte array can be interpreted as follows: 8 bits images have one byte per channel, and as many bytes as there are channels. 16 bits integer images have two bytes per channel, representing an unsigned short. 16 bits float images have two bytes per channel, representing a half, or 16 bits float. 32 bits float images have four bytes per channel, representing a float.</p><p></p><p>You can read outside the node boundaries; those pixels will be transparent black.</p><p></p><p>The order of channels is:</p><p></p><p><ul> <li>Integer RGBA: Blue, Green, Red, Alpha <li>Float RGBA: Red, Green, Blue, Alpha <li>GrayA: Gray, Alpha <li>Selection: selectedness <li>LabA: L, a, b, Alpha <li>CMYKA: Cyan, Magenta, Yellow, Key, Alpha <li>XYZA: X, Y, Z, A <li>YCbCrA: Y, Cb, Cr, Alpha </ul></p><p></p><p>The byte array is a copy of the original node data. In Python, you can use bytes, bytearray and the struct module to interpret the data and construct, for instance, a Pillow Image object.</p><p></p><p>If you read the projection of a mask, you get the selection bytes, which is one channel with values in the range from 0..255.</p><p></p><p>If you want to change the pixels of a node you can write the pixels back after manipulation with setPixelData(). This will only succeed on nodes with writable pixel data, e.g not on groups or file layers.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>x position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>y position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>row length to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>number of rows to read</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QByteArray with the pixel data. The byte array may be empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="remove">remove</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>removes this node from its parent image.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="removeChildNode">removeChildNode</a><span class='methodSep'>(</span><span class='methodParamName'>child</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>removes the given node from the list of children.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>child</span></td><td><p>the node to be removed</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="rotateNode">rotateNode</a><span class='methodSep'>(</span><span class='methodParamName'>radians</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>rotate this layer by the given radians.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>radians</span></td><td><p>amount the layer should be rotated in, in radians.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="save">save</a><span class='methodSep'>(</span><span class='methodParamName'>filename</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>xRes</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>yRes</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>exportConfiguration</span><span class='methodSep'>: </span><span class='methodParameterType'>InfoObject</span><span class="methodSep">, </span><span class='methodParamName'>exportRect</span><span class='methodSep'>: </span><span class='methodParameterType'>QRect</span><span class='methodSep'> = </span><span class='methodParameterDefault'>QRect()</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>exports the given node with this filename. The extension of the filename determines the filetype.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>filename</span></td><td><p>the filename including extension</p></td></tr><tr><td class='paramName'><span class='methodParamName'>xRes</span></td><td><p>the horizontal resolution in pixels per pt (there are 72 pts in an inch)</p></td></tr><tr><td class='paramName'><span class='methodParamName'>yRes</span></td><td><p>the horizontal resolution in pixels per pt (there are 72 pts in an inch)</p></td></tr><tr><td class='paramName'><span class='methodParamName'>exportConfiguration</span></td><td><p>a configuration object appropriate to the file format.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>exportRect</span></td><td><p>the export bounds for saving a node as a QRect If \p exportRect is empty, then save exactBounds() of the node. If you'd like to save the image- aligned area of the node, just pass image->bounds() there. See Document->exportImage for InfoObject details.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if saving succeeded, false if it failed.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="scaleNode">scaleNode</a><span class='methodSep'>(</span><span class='methodParamName'>origin</span><span class='methodSep'>: </span><span class='methodParameterType'>QPointF</span><span class="methodSep">, </span><span class='methodParamName'>width</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>height</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>strategy</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>origin</span></td><td><p>the origin point</p></td></tr><tr><td class='paramName'><span class='methodParamName'>width</span></td><td><p>the width</p></td></tr><tr><td class='paramName'><span class='methodParamName'>height</span></td><td><p>the height</p></td></tr><tr><td class='paramName'><span class='methodParamName'>strategy</span></td><td><p>the scaling strategy. There's several ones amongst these that aren't available in the regular UI. <ul> <li>Hermite</li> <li>Bicubic - Adds pixels using the color of surrounding pixels. Produces smoother tonal gradations than Bilinear.</li> <li>Box - Replicate pixels in the image. Preserves all the original detail, but can produce jagged effects.</li> <li>Bilinear - Adds pixels averaging the color values of surrounding pixels. Produces medium quality results when the image is scaled from half to two times the original size.</li> <li>Bell</li> <li>BSpline</li> <li>Lanczos3 - Offers similar results than Bicubic, but maybe a little bit sharper. Can produce light and dark halos along strong edges.</li> <li>Mitchell</li> </ul></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setAlphaLocked">setAlphaLocked</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>set the layer to value if the node is paint layer.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setBlendingMode">setBlendingMode</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>set the blending mode of the node to the given value</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>one of the string values from @see KoCompositeOpRegistry.h</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setChildNodes">setChildNodes</a><span class='methodSep'>(</span><span class='methodParamName'>nodes</span><span class='methodSep'>: </span><span class='methodParameterType'>list[Node]</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>this replaces the existing set of child nodes with the new set.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>nodes</span></td><td><p>The list of nodes that will become children, bottom-up -- the first node, is the bottom-most node in the stack.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setCollapsed">setCollapsed</a><span class='methodSep'>(</span><span class='methodParamName'>collapsed</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Sets the state of the node to the value of collapsed</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>collapsed</span></td><td><p><span class="noDescriptionProvided">(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setColorLabel">setColorLabel</a><span class='methodSep'>(</span><span class='methodParamName'>index</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>sets a color label index associated to the layer.  The actual color of the label and the number of available colors is defined by Krita GUI configuration.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>index</span></td><td><p>an integer corresponding to the set of available color labels.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setColorProfile">setColorProfile</a><span class='methodSep'>(</span><span class='methodParamName'>colorProfile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>set the color profile of the image to the given profile. The profile has to be registered with krita and be compatible with the current color model and depth; the image data is <i>not</i> converted.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>colorProfile</span></td><td><p><span class="noDescriptionProvided">(no description provided)</span></p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>if assigning the color profile worked</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setColorSpace">setColorSpace</a><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorProfile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>convert the node to the given colorspace</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>colorModel</span></td><td><p>A string describing the color model of the node: <ul> <li>A: Alpha mask</li> <li>RGBA: RGB with alpha channel (The actual order of channels is most often BGR!)</li> <li>XYZA: XYZ with alpha channel</li> <li>LABA: LAB with alpha channel</li> <li>CMYKA: CMYK with alpha channel</li> <li>GRAYA: Gray with alpha channel</li> <li>YCbCrA: YCbCr with alpha channel</li> </ul></p></td></tr><tr><td class='paramName'><span class='methodParamName'>colorDepth</span></td><td><p>A string describing the color depth of the image: <ul> <li>U8: unsigned 8 bits integer, the most common type</li> <li>U16: unsigned 16 bits integer</li> <li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li> <li>F32: 32 bits floating point</li> </ul></p></td></tr><tr><td class='paramName'><span class='methodParamName'>colorProfile</span></td><td><p>a valid color profile for this color model and color depth combination.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setInheritAlpha">setInheritAlpha</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>set the Inherit Alpha flag to the given value</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setLayerStyleFromAsl">setLayerStyleFromAsl</a><span class='methodSep'>(</span><span class='methodParamName'>asl</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>set a new layer style for this node.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>asl</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if layer style was set, false if failed.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setLocked">setLocked</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>set the Locked flag to the give value</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setName">setName</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>rename the Node to the given name</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setOpacity">setOpacity</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>set the opacity of the Node to the given value. The opacity is a value between 0 and 255.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setPinnedToTimeline">setPinnedToTimeline</a><span class='methodSep'>(</span><span class='methodParamName'>pinned</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>Sets whether or not node should be pinned to the Timeline Docker, regardless of selection activity.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>pinned</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setPixelData">setPixelData</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>writes the given bytes, of which there must be enough, into the Node, if the Node has writable pixel data:</p><p></p><p><ul> <li>paint layer: the layer's original pixels are overwritten <li>filter layer, generator layer, any mask: the embedded selection's pixels are overwritten. <b>Note:</b> for these </ul></p><p></p><p>File layers, Group layers, Clone layers cannot be written to. Calling setPixelData on those layer types will silently do nothing.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>the byte array representing the pixels. There must be enough bytes available. Krita will take the raw pointer from the QByteArray and start reading, not stopping before (number of channels * size of channel * w * h) bytes are read.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>the x position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>the y position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>the width of each row</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>the number of rows to write</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if writing the pixeldata worked</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setShowInTimeline">setShowInTimeline</a><span class='methodSep'>(</span><span class='methodParamName'>showInTimeline</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>Should the node be visible in the timeline. It defaults to false with new layer</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>showInTimeline</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setVisible">setVisible</a><span class='methodSep'>(</span><span class='methodParamName'>visible</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Set the visibility of the current node to visible</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>visible</span></td><td><p><span class="noDescriptionProvided">(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="shearNode">shearNode</a><span class='methodSep'>(</span><span class='methodParamName'>angleX</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class="methodSep">, </span><span class='methodParamName'>angleY</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>perform a shear operation on this node.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>angleX</span></td><td><p>the X-angle in degrees to shear by</p></td></tr><tr><td class='paramName'><span class='methodParamName'>angleY</span></td><td><p>the Y-angle in degrees to shear by</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="showInTimeline">showInTimeline</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>is layer is shown in the timeline</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="thumbnail">thumbnail</a><span class='methodSep'>(</span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QImage</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>create a thumbnail of the given dimensions. The thumbnail is sized according to the layer dimensions, not the image dimensions. If the requested size is too big a null QImage is created. If the current node cannot generate a thumbnail, a transparent QImage of the requested size is generated.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>w</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QImage representing the layer contents.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="type">type</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <span class='rightTag isVirtual'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Krita has several types of nodes, split in layers and masks. Group layers can contain other layers, any layer can contain masks.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>The type of the node. Valid types are: <ul></p><p> <li>paintlayer</p><p> <li>grouplayer</p><p> <li>filelayer</p><p> <li>filterlayer</p><p> <li>filllayer</p><p> <li>clonelayer</p><p> <li>vectorlayer</p><p> <li>transparencymask</p><p> <li>filtermask</p><p> <li>transformmask</p><p> <li>selectionmask</p><p> <li>colorizemask </ul></p><p></p><p>If the Node object isn't wrapping a valid Krita layer or mask object, and empty string is returned.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="uniqueId">uniqueId</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QUuid</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.4.5</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <p>uniqueId of the node</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QUuid representing a unique id to identify the node</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="visible">visible</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Check whether the current Node is visible in the layer stack</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+    </body>
+</html>
