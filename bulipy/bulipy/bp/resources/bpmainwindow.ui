@@ -197,6 +197,7 @@
     <addaction name="actionToolsColorPicker"/>
     <addaction name="actionToolsIconsSelector"/>
     <addaction name="actionToolsDocuments"/>
+    <addaction name="actionToolsQuickPyKritaAPI"/>
     <addaction name="actionToolsClipboard"/>
     <addaction name="separator"/>
     <addaction name="menuToolsCopyToClipboard"/>
@@ -987,6 +988,18 @@
    </property>
    <property name="statusTip">
     <string>Open Krita Scripting School in default browser</string>
+   </property>
+  </action>
+  <action name="actionToolsQuickPyKritaAPI">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/symbol+filled_help</normaloff>:/pktk/images/normal/symbol+filled_help</iconset>
+   </property>
+   <property name="text">
+    <string>Quick PyKrita API</string>
    </property>
   </action>
  </widget>

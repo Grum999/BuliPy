@@ -437,6 +437,7 @@ class BPMainWindow(QMainWindow):
         self.actionToolsIconsSelector.triggered.connect(self.__uiController.commandToolsDockIconSelectorVisible)
         self.actionToolsDocuments.triggered.connect(self.__uiController.commandToolsDockDocumentsVisible)
         self.actionToolsClipboard.triggered.connect(self.__uiController.commandToolsDockClipboardVisible)
+        self.actionToolsQuickPyKritaAPI.triggered.connect(self.__uiController.commandToolsDockQuickPyKritaApi)
 
         self.actionToolsCopyFullPathFileName.triggered.connect(self.__uiController.commandToolsCopyFullPathFileName)
         self.actionToolsCopyPathName.triggered.connect(self.__uiController.commandToolsCopyPathName)
