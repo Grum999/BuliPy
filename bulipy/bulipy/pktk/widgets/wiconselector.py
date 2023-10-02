@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (
         QWidget
     )
 
-from ..modules.utils import (loadXmlUi, replaceLineEditClearButton)
+from ..modules.utils import (regExIsValid, loadXmlUi, replaceLineEditClearButton)
 from ..modules.iconsizes import IconSizes
 from ..modules.imgutils import (buildIcon, getIconList, QUriIcon)
 from ..pktk import *
@@ -223,6 +223,9 @@ class WIconSelector(QWidget):
             searchFilter = searchFilter.replace(" ", r"\s").replace("*", ".*").replace("?", ".")
 
         self.lvIcons.setUpdatesEnabled(False)
+
+        if not regExIsValid(searchFilter):
+            return
 
         nbVisible = 0
         for index in range(self.lvIcons.count()):
