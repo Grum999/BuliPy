@@ -192,10 +192,10 @@ class Token(object):
         self.__previous = None
         self.__simplifySpaces = simplifySpaces
 
+        Token.__LINE_NUMBER += text.count('\n')
+        Token.__LINE_POSSTART = positionEnd
         if self.type() == TokenType.NEWLINE:
             self.__indent = 0
-            Token.__LINE_NUMBER += text.count('\n')
-            Token.__LINE_POSSTART = positionEnd
         else:
             self.__indent = len(text) - len(self.__text)
 
