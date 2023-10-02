@@ -1,0 +1,857 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="generator" content="BuliPy/build_docs.py"/>
+        <meta name="buildDoc:git:tagName" content="5.1.6"/>
+        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
+        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+
+        <title>Krita 5.1.6 API - Class Selection</title>
+        <style>
+        :root {
+--blue: #007bff;
+--indigo: #6610f2;
+--purple: #6f42c1;
+--pink: #e83e8c;
+--red: #dc3545;
+--orange: #fd7e14;
+--yellow: #ffc107;
+--green: #28a745;
+--teal: #20c997;
+--cyan: #17a2b8;
+--white: #fff;
+--gray: #bdc3c7;
+--gray-dark: #343a40;
+--primary: #54a3d8;
+--secondary: #bdc3c7;
+--success: #28a745;
+--info: #17a2b8;
+--warning: #ffc107;
+--danger: #dc3545;
+--light: #f8f9fa;
+--dark: #343a40;
+
+--body-color: #eff0f1;
+--body-bg: #232629;
+--border-color: #16181b;
+        }
+
+        body {
+color: var(--body-color);
+background-color: var(--body-bg);
+font-family: sans-serif;
+        }
+
+        body.index {
+margin: 0;
+        }
+
+        body.class {
+margin: 0.5em;
+        }
+
+        a {
+text-decoration: none;
+color: var(--primary);
+        }
+
+        a:visited {
+color: var(--orange);
+        }
+
+        body h1:first-child {
+margin-top: 0;
+        }
+
+        h1, h2, h3 {
+background-color: rgba(255,255,255,0.125);
+padding: 0.15em 0.25em;
+border-radius: 0.1em;
+        }
+
+        div.methodList span.methodList:first-child {
+border-top: 1px dotted rgba(128,128,128,0.25);
+        }
+        div.methodList span.methodList {
+display: block;
+margin-left: 1em;
+line-height: 1.5em;
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+font-family: monospace;
+        }
+        div.methodList span.methodList:hover {
+background-color: var(--dark);
+        }
+
+        .className {
+font-weight: bold;
+font-family: monospace;
+        }
+        .buildFrom a {
+font-family: monospace;
+        }
+        .docRefTags {
+padding: 0.15em;
+        }
+        .refTag::after {
+content: "";
+white-space: pre;
+        }
+        .refTag {
+background-color: rgba(84, 163, 216, 0.25);
+font-size: 85%;
+border-radius: 0.2em;
+margin-right: 0.25em;
+overflow: hidden;
+display: inline-block;
+line-height: 1.5em;
+        }
+        .refTag .refTagTag {
+font-weight: bold;
+padding: 0.15em 0.35em;
+        }
+        .refTag .refTagSymbol {
+padding: 0.15em;
+background: rgba(84, 163, 216, 0.5);
+        }
+        .methodDef {
+margin-left: 1em;
+background-color: rgba(128,128,128,0.05);
+margin-bottom: 2em;
+border-radius: 0.15em;
+overflow: hidden;
+        }
+        .methodDef:hover {
+background-color: rgba(255,255,255,0.05);
+        }
+        .methodDef .def {
+font-family: monospace;
+font-size: 110%;
+background-color: rgba(255,255,255,0.075);
+padding: 0.15em;
+        }
+        .methodSep {
+color: var(--pink);
+        }
+        .methodParameterType {
+color: var(--teal);
+        }
+        .methodParameterDefault {
+color: var(--cyan);
+        }
+        .methodParamName {
+color: var(--gray);
+        }
+        .rightTag::after {
+float: right;
+display: block;
+font-size: 70%;
+padding: 0.15em;
+border-radius: 0.15em;
+line-height: 1em;
+margin: 2px 2px 2px 0px;
+        }
+        .rightTag.isStatic::after {
+background-color: var(--green);
+content: "Static";
+        }
+        .rightTag.isSignal::after {
+background-color: var(--pink);
+content: "Signal";
+        }
+        .rightTag.isVirtual::after {
+background-color: var(--blue);
+content: "Virtual";
+        }
+        .docString {
+padding: 0.5em 0.5em 0.5em 2em;
+        }
+        .docString p {
+margin: 0;
+        }
+        .docString p + p,
+        .docString p + h3,
+        .docString table + h3 {
+margin-top: 0.5em;
+        }
+        .docString h3 {
+margin: 0;
+max-width: 150px;
+background-color: rgba(128,128,128,0.1);
+        }
+        .docString ul {
+margin-top: 0.25em;
+margin-bottom: 0.25em;
+        }
+        table.paramList {
+border: 1px solid rgba(128,128,128,0.1);
+width: 100%;
+border-collapse: collapse;
+        }
+        table.paramList tr {
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+vertical-align: top;
+        }
+        table td.paramName {
+font-family: monospace;
+width: 250px;
+        }
+
+        .noDescriptionProvided {
+font-style: italic;
+opacity: 0.35;
+        }
+
+        .code {
+font-family: mono;
+border: 2px dashed rgba(128,128,128,0.45);
+padding: 0.5em;
+margin: 0.5em 0;
+        }
+        .code p {
+white-space: pre;
+        }
+
+        .leftMenu {
+display: inline-block;
+position: absolute;
+width: 16vw;
+background: var(--dark);
+height: 100vh;
+        }
+        .leftMenu ul {
+padding: 0 1.25em;
+margin: 0.25em 0;
+        }
+        .leftMenu ul li {
+list-style-type: disclosure-closed;
+        }
+        .frameContent {
+width: 84vw;
+height: 100vh;
+display: block;
+padding: 0;
+margin: 0 0 0 16vw;
+border: none;
+        }
+        .leftMenu h3 {
+margin: 0;
+        }
+
+        .bulipy {
+font-size: 65%;
+display: block;
+text-align: right;
+font-style: italic;
+        }
+    </style>
+    </head>
+    <body class='class'>
+        <h1>Class description - <span class='className'>Selection</span></h1>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/Selection.h'>Selection.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 4.3.0</span></span></div>
+        <div class='docString'><p>Selection represents a selection on Krita. A selection is not necessarily associated with a particular Node or Image.</p><p></p><p><div class='code'>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">from</span> <span style=" color:#e6e6e6;">krita</span> <span style=" font-weight:600; color:#c678dd;">import</span> <span style=" color:#ff99ff;">*</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">d</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Application</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">activeDocument</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">n</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">d</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">activeNode</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">r</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">n</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">bounds</span><span style=" color:#ff66d9;">()</span> </p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">s</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Selection</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">s</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">select</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">r</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">width</span><span style=" color:#ff66d9;">()</span> <span style=" color:#ff99ff;">/</span> <span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">,</span> <span style=" color:#e6e6e6;">r</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">height</span><span style=" color:#ff66d9;">()</span> <span style=" color:#ff99ff;">/</span> <span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">,</span> <span style=" color:#e6e6e6;">r</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">width</span><span style=" color:#ff66d9;">()</span> <span style=" color:#ff99ff;">/</span> <span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">,</span> <span style=" color:#e6e6e6;">r</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">height</span><span style=" color:#ff66d9;">()</span> <span style=" color:#ff99ff;">/</span> <span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">255</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">s</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">cut</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">n</span><span style=" color:#ff66d9;">)</span></p></div></p></div>
+        
+        <h2>Methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#add'>
+                                <span class='methodName'>add</span><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#border'>
+                                <span class='methodName'>border</span><span class='methodSep'>(</span><span class='methodParamName'>xRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#clear'>
+                                <span class='methodName'>clear</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#contract'>
+                                <span class='methodName'>contract</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#copy'>
+                                <span class='methodName'>copy</span><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#cut'>
+                                <span class='methodName'>cut</span><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#dilate'>
+                                <span class='methodName'>dilate</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#duplicate'>
+                                <span class='methodName'>duplicate</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#erode'>
+                                <span class='methodName'>erode</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#feather'>
+                                <span class='methodName'>feather</span><span class='methodSep'>(</span><span class='methodParamName'>radius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#grow'>
+                                <span class='methodName'>grow</span><span class='methodSep'>(</span><span class='methodParamName'>xradius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yradius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#height'>
+                                <span class='methodName'>height</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#intersect'>
+                                <span class='methodName'>intersect</span><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#invert'>
+                                <span class='methodName'>invert</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#move'>
+                                <span class='methodName'>move</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#paste'>
+                                <span class='methodName'>paste</span><span class='methodSep'>(</span><span class='methodParamName'>destination</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#pixelData'>
+                                <span class='methodName'>pixelData</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#replace'>
+                                <span class='methodName'>replace</span><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#resize'>
+                                <span class='methodName'>resize</span><span class='methodSep'>(</span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#select'>
+                                <span class='methodName'>select</span><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#selectAll'>
+                                <span class='methodName'>selectAll</span><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setPixelData'>
+                                <span class='methodName'>setPixelData</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#shrink'>
+                                <span class='methodName'>shrink</span><span class='methodSep'>(</span><span class='methodParamName'>xRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>edgeLock</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#smooth'>
+                                <span class='methodName'>smooth</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#subtract'>
+                                <span class='methodName'>subtract</span><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#symmetricdifference'>
+                                <span class='methodName'>symmetricdifference</span><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#width'>
+                                <span class='methodName'>width</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#x'>
+                                <span class='methodName'>x</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#y'>
+                                <span class='methodName'>y</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+    </div>
+    
+        
+        
+        <h1>Member documentation</h1>
+        <div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="add">add</a><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Add the given selection's selected pixels to the current selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>selection</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="border">border</a><span class='methodSep'>(</span><span class='methodParamName'>xRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Border the selection with the given radius.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>xRadius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>yRadius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="clear">clear</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Make the selection entirely unselected.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="contract">contract</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Make the selection's width and height smaller by the given value. This will not move the selection's top-left position.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="copy">copy</a><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>copies the area defined by the selection from the node to the clipboard.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>node</span></td><td><p>the node from where the pixels will be copied.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="cut">cut</a><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>erases the area defined by the selection from the node and puts a copy on the clipboard.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>node</span></td><td><p>the node from which the selection will be cut.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="dilate">dilate</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Dilate the selection with a radius of 1 pixel.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="duplicate">duplicate</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.3.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a duplicate of the selection</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="erode">erode</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Erode the selection with a radius of 1 pixel.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="feather">feather</a><span class='methodSep'>(</span><span class='methodParamName'>radius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Feather the selection with the given radius.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>radius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="grow">grow</a><span class='methodSep'>(</span><span class='methodParamName'>xradius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yradius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Grow the selection with the given radius.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>xradius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>yradius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="height">height</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the height of the selection</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="intersect">intersect</a><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Intersect the given selection with this selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>selection</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="invert">invert</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Invert the selection.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="move">move</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Move the selection's top-left corner to the given coordinates.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="paste">paste</a><span class='methodSep'>(</span><span class='methodParamName'>destination</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>pastes the content of the clipboard to the given node, limited by the area of the current selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>destination</span></td><td><p>the node where the pixels will be written</p></td></tr><tr><td class='paramName'><span class='methodParamName'>x</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="pixelData">pixelData</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>reads the given rectangle from the Selection's mask and returns it as a byte array. The pixel data starts top-left, and is ordered row-first.</p><p></p><p>The byte array will contain one byte for every pixel, representing the selectedness. 0 is totally unselected, 255 is fully selected.</p><p></p><p>You can read outside the Selection's boundaries; those pixels will be unselected.</p><p></p><p>The byte array is a copy of the original selection data.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>x position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>y position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>row length to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>number of rows to read</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QByteArray with the pixel data. The byte array may be empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="replace">replace</a><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Replace the current selection's selection with the one of the given selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>selection</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="resize">resize</a><span class='methodSep'>(</span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Resize the selection to the given width and height. The top-left position will not be moved.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>w</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="select">select</a><span class='methodSep'>(</span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Select the given area. The value can be between 0 and 255; 0 is </p><p>totally unselected, 255 is totally selected.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>x</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="selectAll">selectAll</a><span class='methodSep'>(</span><span class='methodParamName'>node</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Select all pixels in the given node. The value can be between 0 and 255; 0 is </p><p>totally unselected, 255 is totally selected.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>node</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setPixelData">setPixelData</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>writes the given bytes, of which there must be enough, into the Selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>the byte array representing the pixels. There must be enough bytes available. Krita will take the raw pointer from the QByteArray and start reading, not stopping before (w * h) bytes are read.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>the x position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>the y position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>the width of each row</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>the number of rows to write</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="shrink">shrink</a><span class='methodSep'>(</span><span class='methodParamName'>xRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>yRadius</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>edgeLock</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Shrink the selection with the given radius.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>xRadius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>yRadius</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>edgeLock</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="smooth">smooth</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Smooth the selection.</p>
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="subtract">subtract</a><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Subtract the given selection's selected pixels from the current selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>selection</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="symmetricdifference">symmetricdifference</a><span class='methodSep'>(</span><span class='methodParamName'>selection</span><span class='methodSep'>: </span><span class='methodParameterType'>Selection</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.2.0</span></span></div>
+        <div class='docString'>
+            <p>Intersect with the inverse of the given selection with this selection.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>selection</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="width">width</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the width of the selection</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="x">x</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the left-hand position of the selection.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="y">y</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the top position of the selection.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+    </body>
+</html>

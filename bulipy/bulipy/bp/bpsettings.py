@@ -147,6 +147,12 @@ class BPSettingsKey(SettingsKey):
     SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN =                       'session.tools.dockers.clipboard.sort.column'
     SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER =                        'session.tools.dockers.clipboard.sort.order'
 
+    # docker "PyKritaApi"; keep in memory search options
+    SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED =          'session.tools.dockers.pyKritaApi.search.buttons.regex.checked'
+    SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED =  'session.tools.dockers.pyKritaApi.search.buttons.caseSensitive.checked'
+    SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_TEXT =                       'session.tools.dockers.pyKritaApi.search.text'
+    SESSION_TOOLS_DOCKERS_PYKRITAAPI_SPLITTER =                          'session.tools.dockers.pyKritaApi.splitter'
+
 
 class BPSettings(Settings):
     """Manage all BuliPy settings with open&save options
@@ -247,6 +253,12 @@ class BPSettings(Settings):
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE,                 12,                   SettingsFmt(int)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN,                      0,                    SettingsFmt(int, [0, 1])),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER,                       Qt.AscendingOrder,    SettingsFmt(int, [Qt.AscendingOrder, Qt.DescendingOrder])),
+
+
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED,         False,             SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED, False,             SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_TEXT,                      '',                SettingsFmt(str)),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SPLITTER,                         [1000, 1000],      SettingsFmt(list)),
 
             SettingsRule(BPSettingsKey.CONFIG_TOOLBARS,                                            [],                       SettingsFmt(list, dict)),
             SettingsRule(BPSettingsKey.SESSION_TOOLBARS,                                           [],                       SettingsFmt(list, dict))

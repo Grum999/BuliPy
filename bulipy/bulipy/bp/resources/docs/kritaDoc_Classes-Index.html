@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="generator" content="BuliPy/build_docs.py"/>
+        <meta name="buildDoc:git:tagName" content="5.1.6"/>
+        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
+        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+
+        <title>Krita 5.1.6 API - Classes</title>
+        <style>
+        :root {
+--blue: #007bff;
+--indigo: #6610f2;
+--purple: #6f42c1;
+--pink: #e83e8c;
+--red: #dc3545;
+--orange: #fd7e14;
+--yellow: #ffc107;
+--green: #28a745;
+--teal: #20c997;
+--cyan: #17a2b8;
+--white: #fff;
+--gray: #bdc3c7;
+--gray-dark: #343a40;
+--primary: #54a3d8;
+--secondary: #bdc3c7;
+--success: #28a745;
+--info: #17a2b8;
+--warning: #ffc107;
+--danger: #dc3545;
+--light: #f8f9fa;
+--dark: #343a40;
+
+--body-color: #eff0f1;
+--body-bg: #232629;
+--border-color: #16181b;
+        }
+
+        body {
+color: var(--body-color);
+background-color: var(--body-bg);
+font-family: sans-serif;
+        }
+
+        body.index {
+margin: 0;
+        }
+
+        body.class {
+margin: 0.5em;
+        }
+
+        a {
+text-decoration: none;
+color: var(--primary);
+        }
+
+        a:visited {
+color: var(--orange);
+        }
+
+        body h1:first-child {
+margin-top: 0;
+        }
+
+        h1, h2, h3 {
+background-color: rgba(255,255,255,0.125);
+padding: 0.15em 0.25em;
+border-radius: 0.1em;
+        }
+
+        div.methodList span.methodList:first-child {
+border-top: 1px dotted rgba(128,128,128,0.25);
+        }
+        div.methodList span.methodList {
+display: block;
+margin-left: 1em;
+line-height: 1.5em;
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+font-family: monospace;
+        }
+        div.methodList span.methodList:hover {
+background-color: var(--dark);
+        }
+
+        .className {
+font-weight: bold;
+font-family: monospace;
+        }
+        .buildFrom a {
+font-family: monospace;
+        }
+        .docRefTags {
+padding: 0.15em;
+        }
+        .refTag::after {
+content: "";
+white-space: pre;
+        }
+        .refTag {
+background-color: rgba(84, 163, 216, 0.25);
+font-size: 85%;
+border-radius: 0.2em;
+margin-right: 0.25em;
+overflow: hidden;
+display: inline-block;
+line-height: 1.5em;
+        }
+        .refTag .refTagTag {
+font-weight: bold;
+padding: 0.15em 0.35em;
+        }
+        .refTag .refTagSymbol {
+padding: 0.15em;
+background: rgba(84, 163, 216, 0.5);
+        }
+        .methodDef {
+margin-left: 1em;
+background-color: rgba(128,128,128,0.05);
+margin-bottom: 2em;
+border-radius: 0.15em;
+overflow: hidden;
+        }
+        .methodDef:hover {
+background-color: rgba(255,255,255,0.05);
+        }
+        .methodDef .def {
+font-family: monospace;
+font-size: 110%;
+background-color: rgba(255,255,255,0.075);
+padding: 0.15em;
+        }
+        .methodSep {
+color: var(--pink);
+        }
+        .methodParameterType {
+color: var(--teal);
+        }
+        .methodParameterDefault {
+color: var(--cyan);
+        }
+        .methodParamName {
+color: var(--gray);
+        }
+        .rightTag::after {
+float: right;
+display: block;
+font-size: 70%;
+padding: 0.15em;
+border-radius: 0.15em;
+line-height: 1em;
+margin: 2px 2px 2px 0px;
+        }
+        .rightTag.isStatic::after {
+background-color: var(--green);
+content: "Static";
+        }
+        .rightTag.isSignal::after {
+background-color: var(--pink);
+content: "Signal";
+        }
+        .rightTag.isVirtual::after {
+background-color: var(--blue);
+content: "Virtual";
+        }
+        .docString {
+padding: 0.5em 0.5em 0.5em 2em;
+        }
+        .docString p {
+margin: 0;
+        }
+        .docString p + p,
+        .docString p + h3,
+        .docString table + h3 {
+margin-top: 0.5em;
+        }
+        .docString h3 {
+margin: 0;
+max-width: 150px;
+background-color: rgba(128,128,128,0.1);
+        }
+        .docString ul {
+margin-top: 0.25em;
+margin-bottom: 0.25em;
+        }
+        table.paramList {
+border: 1px solid rgba(128,128,128,0.1);
+width: 100%;
+border-collapse: collapse;
+        }
+        table.paramList tr {
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+vertical-align: top;
+        }
+        table td.paramName {
+font-family: monospace;
+width: 250px;
+        }
+
+        .noDescriptionProvided {
+font-style: italic;
+opacity: 0.35;
+        }
+
+        .code {
+font-family: mono;
+border: 2px dashed rgba(128,128,128,0.45);
+padding: 0.5em;
+margin: 0.5em 0;
+        }
+        .code p {
+white-space: pre;
+        }
+
+        .leftMenu {
+display: inline-block;
+position: absolute;
+width: 16vw;
+background: var(--dark);
+height: 100vh;
+        }
+        .leftMenu ul {
+padding: 0 1.25em;
+margin: 0.25em 0;
+        }
+        .leftMenu ul li {
+list-style-type: disclosure-closed;
+        }
+        .frameContent {
+width: 84vw;
+height: 100vh;
+display: block;
+padding: 0;
+margin: 0 0 0 16vw;
+border: none;
+        }
+        .leftMenu h3 {
+margin: 0;
+        }
+
+        .bulipy {
+font-size: 65%;
+display: block;
+text-align: right;
+font-style: italic;
+        }
+    </style>
+    </head>
+    <body class='index'>
+        <div class='leftMenu'>
+            <h3>Krita Classes<span class='bulipy'>Documentation built from plugin <a href='https://github.com/Grum999/BuliPy'>BuliPy</a></span></h3>
+            <ul><li><a href='kritaDoc_Class-Canvas.html' target='iframeClass'>Canvas</a></li><li><a href='kritaDoc_Class-Channel.html' target='iframeClass'>Channel</a></li><li><a href='kritaDoc_Class-CloneLayer.html' target='iframeClass'>CloneLayer</a></li><li><a href='kritaDoc_Class-DockWidget.html' target='iframeClass'>DockWidget</a></li><li><a href='kritaDoc_Class-DockWidgetFactoryBase.html' target='iframeClass'>DockWidgetFactoryBase</a></li><li><a href='kritaDoc_Class-Document.html' target='iframeClass'>Document</a></li><li><a href='kritaDoc_Class-Extension.html' target='iframeClass'>Extension</a></li><li><a href='kritaDoc_Class-FileLayer.html' target='iframeClass'>FileLayer</a></li><li><a href='kritaDoc_Class-FillLayer.html' target='iframeClass'>FillLayer</a></li><li><a href='kritaDoc_Class-Filter.html' target='iframeClass'>Filter</a></li><li><a href='kritaDoc_Class-FilterLayer.html' target='iframeClass'>FilterLayer</a></li><li><a href='kritaDoc_Class-FilterMask.html' target='iframeClass'>FilterMask</a></li><li><a href='kritaDoc_Class-GroupLayer.html' target='iframeClass'>GroupLayer</a></li><li><a href='kritaDoc_Class-GroupShape.html' target='iframeClass'>GroupShape</a></li><li><a href='kritaDoc_Class-InfoObject.html' target='iframeClass'>InfoObject</a></li><li><a href='kritaDoc_Class-Krita.html' target='iframeClass'>Krita</a></li><li><a href='kritaDoc_Class-ManagedColor.html' target='iframeClass'>ManagedColor</a></li><li><a href='kritaDoc_Class-Node.html' target='iframeClass'>Node</a></li><li><a href='kritaDoc_Class-Notifier.html' target='iframeClass'>Notifier</a></li><li><a href='kritaDoc_Class-Palette.html' target='iframeClass'>Palette</a></li><li><a href='kritaDoc_Class-PaletteView.html' target='iframeClass'>PaletteView</a></li><li><a href='kritaDoc_Class-PresetChooser.html' target='iframeClass'>PresetChooser</a></li><li><a href='kritaDoc_Class-Resource.html' target='iframeClass'>Resource</a></li><li><a href='kritaDoc_Class-Scratchpad.html' target='iframeClass'>Scratchpad</a></li><li><a href='kritaDoc_Class-Selection.html' target='iframeClass'>Selection</a></li><li><a href='kritaDoc_Class-SelectionMask.html' target='iframeClass'>SelectionMask</a></li><li><a href='kritaDoc_Class-Shape.html' target='iframeClass'>Shape</a></li><li><a href='kritaDoc_Class-Swatch.html' target='iframeClass'>Swatch</a></li><li><a href='kritaDoc_Class-TransformMask.html' target='iframeClass'>TransformMask</a></li><li><a href='kritaDoc_Class-VectorLayer.html' target='iframeClass'>VectorLayer</a></li><li><a href='kritaDoc_Class-View.html' target='iframeClass'>View</a></li><li><a href='kritaDoc_Class-Window.html' target='iframeClass'>Window</a></li></ul>
+        </div>
+        <iframe class='frameContent' src="kritaDoc_Class-Krita.html" name="iframeClass"></iframe>
+    </body>
+</html>

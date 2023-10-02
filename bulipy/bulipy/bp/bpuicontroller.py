@@ -19,6 +19,7 @@ import base64
 import traceback
 import platform
 import time
+import webbrowser
 
 from krita import Krita
 
@@ -27,7 +28,8 @@ from PyQt5.QtGui import (
         QColor,
         QGuiApplication,
         QTextCursor,
-        QClipboard
+        QClipboard,
+        QIcon
     )
 from PyQt5.QtCore import (
         pyqtSignal as Signal,
@@ -43,6 +45,7 @@ from .bpdwconsole import BPDockWidgetConsoleOutput
 from .bpdwcolorpicker import BPDockWidgetColorPicker
 from .bpdwiconselector import BPDockWidgetIconSelector
 from .bpdwsearchreplace import BPDockWidgetSearchReplace
+from .bpdwquickpykritaapi import BPDockWidgetQuickKritaApi
 from .bpdwdocuments import BPDockWidgetDocuments
 from .bpdwclipboard import BPDockWidgetClipboard
 from .bpwopensavedialog import BPWOpenSave
@@ -175,6 +178,7 @@ class BPUIController(QObject):
         self.__dwIconSelector = None
         self.__dwDocuments = None
         self.__dwClipboard = None
+        self.__dwQuickPyKritaApi = None
 
         self.__dwConsoleOutputAction = None
         self.__dwColorPickerAction = None
@@ -182,6 +186,7 @@ class BPUIController(QObject):
         self.__dwIconSelectorAction = None
         self.__dwDocumentsAction = None
         self.__dwClipboardAction = None
+        self.__dwQuickPyKritaApiAction = None
 
         # -- misc
         # editor/syntax theme
@@ -266,6 +271,13 @@ class BPUIController(QObject):
         self.__dwClipboardAction.setText(i18n("Clipboard"))
         self.__dwClipboardAction.toggled.connect(self.commandToolsDockClipboardVisible)
         self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwClipboard)
+
+        self.__dwQuickPyKritaApi = BPDockWidgetQuickKritaApi(self.__window, self.__documents, i18n('Quick PyKrita API'))
+        self.__dwQuickPyKritaApi.setObjectName('__dwQuickPyKritaApi')
+        self.__dwQuickPyKritaApiAction = self.__dwQuickPyKritaApi.toggleViewAction()
+        self.__dwQuickPyKritaApiAction.setText(i18n("Quick PyKrita API"))
+        self.__dwQuickPyKritaApiAction.toggled.connect(self.commandToolsDockQuickPyKritaApi)
+        self.__window.addDockWidget(Qt.RightDockWidgetArea, self.__dwQuickPyKritaApi)
 
         self.__window.setWindowTitle(self.__bpTitle)
         self.__window.show()
@@ -364,6 +376,11 @@ class BPUIController(QObject):
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTSIZE,          BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE))
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_COLUMN,       BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN))
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_ORDER,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER))
+
+        self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_BTN_REGEX,         BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED))
+        self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED))
+        self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_TXT_SEARCH,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_TEXT))
+        self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_SPLITTER,          BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SPLITTER))
 
         # do not load from here, already loaded from BPDocuments() initialisation
         # for fileName in BPSettings.get(BPSettingsKey.SESSION_DOCUMENTS_OPENED):
@@ -897,6 +914,11 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_FONTSIZE))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_COLUMN))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_ORDER))
+
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_BTN_REGEX))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_BTN_CASESENSITIVE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_TEXT, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_TXT_SEARCH))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SPLITTER, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_SPLITTER))
 
         return BPSettings.save()
 
@@ -1470,6 +1492,24 @@ class BPUIController(QObject):
         if self.__window:
             self.__window.actionToolsClipboard.setChecked(visible)
 
+    def commandToolsDockQuickPyKritaApi(self, visible=None):
+        """Display/Hide Quick PyKrita API docker"""
+        if visible is None:
+            visible = self.__dwQuickPyKritaApiAction.isChecked()
+        elif not isinstance(visible, bool):
+            raise EInvalidValue('Given `visible` must be a <bool>')
+
+        if self.__dwQuickPyKritaApi:
+            if visible:
+                self.__dwQuickPyKritaApi.show()
+                self.__dwQuickPyKritaApi.setActive()
+            else:
+                self.__dwQuickPyKritaApi.hide()
+            self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
+
+        if self.__window:
+            self.__window.actionToolsQuickPyKritaAPI.setChecked(visible)
+
     def commandToolsShowVersion(self, forceDisplayConsole=False):
         """Clear console and display BuliPy, Krita, Qt, ..., versions"""
         if forceDisplayConsole:
@@ -1734,7 +1774,7 @@ class BPUIController(QObject):
                 self.__toolbarsTmpSession = session
             self.__window.initToolbar(config, self.__toolbarsTmpSession)
 
-    def commandAboutBp(self):
+    def commandHelpAboutBp(self):
         """Display 'About BuliPy' dialog box"""
         WAboutWindow(self.__bpName,
                      self.__bpVersion,
@@ -1742,6 +1782,14 @@ class BPUIController(QObject):
                      None,
                      ':BuliPy',
                      icon=buildIcon([(':/bp/images/normal/bulipy', QIcon.Normal)]))
+
+    def commandHelpPyKritaAPI(self):
+        """Display internal PyKrita API in default browser"""
+        webbrowser.open(os.path.join(os.path.dirname(__file__), 'resources', 'docs', 'kritaDoc_Classes-Index.html'))
+
+    def commandHelpKritaScriptingSchool(self):
+        """Display Krita Scripting School in default browser"""
+        webbrowser.open('https://scripting.krita.org')
 
 
 # Debug.setEnabled(True)

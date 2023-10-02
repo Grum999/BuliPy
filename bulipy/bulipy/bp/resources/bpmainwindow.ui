@@ -154,6 +154,9 @@
      <string>He&amp;lp</string>
     </property>
     <addaction name="actionHelpAboutBP"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelpPyKritaAPI"/>
+    <addaction name="actionHelpKritaScriptingSchool"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -194,6 +197,7 @@
     <addaction name="actionToolsColorPicker"/>
     <addaction name="actionToolsIconsSelector"/>
     <addaction name="actionToolsDocuments"/>
+    <addaction name="actionToolsQuickPyKritaAPI"/>
     <addaction name="actionToolsClipboard"/>
     <addaction name="separator"/>
     <addaction name="menuToolsCopyToClipboard"/>
@@ -958,6 +962,44 @@
    </property>
    <property name="text">
     <string>Clipboard</string>
+   </property>
+  </action>
+  <action name="actionHelpPyKritaAPI">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/url</normaloff>
+     <disabledoff>:/pktk/images/disabled/url</disabledoff>:/pktk/images/normal/url</iconset>
+   </property>
+   <property name="text">
+    <string>PyKrita API</string>
+   </property>
+   <property name="statusTip">
+    <string>Open internal PyKrita API document in default browser</string>
+   </property>
+  </action>
+  <action name="actionHelpKritaScriptingSchool">
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/url</normaloff>
+     <disabledoff>:/pktk/images/disabled/url</disabledoff>:/pktk/images/normal/url</iconset>
+   </property>
+   <property name="text">
+    <string>Krita Scripting School</string>
+   </property>
+   <property name="statusTip">
+    <string>Open Krita Scripting School in default browser</string>
+   </property>
+  </action>
+  <action name="actionToolsQuickPyKritaAPI">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pktk/resources/svg/dark_icons.qrc">
+     <normaloff>:/pktk/images/normal/symbol+filled_help</normaloff>:/pktk/images/normal/symbol+filled_help</iconset>
+   </property>
+   <property name="text">
+    <string>Quick PyKrita API</string>
    </property>
   </action>
  </widget>

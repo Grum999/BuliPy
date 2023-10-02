@@ -47,7 +47,10 @@ from ..pktk.modules.languagedef import LanguageDef
 from ..pktk.modules.strutils import wildcardToRegEx
 from ..pktk.modules.timeutils import tsToStr
 from ..pktk.modules.imgutils import buildIcon
-from ..pktk.modules.utils import Debug
+from ..pktk.modules.utils import (
+        regExIsValid,
+        Debug
+    )
 from ..pktk.modules.bytesrw import BytesRW
 from ..pktk.widgets.wseparator import WVLine
 from ..pktk.widgets.wdockwidget import WDockWidget
@@ -317,6 +320,9 @@ class BPDockWidgetClipboard(WDockWidget):
                 regEx = fr"\b({regEx})\b"
             else:
                 regEx = fr"({regEx})"
+
+            if not regExIsValid(regEx):
+                return
 
             self.__filteredFound = 0
             for index in range(self.__twClipboard.topLevelItemCount()):

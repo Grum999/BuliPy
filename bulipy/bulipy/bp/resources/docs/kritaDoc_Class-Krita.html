@@ -1,0 +1,1085 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="generator" content="BuliPy/build_docs.py"/>
+        <meta name="buildDoc:git:tagName" content="5.1.6"/>
+        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
+        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+
+        <title>Krita 5.1.6 API - Class Krita</title>
+        <style>
+        :root {
+--blue: #007bff;
+--indigo: #6610f2;
+--purple: #6f42c1;
+--pink: #e83e8c;
+--red: #dc3545;
+--orange: #fd7e14;
+--yellow: #ffc107;
+--green: #28a745;
+--teal: #20c997;
+--cyan: #17a2b8;
+--white: #fff;
+--gray: #bdc3c7;
+--gray-dark: #343a40;
+--primary: #54a3d8;
+--secondary: #bdc3c7;
+--success: #28a745;
+--info: #17a2b8;
+--warning: #ffc107;
+--danger: #dc3545;
+--light: #f8f9fa;
+--dark: #343a40;
+
+--body-color: #eff0f1;
+--body-bg: #232629;
+--border-color: #16181b;
+        }
+
+        body {
+color: var(--body-color);
+background-color: var(--body-bg);
+font-family: sans-serif;
+        }
+
+        body.index {
+margin: 0;
+        }
+
+        body.class {
+margin: 0.5em;
+        }
+
+        a {
+text-decoration: none;
+color: var(--primary);
+        }
+
+        a:visited {
+color: var(--orange);
+        }
+
+        body h1:first-child {
+margin-top: 0;
+        }
+
+        h1, h2, h3 {
+background-color: rgba(255,255,255,0.125);
+padding: 0.15em 0.25em;
+border-radius: 0.1em;
+        }
+
+        div.methodList span.methodList:first-child {
+border-top: 1px dotted rgba(128,128,128,0.25);
+        }
+        div.methodList span.methodList {
+display: block;
+margin-left: 1em;
+line-height: 1.5em;
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+font-family: monospace;
+        }
+        div.methodList span.methodList:hover {
+background-color: var(--dark);
+        }
+
+        .className {
+font-weight: bold;
+font-family: monospace;
+        }
+        .buildFrom a {
+font-family: monospace;
+        }
+        .docRefTags {
+padding: 0.15em;
+        }
+        .refTag::after {
+content: "";
+white-space: pre;
+        }
+        .refTag {
+background-color: rgba(84, 163, 216, 0.25);
+font-size: 85%;
+border-radius: 0.2em;
+margin-right: 0.25em;
+overflow: hidden;
+display: inline-block;
+line-height: 1.5em;
+        }
+        .refTag .refTagTag {
+font-weight: bold;
+padding: 0.15em 0.35em;
+        }
+        .refTag .refTagSymbol {
+padding: 0.15em;
+background: rgba(84, 163, 216, 0.5);
+        }
+        .methodDef {
+margin-left: 1em;
+background-color: rgba(128,128,128,0.05);
+margin-bottom: 2em;
+border-radius: 0.15em;
+overflow: hidden;
+        }
+        .methodDef:hover {
+background-color: rgba(255,255,255,0.05);
+        }
+        .methodDef .def {
+font-family: monospace;
+font-size: 110%;
+background-color: rgba(255,255,255,0.075);
+padding: 0.15em;
+        }
+        .methodSep {
+color: var(--pink);
+        }
+        .methodParameterType {
+color: var(--teal);
+        }
+        .methodParameterDefault {
+color: var(--cyan);
+        }
+        .methodParamName {
+color: var(--gray);
+        }
+        .rightTag::after {
+float: right;
+display: block;
+font-size: 70%;
+padding: 0.15em;
+border-radius: 0.15em;
+line-height: 1em;
+margin: 2px 2px 2px 0px;
+        }
+        .rightTag.isStatic::after {
+background-color: var(--green);
+content: "Static";
+        }
+        .rightTag.isSignal::after {
+background-color: var(--pink);
+content: "Signal";
+        }
+        .rightTag.isVirtual::after {
+background-color: var(--blue);
+content: "Virtual";
+        }
+        .docString {
+padding: 0.5em 0.5em 0.5em 2em;
+        }
+        .docString p {
+margin: 0;
+        }
+        .docString p + p,
+        .docString p + h3,
+        .docString table + h3 {
+margin-top: 0.5em;
+        }
+        .docString h3 {
+margin: 0;
+max-width: 150px;
+background-color: rgba(128,128,128,0.1);
+        }
+        .docString ul {
+margin-top: 0.25em;
+margin-bottom: 0.25em;
+        }
+        table.paramList {
+border: 1px solid rgba(128,128,128,0.1);
+width: 100%;
+border-collapse: collapse;
+        }
+        table.paramList tr {
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+vertical-align: top;
+        }
+        table td.paramName {
+font-family: monospace;
+width: 250px;
+        }
+
+        .noDescriptionProvided {
+font-style: italic;
+opacity: 0.35;
+        }
+
+        .code {
+font-family: mono;
+border: 2px dashed rgba(128,128,128,0.45);
+padding: 0.5em;
+margin: 0.5em 0;
+        }
+        .code p {
+white-space: pre;
+        }
+
+        .leftMenu {
+display: inline-block;
+position: absolute;
+width: 16vw;
+background: var(--dark);
+height: 100vh;
+        }
+        .leftMenu ul {
+padding: 0 1.25em;
+margin: 0.25em 0;
+        }
+        .leftMenu ul li {
+list-style-type: disclosure-closed;
+        }
+        .frameContent {
+width: 84vw;
+height: 100vh;
+display: block;
+padding: 0;
+margin: 0 0 0 16vw;
+border: none;
+        }
+        .leftMenu h3 {
+margin: 0;
+        }
+
+        .bulipy {
+font-size: 65%;
+display: block;
+text-align: right;
+font-style: italic;
+        }
+    </style>
+    </head>
+    <body class='class'>
+        <h1>Class description - <span class='className'>Krita</span></h1>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/Krita.h'>Krita.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.1.0</span></span></div>
+        <div class='docString'><p>Krita is a singleton class that offers the root access to the Krita object hierarchy.</p><p></p><p>The Krita.instance() is aliased as two builtins: Scripter and Application.</p></div>
+        <h2>Static methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#fromVariant'>
+                                <span class='methodName'>fromVariant</span><span class='methodSep'>(</span><span class='methodParamName'>v</span><span class='methodSep'>: </span><span class='methodParameterType'>QVariant</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QObject</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#getAppDataLocation'>
+                                <span class='methodName'>getAppDataLocation</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#instance'>
+                                <span class='methodName'>instance</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#krita_i18n'>
+                                <span class='methodName'>krita_i18n</span><span class='methodSep'>(</span><span class='methodParamName'>text</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#krita_i18nc'>
+                                <span class='methodName'>krita_i18nc</span><span class='methodSep'>(</span><span class='methodParamName'>context</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>text</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+    </div>
+    
+        <h2>Methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#action'>
+                                <span class='methodName'>action</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QAction</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#actions'>
+                                <span class='methodName'>actions</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[QAction]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#activeDocument'>
+                                <span class='methodName'>activeDocument</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#activeWindow'>
+                                <span class='methodName'>activeWindow</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Window</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#addDockWidgetFactory'>
+                                <span class='methodName'>addDockWidgetFactory</span><span class='methodSep'>(</span><span class='methodParamName'>factory</span><span class='methodSep'>: </span><span class='methodParameterType'>DockWidgetFactoryBase</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#addExtension'>
+                                <span class='methodName'>addExtension</span><span class='methodSep'>(</span><span class='methodParamName'>extension</span><span class='methodSep'>: </span><span class='methodParameterType'>Extension</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#addProfile'>
+                                <span class='methodName'>addProfile</span><span class='methodSep'>(</span><span class='methodParamName'>profilePath</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#batchmode'>
+                                <span class='methodName'>batchmode</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorDepths'>
+                                <span class='methodName'>colorDepths</span><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#colorModels'>
+                                <span class='methodName'>colorModels</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#createDocument'>
+                                <span class='methodName'>createDocument</span><span class='methodSep'>(</span><span class='methodParamName'>width</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>height</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>profile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>resolution</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#dockers'>
+                                <span class='methodName'>dockers</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[QDockWidget]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#documents'>
+                                <span class='methodName'>documents</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Document]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#extensions'>
+                                <span class='methodName'>extensions</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Extension]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#filter'>
+                                <span class='methodName'>filter</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Filter</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#filterStrategies'>
+                                <span class='methodName'>filterStrategies</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#filters'>
+                                <span class='methodName'>filters</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#icon'>
+                                <span class='methodName'>icon</span><span class='methodSep'>(</span><span class='methodParamName'>iconName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QIcon</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#notifier'>
+                                <span class='methodName'>notifier</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Notifier</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#openDocument'>
+                                <span class='methodName'>openDocument</span><span class='methodSep'>(</span><span class='methodParamName'>filename</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#openWindow'>
+                                <span class='methodName'>openWindow</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Window</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#profiles'>
+                                <span class='methodName'>profiles</span><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#readSetting'>
+                                <span class='methodName'>readSetting</span><span class='methodSep'>(</span><span class='methodParamName'>group</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>defaultValue</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#recentDocuments'>
+                                <span class='methodName'>recentDocuments</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#resources'>
+                                <span class='methodName'>resources</span><span class='methodSep'>(</span><span class='methodParamName'>type</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>dict[str: Resource]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setActiveDocument'>
+                                <span class='methodName'>setActiveDocument</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>Document</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setBatchmode'>
+                                <span class='methodName'>setBatchmode</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#version'>
+                                <span class='methodName'>version</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#views'>
+                                <span class='methodName'>views</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[View]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#windows'>
+                                <span class='methodName'>windows</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Window]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#writeSetting'>
+                                <span class='methodName'>writeSetting</span><span class='methodSep'>(</span><span class='methodParamName'>group</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+    </div>
+    
+        
+        
+        <h1>Member documentation</h1>
+        <div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="action">action</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QAction</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the action that has been registered under the given name, or 0 if no such action exists.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="actions">actions</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[QAction]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>return a list of all actions for the currently active mainWindow.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="activeDocument">activeDocument</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the currently active document, if there is one.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="activeWindow">activeWindow</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Window</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the currently active window or None if there is no window</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="addDockWidgetFactory">addDockWidgetFactory</a><span class='methodSep'>(</span><span class='methodParamName'>factory</span><span class='methodSep'>: </span><span class='methodParameterType'>DockWidgetFactoryBase</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Add the given docker factory to the application. For scripts loaded on startup, this means that every window will have one of the dockers created by the factory.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>factory</span></td><td><p>The factory object.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="addExtension">addExtension</a><span class='methodSep'>(</span><span class='methodParamName'>extension</span><span class='methodSep'>: </span><span class='methodParameterType'>Extension</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>add the given plugin to Krita. There will be a single instance of each Extension in the Krita process.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>extension</span></td><td><p>the extension to add.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="addProfile">addProfile</a><span class='methodSep'>(</span><span class='methodParamName'>profilePath</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>load the given profile into the profile registry.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>profilePath</span></td><td><p>the path to the profile.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if adding the profile succeeded.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="batchmode">batchmode</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>determines whether the script is run in batch mode. If batchmode is true, scripts should now show messageboxes or dialog boxes.</p><p></p><p>Note that this separate from Document.setBatchmode(), which determines whether export/save option dialogs are shown.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if the script is run in batchmode</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorDepths">colorDepths</a><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>creates a list with the names of all color depths compatible with the given color model.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>colorModel</span></td><td><p>the id of a color model.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all color depths or a empty list if there is no such color depths.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="colorModels">colorModels</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>creates a list with all color models id's registered.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all color models or a empty list if there is no such color models.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="createDocument">createDocument</a><span class='methodSep'>(</span><span class='methodParamName'>width</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>height</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>profile</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>resolution</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 4.1.0</span></span></div>
+        <div class='docString'>
+            <p>creates a new document and image and registers the document with the Krita application.</p><p></p><p>Unless you explicitly call Document::close() the document will remain known to the Krita document registry. The document and its image will only be deleted when Krita exits.</p><p></p><p>The document will have one transparent layer.</p><p></p><p>To create a new document and show it, do something like: <div class='code'>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">from</span> <span style=" color:#e6e6e6;">Krita</span> <span style=" font-weight:600; color:#c678dd;">import</span> <span style=" color:#ff99ff;">*</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">def</span> <span style=" font-weight:600; color:#ffe066;">add_document_to_window</span><span style=" color:#ff66d9;">():</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#e6e6e6;">d</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Application</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">createDocument</span><span style=" color:#ff66d9;">(</span><span style=" color:#c9986a;">100</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">100</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;Test&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;RGBA&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;U8&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">120.0</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#e6e6e6;">Application</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">activeWindow</span><span style=" color:#ff66d9;">().</span><span style=" color:#e6e6e6;">addView</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">d</span><span style=" color:#ff66d9;">)</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">add_document_to_window</span><span style=" color:#ff66d9;">()</span></p></div></p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>width</span></td><td><p>the width in pixels</p></td></tr><tr><td class='paramName'><span class='methodParamName'>height</span></td><td><p>the height in pixels</p></td></tr><tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>the name of the image (not the filename of the document)</p></td></tr><tr><td class='paramName'><span class='methodParamName'>colorModel</span></td><td><p>A string describing the color model of the image: <ul> <li>A: Alpha mask</li> <li>RGBA: RGB with alpha channel (The actual order of channels is most often BGR!)</li> <li>XYZA: XYZ with alpha channel</li> <li>LABA: LAB with alpha channel</li> <li>CMYKA: CMYK with alpha channel</li> <li>GRAYA: Gray with alpha channel</li> <li>YCbCrA: YCbCr with alpha channel</li> </ul></p></td></tr><tr><td class='paramName'><span class='methodParamName'>colorDepth</span></td><td><p>A string describing the color depth of the image: <ul> <li>U8: unsigned 8 bits integer, the most common type</li> <li>U16: unsigned 16 bits integer</li> <li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li> <li>F32: 32 bits floating point</li> </ul></p></td></tr><tr><td class='paramName'><span class='methodParamName'>profile</span></td><td><p>The name of an icc profile that is known to Krita. If an empty string is passed, the default is taken.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>resolution</span></td><td><p>the resolution in points per inch.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the created document.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="dockers">dockers</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[QDockWidget]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.4.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all the dockers</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="documents">documents</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Document]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all open Documents</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="extensions">extensions</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Extension]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>return a list with all registered extension objects.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="filter">filter</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Filter</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>construct a Filter object with a default configuration.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>the name of the filter. Use Krita.instance().filters() to get a list of all possible filters.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the filter or None if there is no such filter.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="filterStrategies">filterStrategies</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Retrieves all installed filter strategies. A filter strategy is used when transforming (scaling, shearing, rotating) an image to calculate the value of the new pixels. You can use th</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the id's of all available filters.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="filters">filters</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Filters are identified by an internal name. This function returns a list of all existing registered filters.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all registered filters</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="fromVariant">fromVariant</a><span class='methodSep'>(</span><span class='methodParamName'>v</span><span class='methodSep'>: </span><span class='methodParameterType'>QVariant</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QObject</span>
+            <span class='rightTag isStatic'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Internal only: for use with mikro.py</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>v</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="getAppDataLocation">getAppDataLocation</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <span class='rightTag isStatic'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.1.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="icon">icon</a><span class='methodSep'>(</span><span class='methodParamName'>iconName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QIcon</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>This allows you to get icons from Krita's internal icons.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>iconName</span></td><td><p>name of the icon.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the icon related to this name.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="instance">instance</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            <span class='rightTag isStatic'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>retrieve the singleton instance of the Application object.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="krita_i18n">krita_i18n</a><span class='methodSep'>(</span><span class='methodParamName'>text</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <span class='rightTag isStatic'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.1.0</span></span></div>
+        <div class='docString'>
+            <h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>text</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="krita_i18nc">krita_i18nc</a><span class='methodSep'>(</span><span class='methodParamName'>context</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>text</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <span class='rightTag isStatic'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.4.0</span></span></div>
+        <div class='docString'>
+            <h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>context</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr><tr><td class='paramName'><span class='methodParamName'>text</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="notifier">notifier</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Notifier</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>the Notifier singleton emits signals when documents are opened and closed, the configuration changes, views are opened and closed or windows are opened.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the notifier object</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="openDocument">openDocument</a><span class='methodSep'>(</span><span class='methodParamName'>filename</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Document</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>creates a new Document, registers it with the Krita application and loads the given file.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>filename</span></td><td><p>the file to open in the document</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the document</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="openWindow">openWindow</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Window</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>create a new main window. The window is not shown by default.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="profiles">profiles</a><span class='methodSep'>(</span><span class='methodParamName'>colorModel</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>colorDepth</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>creates a list with the names of all color profiles compatible with the given color model and color depth.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>colorModel</span></td><td><p>A string describing the color model of the image: <ul> <li>A: Alpha mask</li> <li>RGBA: RGB with alpha channel (The actual order of channels is most often BGR!)</li> <li>XYZA: XYZ with alpha channel</li> <li>LABA: LAB with alpha channel</li> <li>CMYKA: CMYK with alpha channel</li> <li>GRAYA: Gray with alpha channel</li> <li>YCbCrA: YCbCr with alpha channel</li> </ul></p></td></tr><tr><td class='paramName'><span class='methodParamName'>colorDepth</span></td><td><p>A string describing the color depth of the image: <ul> <li>U8: unsigned 8 bits integer, the most common type</li> <li>U16: unsigned 16 bits integer</li> <li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li> <li>F32: 32 bits floating point</li> </ul></p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list with valid names</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="readSetting">readSetting</a><span class='methodSep'>(</span><span class='methodParamName'>group</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>defaultValue</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>read the given setting value from the kritarc file.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>group</span></td><td><p>The group the setting is part of. If empty, then the setting is read from the general group.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>The name of the setting</p></td></tr><tr><td class='paramName'><span class='methodParamName'>defaultValue</span></td><td><p>The default value of the setting</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a string representing the setting.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="recentDocuments">recentDocuments</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[str]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>return all recent documents registered in the RecentFiles group of the kritarc</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="resources">resources</a><span class='methodSep'>(</span><span class='methodParamName'>type</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>dict[str: Resource]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>returns a list of Resource objects of the given type</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>type</span></td><td><p>Valid types are:</p><p></p><p><ul> <li>pattern</li> <li>gradient</li> <li>brush</li> <li>preset</li> <li>palette</li> <li>workspace</li> </ul></p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setActiveDocument">setActiveDocument</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>Document</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>activates the first view that shows the given document</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>the document we want to activate</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setBatchmode">setBatchmode</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>sets the batchmode to value; if true, scripts should not show dialogs or messageboxes.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="version">version</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>Determine the version of Krita</p><p></p><p>Usage: print(Application.version ())</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the version string including git sha1 if Krita was built from git</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="views">views</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[View]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all views. A Document can be shown in more than one view.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="windows">windows</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Window]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a list of all windows</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="writeSetting">writeSetting</a><span class='methodSep'>(</span><span class='methodParamName'>group</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docString'>
+            <p>write the given setting under the given name to the kritarc file in the given settings group.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>group</span></td><td><p>The group the setting belongs to. If empty, then the setting is written in the general section</p></td></tr><tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>The name of the setting</p></td></tr><tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>The value of the setting. Script settings are always written as strings.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+    </body>
+</html>
