@@ -1978,7 +1978,7 @@ class KritaBuildDoc:
 
             returned = f"<span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita {self.__getTagName(implementedFrom)}</span></span>"
             if implementedFrom != lastUpdatedFrom:
-                returned += f"<span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#128472;</span><span class='refTagTag'>Krita {self.__getTagName(lastUpdatedFrom)}</span></span>"
+                returned += f"<span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita {self.__getTagName(lastUpdatedFrom)}</span></span>"
 
             return returned
 
