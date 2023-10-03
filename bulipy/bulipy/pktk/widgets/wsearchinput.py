@@ -37,7 +37,8 @@ from PyQt5.QtCore import (
         pyqtSignal as Signal
     )
 from PyQt5.QtWidgets import (
-        QWidget
+        QWidget,
+        QToolButton
     )
 
 
@@ -47,6 +48,7 @@ from ..modules.listutils import (
         filterExtraSelections
     )
 from ..modules.imgutils import buildIcon
+from .wlabelelide import WLabelElide
 from .wseparator import WVLine
 
 from ..pktk import *
@@ -270,10 +272,11 @@ class WSearchInput(QWidget):
         palette = self.palette()
         color = palette.color(QPalette.Active, QPalette.Text)
         color.setAlpha(128)
-        self.__optionsInfo = QLabel()
-        self.__optionsInfo.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
+        self.__optionsInfo = WLabelElide(Qt.ElideLeft)
+        self.__optionsInfo.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         self.__optionsInfo.setFont(font)
         self.__optionsInfo.setStyleSheet(f"color: {color.name(QColor.HexArgb)};")
+        self.__optionsInfo.setMinimumWidth(1)
 
         self.__wSRInfo = QWidget()
         self.__lSRInfo = QHBoxLayout()
@@ -396,7 +399,7 @@ class WSearchInput(QWidget):
             if self.__options & SearchOptions.HIGHLIGHT == SearchOptions.HIGHLIGHT:
                 optionsInfo.append(i18n('Highlight all found occurences'))
 
-            self.__optionsInfo.setText(f"{i18n('Finding with options:')}<i>{', '.join(optionsInfo)}</i>")
+            self.__optionsInfo.setText(f"{i18n('Finding with options:')} {', '.join(optionsInfo)}")
 
     def __searchTextModified(self):
         """Search value has been modified, emit signal"""
