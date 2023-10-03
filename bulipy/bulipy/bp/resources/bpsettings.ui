@@ -80,7 +80,7 @@
      <item>
       <widget class="QStackedWidget" name="swCatPages">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="pageCatDocuments">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -112,8 +112,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>340</width>
-              <height>202</height>
+              <width>1188</width>
+              <height>763</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
@@ -511,7 +511,7 @@
                 <string notr="true">background-color: palette(light);padding: 6;</string>
                </property>
                <property name="text">
-                <string>Font</string>
+                <string>Helpers</string>
                </property>
                <property name="margin">
                 <number>4</number>
