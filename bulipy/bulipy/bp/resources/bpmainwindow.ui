@@ -212,7 +212,6 @@
     <addaction name="actionViewShowLineNumber"/>
     <addaction name="actionViewShowSpaces"/>
     <addaction name="actionViewShowIndent"/>
-    <addaction name="actionViewHighlightClassesFunctionDeclaration"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>

@@ -418,7 +418,7 @@ class BPMainWindow(QMainWindow):
         self.actionViewShowLineNumber.triggered.connect(self.__uiController.commandViewShowLineNumber)
         self.actionViewShowSpaces.triggered.connect(self.__uiController.commandViewShowSpaces)
         self.actionViewShowIndent.triggered.connect(self.__uiController.commandViewShowIndent)
-        self.actionViewHighlightClassesFunctionDeclaration.triggered.connect(self.__uiController.commandViewHighlightClassesFunctionDeclaration)
+        # self.actionViewHighlightClassesFunctionDeclaration.triggered.connect(self.__uiController.commandViewHighlightClassesFunctionDeclaration)
 
         self.menuView.aboutToShow.connect(self.__menuAboutToShow)
 

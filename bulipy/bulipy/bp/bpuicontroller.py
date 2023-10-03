@@ -1364,10 +1364,14 @@ class BPUIController(QObject):
 
     def commandViewHighlightClassesFunctionDeclaration(self, active):
         """show/hide class/function definition for ALL Python documents"""
-        self.__window.actionViewHighlightClassesFunctionDeclaration.setChecked(active)
-        BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
-        self.__documents.updateSettings()
-        self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
+        # Deactivated as currently have some really boring bugs...
+        # Need to review this
+        #
+        # self.__window.actionViewHighlightClassesFunctionDeclaration.setChecked(active)
+        # BPSettings.set(BPSettingsKey.SESSION_EDITOR_HIGHTLIGHT_FCTCLASSDECL_ACTIVE, self.__window.actionViewHighlightClassesFunctionDeclaration.isChecked())
+        # self.__documents.updateSettings()
+        # self.saveSettings(BPUIController.__DELAYED_SAVESETTINGS_TIMEOUT)
+        pass
 
     def commandViewSetFontSize(self, size):
         """Set font size for ALL document"""
