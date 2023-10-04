@@ -1496,7 +1496,11 @@ class WCodeEditor(QPlainTextEdit):
 
         if self.__languageDef:
             self.__highlighter = WCESyntaxHighlighter(self.document(), self.__languageDef, self)
+            self.__languageDef.tokenizer().setMassUpdate(True)
+            # ts=time.time()
             self.__highlighter.rehighlight()
+            # print("setLanguageDefinition--3 (re higlight)", time.time() - ts)
+            self.__languageDef.tokenizer().setMassUpdate(False)
         else:
             self.__highlighter = None
 
@@ -2427,6 +2431,7 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         self.__cursorLastToken = None
         self.__cursorToken = None
         self.__editor = editor
+        self.__mlRuleType = None
 
     def highlightMultiLine(self, text):
         """Manage color syntax for multilines"""
@@ -2434,54 +2439,68 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         # (if there's none, then nothing will happen)
         multiLineRules = self.__languageDef.tokenizer().rules(Tokenizer.RULES_MULTILINE)
         if len(multiLineRules) > 0:
+            globalIndex = 0
             searchOffset = 0
             # we have multilines rules, need to check status
             for ruleIndex, rule in enumerate(multiLineRules, 1):
+                if self.__mlRuleType is None:
+                    self.__mlRuleType = rule.type()
+
                 # method return a tuple of regular expression
-                regExStart, regExEnd = rule.multiLineRegEx()
+                for mRegExIndex, mRegEx in enumerate(rule.multiLineRegEx()):
+                    globalIndex += 1
+                    regExStart, regExEnd = mRegEx
 
-                if self.previousBlockState() == ruleIndex:
-                    # we're already in a multiline token block
-                    # then need to highlight from first character (position=0)
-                    pStart = 0
-                    pLength = 0
-                else:
-                    # Need to check for current multiline start delimiter
-                    matched = regExStart.match(text, searchOffset)
-                    pStart = matched.capturedStart()
-                    pLength = matched.capturedLength()
-
-                while pStart >= 0:
-                    # a start delimiter is found for current line
-
-                    # check for end delimiter
-                    matched = regExEnd.match(text, pStart + pLength)
-                    pEnd = matched.capturedStart()
-
-                    if pEnd > -1:
-                        # end delimiter found!
-                        formattingLength = pEnd - pStart + pLength + matched.capturedLength()
-                        self.setCurrentBlockState(0)
+                    if self.previousBlockState() == globalIndex:
+                        # we're already in a multiline token block
+                        # then need to highlight from first character (position=0)
+                        pStart = 0
+                        pLength = 0
                     else:
-                        # not found, multiline...
-                        self.setCurrentBlockState(ruleIndex)
-                        formattingLength = len(text) - pStart + pLength
+                        # Need to check for current multiline start delimiter
+                        matched = regExStart.match(text, searchOffset)
+                        pStart = matched.capturedStart()
+                        pLength = matched.capturedLength()
 
-                    # Format text
-                    self.setFormat(pStart, formattingLength, self.__languageDef.style(rule))
+                        matchedText = matched.captured()
+                        for ruleSubType in rule.subTypes():
+                            if ruleSubType[1].search(matchedText):
+                                self.__mlRuleType = ruleSubType[0]
+                                break
 
-                    # update offset for next search
-                    searchOffset = pStart + formattingLength
+                    while pStart >= 0:
+                        # a start delimiter is found for current line
 
-                    # Next match
-                    matched = regExStart.match(text, searchOffset)
-                    pStart = matched.capturedStart()
+                        # check for end delimiter
+                        matched = regExEnd.match(text, pStart + pLength)
+                        pEnd = matched.capturedStart()
 
-                # Return True if we are still inside a multi-line
-                # otherwise need to continue with next multiline rule
-                if self.currentBlockState() == ruleIndex:
-                    return True
+                        if pEnd > -1:
+                            # end delimiter found!
+                            formattingLength = pEnd - pStart + matched.capturedLength()
+                            self.setCurrentBlockState(0)
+                        else:
+                            # not found, multiline...
+                            self.setCurrentBlockState(globalIndex)
+                            formattingLength = len(text) - pStart + pLength
 
+                        # Format text
+                        self.setFormat(pStart, formattingLength, self.__languageDef.style(self.__mlRuleType))
+
+                        # update offset for next search
+                        searchOffset = pStart + formattingLength
+
+                        # Next match
+                        matched = regExStart.match(text, searchOffset)
+                        pStart = matched.capturedStart()
+                        pLength = matched.capturedLength()
+
+                    # Return True if we are still inside a multi-line
+                    # otherwise need to continue with next multiline rule
+                    if self.currentBlockState() == globalIndex:
+                        return True
+
+        self.__mlRuleType = None
         return False
 
     def highlightBlock(self, text):
@@ -2548,4 +2567,3 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
     def lastCursorToken(self):
         """Return last token processed before current token on which cursor is"""
         return self.__cursorLastToken
-
