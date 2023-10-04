@@ -195,7 +195,11 @@ class Token(object):
         self.__type = rule.type()
         # check for subtype
         for subType in rule.subTypes():
-            if subType[1].search(self.__text):
+            if isinstance(subType[1], (list, tuple)):
+                if self.__text in subType[1]:
+                    self.__type = subType[0]
+                    break
+            elif subType[1].search(self.__text):
                 self.__type = subType[0]
                 break
 
@@ -539,7 +543,7 @@ class TokenizerRule(object):
             Mainly, this can be used to pre-process tokens like:
             - pre-convert a "number" as real number   (ie: value "45.7" <str> will be converted as 45.7 <float>)
         Given `subtypes` allows to define sub type for token (ie: if token match subtype then use subtype instead of type)
-            Provided `subtypes` is a list of tuple(<TokenType>, <str>)
+            Provided `subtypes` is a list of tuple(<TokenType>, <str>) or tuple(<TokenType>, <list>)
             If there's subtype and token match <str> (a regular expression) then token type is set to subtype
         Given `multiLineStart` and `multiLineEnd` allows to define regular exspression to define multiline token like python long string of C comments
             Used only for syntax highlighting (managed line by line)
@@ -770,11 +774,14 @@ class TokenizerRule(object):
             for subType in subTypes:
                 if isinstance(subType, tuple):
                     if isinstance(subType[0], TokenType):
-                        try:
-                            self.__subTypes.append((subType[0], re.compile(subType[1], flags=flags)))
-                        except Exception:
-                            self.__error.append("Given sub-type must be a valid list of tuples(<TokenType>, <str>)")
-                            return
+                        if isinstance(subType[1], str):
+                            try:
+                                self.__subTypes.append((subType[0], re.compile(subType[1], flags=flags)))
+                            except Exception:
+                                self.__error.append("Given sub-type must be a valid list of tuples(<TokenType>, <str>)")
+                                return
+                        elif isinstance(subType[1], (list, tuple)):
+                            self.__subTypes.append(subType)
                     else:
                         self.__error.append("Given sub-type must be a valid list of tuples(<TokenType>, <str>)")
                         return
