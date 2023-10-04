@@ -493,12 +493,9 @@ class BPUIController(QObject):
             if document.languageDefinition().name() == 'Python':
                 if currentToken.type() in (BPLanguageDefPython.ITokenType.STRING,
                                            BPLanguageDefPython.ITokenType.BSTRING,
-                                           BPLanguageDefPython.ITokenType.STRING_LONG_S,
-                                           BPLanguageDefPython.ITokenType.STRING_LONG_D,
-                                           BPLanguageDefPython.ITokenType.FSTRING_LONG_S,
-                                           BPLanguageDefPython.ITokenType.FSTRING_LONG_D,
-                                           BPLanguageDefPython.ITokenType.BSTRING_LONG_S,
-                                           BPLanguageDefPython.ITokenType.BSTRING_LONG_D):
+                                           BPLanguageDefPython.ITokenType.STRING_LONG,
+                                           BPLanguageDefPython.ITokenType.FSTRING_LONG,
+                                           BPLanguageDefPython.ITokenType.BSTRING_LONG):
                     if results := re.search(r'''^(["'])(#(?:[A-F0-9]{6}|[A-F0-9]{8}))(\1)$''', currentToken.value(), flags=re.I):
                         # color code
                         self.__dwColorPicker.setColor(results.groups()[1])
@@ -506,7 +503,7 @@ class BPUIController(QObject):
                         return
                     elif previous := currentToken.previous():
                         # icon reference?
-                        if previous.type() == BPLanguageDefPython.ITokenType.DELIMITER_PARENTHESIS_OPEN:
+                        if previous.type() == BPLanguageDefPython.ITokenType.DELIMITER and previous.value() == '(':
                             if previousFct := previous.previous():
                                 if previousFct.type() == BPLanguageDefPython.ITokenType.IDENTIFIER:
                                     if previousFct.value() == 'icon':

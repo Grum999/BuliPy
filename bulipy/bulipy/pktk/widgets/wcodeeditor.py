@@ -979,6 +979,8 @@ class WCodeEditor(QPlainTextEdit):
         extraSelections = self.extraSelections()
         newExtraSelection = []
 
+        blockText = block.text()
+
         userData = block.userData()
         if userData:
             userDataExtraSelection = userData.extraSelections()
@@ -987,42 +989,47 @@ class WCodeEditor(QPlainTextEdit):
             userData = WCodeEditorBlockUserData()
             block.setUserData(userData)
 
-        if userData.text() == block.text():
+        if userData.text() == blockText:
             # text unchanged, use tokens
             tokens = userData.tokens()
         elif self.__languageDef is not None:
             # text changed, update tokens
-            tokens = self.__languageDef.tokenizer().tokenize(block.text())
+            tokens = self.__languageDef.tokenizer().tokenize(blockText)
             userData.setTokens(tokens)
-            userData.setText(block.text())
+            userData.setText(blockText)
         else:
             tokens = None
 
-        lineNumber = block.blockNumber()
-        for rule in self.__highlightedLinesRules:
-            filterExtraSelections(userDataExtraSelection, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
-            filterExtraSelections(extraSelections, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+        if len(self.__highlightedLinesRules):
+            updated = False
+            lineNumber = block.blockNumber()
+            for rule in self.__highlightedLinesRules:
+                filterExtraSelections(userDataExtraSelection, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+                filterExtraSelections(extraSelections, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
 
-            if toApply := rule.highlight(block, tokens, lineNumber, isCurrentLine):
-                selection = QTextEdit.ExtraSelection()
+                if toApply := rule.highlight(block, tokens, lineNumber, isCurrentLine):
+                    selection = QTextEdit.ExtraSelection()
 
-                selection.format.setBackground(toApply[1])
-                selection.format.setProperty(QTextFormat.FullWidthSelection, True)
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, toApply[0])
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_SHOWGUTTER, toApply[2])
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, lineNumber)
-                selection.cursor = QTextCursor(block)
+                    selection.format.setBackground(toApply[1])
+                    selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, toApply[0])
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_SHOWGUTTER, toApply[2])
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, lineNumber)
+                    selection.cursor = QTextCursor(block)
 
-                extraSelections.append(selection)
-                userDataExtraSelection.append(selection)
+                    extraSelections.append(selection)
+                    userDataExtraSelection.append(selection)
+                    updated = True
 
-        sortExtraSelections(userDataExtraSelection)
-        sortExtraSelections(extraSelections)
-        self.setExtraSelections(extraSelections)
+            if updated:
+                sortExtraSelections(userDataExtraSelection)
+                sortExtraSelections(extraSelections)
+                self.setExtraSelections(extraSelections)
 
-        # user data already exists, need to update it
-        userData.setExtraSelections(userDataExtraSelection)
-        #block.setUserData(userData)
+                # user data already exists, need to update it
+                userData.setExtraSelections(userDataExtraSelection)
+        # no need - updates made on user are already taken in account
+        # block.setUserData(userData)
 
     def highlightedLineRules(self):
         """Return defined to highlight lines"""
@@ -1489,7 +1496,11 @@ class WCodeEditor(QPlainTextEdit):
 
         if self.__languageDef:
             self.__highlighter = WCESyntaxHighlighter(self.document(), self.__languageDef, self)
+            self.__languageDef.tokenizer().setMassUpdate(True)
+            # ts=time.time()
             self.__highlighter.rehighlight()
+            # print("setLanguageDefinition--3 (re higlight)", time.time() - ts)
+            self.__languageDef.tokenizer().setMassUpdate(False)
         else:
             self.__highlighter = None
 
@@ -2072,7 +2083,7 @@ class WCodeEditor(QPlainTextEdit):
         if not isinstance(themeId, str):
             raise EInvalidType("Given `themeId` must be a <str>")
 
-        if themeId in self.__themes:
+        if themeId != self.__currentTheme and themeId in self.__themes:
             self.__currentTheme = themeId
 
             self.setUpdatesEnabled(False)
@@ -2420,6 +2431,7 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         self.__cursorLastToken = None
         self.__cursorToken = None
         self.__editor = editor
+        self.__mlRuleType = None
 
     def highlightMultiLine(self, text):
         """Manage color syntax for multilines"""
@@ -2427,54 +2439,68 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         # (if there's none, then nothing will happen)
         multiLineRules = self.__languageDef.tokenizer().rules(Tokenizer.RULES_MULTILINE)
         if len(multiLineRules) > 0:
+            globalIndex = 0
             searchOffset = 0
             # we have multilines rules, need to check status
             for ruleIndex, rule in enumerate(multiLineRules, 1):
+                if self.__mlRuleType is None:
+                    self.__mlRuleType = rule.type()
+
                 # method return a tuple of regular expression
-                regExStart, regExEnd = rule.multiLineRegEx()
+                for mRegExIndex, mRegEx in enumerate(rule.multiLineRegEx()):
+                    globalIndex += 1
+                    regExStart, regExEnd = mRegEx
 
-                if self.previousBlockState() == ruleIndex:
-                    # we're already in a multiline token block
-                    # then need to highlight from first character (position=0)
-                    pStart = 0
-                    pLength = 0
-                else:
-                    # Need to check for current multiline start delimiter
-                    matched = regExStart.match(text, searchOffset)
-                    pStart = matched.capturedStart()
-                    pLength = matched.capturedLength()
-
-                while pStart >= 0:
-                    # a start delimiter is found for current line
-
-                    # check for end delimiter
-                    matched = regExEnd.match(text, pStart + pLength)
-                    pEnd = matched.capturedStart()
-
-                    if pEnd > -1:
-                        # end delimiter found!
-                        formattingLength = pEnd - pStart + pLength + matched.capturedLength()
-                        self.setCurrentBlockState(0)
+                    if self.previousBlockState() == globalIndex:
+                        # we're already in a multiline token block
+                        # then need to highlight from first character (position=0)
+                        pStart = 0
+                        pLength = 0
                     else:
-                        # not found, multiline...
-                        self.setCurrentBlockState(ruleIndex)
-                        formattingLength = len(text) - pStart + pLength
+                        # Need to check for current multiline start delimiter
+                        matched = regExStart.match(text, searchOffset)
+                        pStart = matched.capturedStart()
+                        pLength = matched.capturedLength()
 
-                    # Format text
-                    self.setFormat(pStart, formattingLength, self.__languageDef.style(rule))
+                        matchedText = matched.captured()
+                        for ruleSubType in rule.subTypes():
+                            if ruleSubType[1].search(matchedText):
+                                self.__mlRuleType = ruleSubType[0]
+                                break
 
-                    # update offset for next search
-                    searchOffset = pStart + formattingLength
+                    while pStart >= 0:
+                        # a start delimiter is found for current line
 
-                    # Next match
-                    matched = regExStart.match(text, searchOffset)
-                    pStart = matched.capturedStart()
+                        # check for end delimiter
+                        matched = regExEnd.match(text, pStart + pLength)
+                        pEnd = matched.capturedStart()
 
-                # Return True if we are still inside a multi-line
-                # otherwise need to continue with next multiline rule
-                if self.currentBlockState() == ruleIndex:
-                    return True
+                        if pEnd > -1:
+                            # end delimiter found!
+                            formattingLength = pEnd - pStart + matched.capturedLength()
+                            self.setCurrentBlockState(0)
+                        else:
+                            # not found, multiline...
+                            self.setCurrentBlockState(globalIndex)
+                            formattingLength = len(text) - pStart + pLength
 
+                        # Format text
+                        self.setFormat(pStart, formattingLength, self.__languageDef.style(self.__mlRuleType))
+
+                        # update offset for next search
+                        searchOffset = pStart + formattingLength
+
+                        # Next match
+                        matched = regExStart.match(text, searchOffset)
+                        pStart = matched.capturedStart()
+                        pLength = matched.capturedLength()
+
+                    # Return True if we are still inside a multi-line
+                    # otherwise need to continue with next multiline rule
+                    if self.currentBlockState() == globalIndex:
+                        return True
+
+        self.__mlRuleType = None
         return False
 
     def highlightBlock(self, text):
@@ -2484,7 +2510,7 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         Then only a subset of entire source code is highlithed here
         It's a problem for multiline text highlighting like
         - multiline comment in C /*  ...  */
-        - multiline string in Pyhton  '''  ...  '''
+        - multiline string in Python  '''  ...  '''
 
         The thing is the current item to parse may not know the previous/next lines define begin/end of multiline text
         """
@@ -2510,6 +2536,9 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
 
         self.__editor.checkIfHighlighted(self.currentBlock(), not notCurrentLine)
         tokens = self.currentBlock().userData().tokens()
+
+        if not tokens or tokens.length() == 0:
+            return
 
         cursor = self.__editor.textCursor()
         cursorPosition = cursor.selectionEnd()
@@ -2538,4 +2567,3 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
     def lastCursorToken(self):
         """Return last token processed before current token on which cursor is"""
         return self.__cursorLastToken
-

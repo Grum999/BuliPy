@@ -518,18 +518,65 @@ class WBPDocument(WBPDocumentBase):
         """Close document"""
         self.__stopWatcher()
 
-        self.__codeEditor.readOnlyModeChanged.disconnect()
-        self.__codeEditor.overwriteModeChanged.disconnect()
-        self.__codeEditor.cursorCoordinatesChanged.disconnect()
-        self.__codeEditor.modificationChanged.disconnect()
-        self.__codeEditor.textChanged.disconnect()
-        self.__codeEditor.redoAvailable.disconnect()
-        self.__codeEditor.undoAvailable.disconnect()
-        self.__codeEditor.selectionChanged.disconnect()
-        self.__codeEditor.copyAvailable.disconnect()
-        self.__codeEditor.fontSizeChanged.disconnect()
-        self.__codeEditor.textCopyToClipboard.disconnect()
-        self.__codeEditor.textCutToClipboard.disconnect()
+        try:
+            self.__codeEditor.readOnlyModeChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.overwriteModeChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.cursorCoordinatesChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.modificationChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.textChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.redoAvailable.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.undoAvailable.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.selectionChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.copyAvailable.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.fontSizeChanged.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.textCopyToClipboard.disconnect()
+        except Exception:
+            pass
+
+        try:
+            self.__codeEditor.textCutToClipboard.disconnect()
+        except Exception:
+            pass
 
         if deleteCache:
             self.deleteCache()
@@ -973,8 +1020,6 @@ class BPDocuments(QObject):
         self.__currentDocument = None
         self.__currentCursorToken = None
 
-        self.__optionAutoCompletionHelp = True
-
         # define if there's currently a mass update and we need to avoid to updated all opened documents
         self.__massUpdate = 0
 
@@ -1059,8 +1104,6 @@ class BPDocuments(QObject):
         document.fileExternallyChanged.connect(self.__fileExternallyChanged)
         document.textCopyToClipboard.connect(self.__textCopyToClipboard)
         document.textCutToClipboard.connect(self.__textCutToClipboard)
-
-        document.codeEditor().setOptionAutoCompletionHelp(self.__optionAutoCompletionHelp)
 
         # emit signal the new document has been added
         self.documentAdded.emit(document)
