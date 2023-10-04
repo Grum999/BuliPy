@@ -877,6 +877,9 @@ class Tokenizer(object):
         # a cache to store tokenized code
         self.__cache = {}
         self.__cacheOrdered = []
+        self.__cacheLastCleared = time.time()
+
+        self.__massUpdate = False
 
         # when True, for token including spaces, reduce consecutive spaces to 1
         # example: 'set    value'
@@ -942,26 +945,32 @@ class Tokenizer(object):
         """Update cache content
 
         If no tokens is provided, consider to update existing hashValue
+        If in self.__massUpdate, do not maintain oredered cache as it's useless '
         """
         if tokens is True:
             # update cache timestamp
             # ==> assume that hashvalue exists in cache!!
-            index = self.__cacheOrdered.index(hashValue)
-            self.__cacheOrdered.pop(self.__cacheOrdered.index(hashValue))
             self.__cache[hashValue][0] = time.time()
-            self.__cacheOrdered.append(hashValue)
-            self.__cache[hashValue][1].resetIndex()
+            if not self.__massUpdate:
+                self.__cache[hashValue][1].resetIndex()
+                index = self.__cacheOrdered.index(hashValue)
+                self.__cacheOrdered.pop(self.__cacheOrdered.index(hashValue))
+                self.__cacheOrdered.append(hashValue)
         elif tokens is False:
             # remove from cache
             # ==> assume that hashvalue exists in cache!!
-            index = self.__cacheOrdered.index(hashValue)
-            self.__cacheOrdered.pop(self.__cacheOrdered.index(hashValue))
-            self.__cache.pop(hashValue)
+            if not self.__massUpdate:
+                index = self.__cacheOrdered.index(hashValue)
+                self.__cacheOrdered.pop(self.__cacheOrdered.index(hashValue))
+                self.__cache.pop(hashValue)
         else:
             # add to cache
-            self.__cache[hashValue] = [time.time(), tokens, len(self.__cacheOrdered)]
-            self.__cacheOrdered.append(hashValue)
-            self.__cache[hashValue][1].resetIndex()
+            if not self.__massUpdate:
+                self.__cache[hashValue] = [time.time(), tokens, len(self.__cacheOrdered)]
+                self.__cache[hashValue][1].resetIndex()
+                self.__cacheOrdered.append(hashValue)
+            else:
+                self.__cache[hashValue] = [time.time(), tokens, 0]
 
     def indent(self):
         """Return current indent value used to generate INDENT/DEDENT tokens"""
@@ -1065,7 +1074,7 @@ class Tokenizer(object):
         """Return current built regular expression used for lexer"""
         def ruleInsensitive(rule):
             if rule.caseInsensitive():
-                return f"(?:(?i){rule.regEx().pattern()})"
+                return f"(?i)(?:{rule.regEx().pattern()})"
             else:
                 return rule.regEx().pattern()
 
@@ -1083,23 +1092,25 @@ class Tokenizer(object):
 
         Otherwise clear oldest values
         - At least 5 items are kept in cache
-        - At most, 250 items are kept in cache
+        - At most, 500 items are kept in cache
         """
+        currentTime = time.time()
         if full:
             self.__cache = {}
             self.__cacheOrdered = []
-        else:
-            currentTime = time.time()
+            self.__cacheLastCleared = currentTime
+        elif self.__massUpdate is False and currentTime - self.__cacheLastCleared > 120:
             # keep at least, five items
             for key in self.__cacheOrdered[:-5]:
                 if (currentTime - self.__cache[key][0]) > 120:
                     # older than than 2minutes, clear it
                     self.__setCache(key, False)
 
-            if len(self.__cacheOrdered) > 250:
-                keys = self.__cacheOrdered[:-250]
+            if len(self.__cacheOrdered) > 500:
+                keys = self.__cacheOrdered[:-500]
                 for key in keys:
                     self.__setCache(key, False)
+            self.__cacheLastCleared = currentTime
 
     def simplifyTokenSpaces(self):
         """Return if option 'simplify token spaces' is active or not"""
@@ -1113,6 +1124,29 @@ class Tokenizer(object):
         if value != self.__simplifyTokenSpaces:
             self.__simplifyTokenSpaces = value
             self.__needUpdate = True
+
+    def massUpdate(self):
+        """Return if tokenizer is in a mass udpate state or not"""
+        return self.__massUpdate
+
+    def setMassUpdate(self, value):
+        """Set if tokenizer is in a mass udpate state or not
+
+        It could be usefull to set the massupdate to True when tokenize() method is called many times in a very short time (tokenize all lines of a file for example)
+        to reduce tokenization time
+        In this situation, ordered cache + automatic cleanup is disabled during operation
+
+        Whe nset to true, cache is automatically ordered and cleanup applied
+        """
+        if value != self.__massUpdate and isinstance(value, bool):
+            self.__massUpdate = value
+            if self.__massUpdate is False:
+                # item[1][0] ==> 1-> item value; 0 -> value time
+                self.__cacheOrdered = [item[0] for item in sorted(self.__cache.items(), key=lambda item: item[1][0])]
+                self.clearCache(False)
+                # reset idnex for all tokens item
+                for item in self.__cache.values():
+                    item[1].resetIndex()
 
     def tokenize(self, text):
         """Tokenize given text
@@ -1139,12 +1173,10 @@ class Tokenizer(object):
             # nothing to process (empty string and/or no rules?)
             return Tokens(text, returned)
 
-        textHash = hashlib.sha1()
-        textHash.update(text.encode())
-        hashValue = textHash.hexdigest()
+        hashValue = hashlib.blake2b(text.encode(), digest_size=64).digest()
 
         if hashValue in self.__cache:
-            # udpate
+            # update
             self.__setCache(hashValue, True)
             # need to clear unused items in cache
             self.clearCache(False)
@@ -1175,16 +1207,10 @@ class Tokenizer(object):
                     # ==> loop on rules, check one by one if token match rule
                     #     if yes, then token type is known
 
-                    if rule.caseInsensitive():
-                        options = QRegularExpression.CaseInsensitiveOption | QRegularExpression.UseUnicodePropertiesOption
-                    else:
-                        options = QRegularExpression.NoPatternOption | QRegularExpression.UseUnicodePropertiesOption
-
                     if rule.regEx(True).match(tokenText).hasMatch():
                         if regex := rule.regExLookBehind():
                             # need to check if not preceded by
-                            checkText = text[0:match.capturedStart(textIndex)]
-                            matchedP = regex.match(checkText)
+                            matchedP = regex.match(text[0:match.capturedStart(textIndex)])
                             if matchedP.hasMatch():
                                 if regex.isNegative:
                                     # there's a match and we have a negative look behind, search next rule
@@ -1196,8 +1222,7 @@ class Tokenizer(object):
 
                         if regex := rule.regExLookAhead():
                             # need to check if not followed by
-                            checkText = text[match.capturedStart(textIndex)+match.capturedLength(textIndex):]
-                            matchedF = regex.match(checkText)
+                            matchedF = regex.match(text[match.capturedStart(textIndex)+match.capturedLength(textIndex):])
                             if matchedF.hasMatch():
                                 if regex.isNegative:
                                     # there's a match and we have a negative look behind, search next rule
