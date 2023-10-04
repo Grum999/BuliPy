@@ -979,6 +979,8 @@ class WCodeEditor(QPlainTextEdit):
         extraSelections = self.extraSelections()
         newExtraSelection = []
 
+        blockText = block.text()
+
         userData = block.userData()
         if userData:
             userDataExtraSelection = userData.extraSelections()
@@ -987,42 +989,47 @@ class WCodeEditor(QPlainTextEdit):
             userData = WCodeEditorBlockUserData()
             block.setUserData(userData)
 
-        if userData.text() == block.text():
+        if userData.text() == blockText:
             # text unchanged, use tokens
             tokens = userData.tokens()
         elif self.__languageDef is not None:
             # text changed, update tokens
-            tokens = self.__languageDef.tokenizer().tokenize(block.text())
+            tokens = self.__languageDef.tokenizer().tokenize(blockText)
             userData.setTokens(tokens)
-            userData.setText(block.text())
+            userData.setText(blockText)
         else:
             tokens = None
 
-        lineNumber = block.blockNumber()
-        for rule in self.__highlightedLinesRules:
-            filterExtraSelections(userDataExtraSelection, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
-            filterExtraSelections(extraSelections, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+        if len(self.__highlightedLinesRules):
+            updated = False
+            lineNumber = block.blockNumber()
+            for rule in self.__highlightedLinesRules:
+                filterExtraSelections(userDataExtraSelection, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
+                filterExtraSelections(extraSelections, lineNumber, EXTRASELECTION_FILTER_REMOVE, WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, False, True)
 
-            if toApply := rule.highlight(block, tokens, lineNumber, isCurrentLine):
-                selection = QTextEdit.ExtraSelection()
+                if toApply := rule.highlight(block, tokens, lineNumber, isCurrentLine):
+                    selection = QTextEdit.ExtraSelection()
 
-                selection.format.setBackground(toApply[1])
-                selection.format.setProperty(QTextFormat.FullWidthSelection, True)
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, toApply[0])
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_SHOWGUTTER, toApply[2])
-                selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, lineNumber)
-                selection.cursor = QTextCursor(block)
+                    selection.format.setBackground(toApply[1])
+                    selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_TYPE, toApply[0])
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_SHOWGUTTER, toApply[2])
+                    selection.format.setProperty(WCodeEditor.__EXTRASELECTIONPROP_LINENUMBER, lineNumber)
+                    selection.cursor = QTextCursor(block)
 
-                extraSelections.append(selection)
-                userDataExtraSelection.append(selection)
+                    extraSelections.append(selection)
+                    userDataExtraSelection.append(selection)
+                    updated = True
 
-        sortExtraSelections(userDataExtraSelection)
-        sortExtraSelections(extraSelections)
-        self.setExtraSelections(extraSelections)
+            if updated:
+                sortExtraSelections(userDataExtraSelection)
+                sortExtraSelections(extraSelections)
+                self.setExtraSelections(extraSelections)
 
-        # user data already exists, need to update it
-        userData.setExtraSelections(userDataExtraSelection)
-        #block.setUserData(userData)
+                # user data already exists, need to update it
+                userData.setExtraSelections(userDataExtraSelection)
+        # no need - updates made on user are already taken in account
+        # block.setUserData(userData)
 
     def highlightedLineRules(self):
         """Return defined to highlight lines"""
@@ -2072,7 +2079,7 @@ class WCodeEditor(QPlainTextEdit):
         if not isinstance(themeId, str):
             raise EInvalidType("Given `themeId` must be a <str>")
 
-        if themeId in self.__themes:
+        if themeId != self.__currentTheme and themeId in self.__themes:
             self.__currentTheme = themeId
 
             self.setUpdatesEnabled(False)
@@ -2484,7 +2491,7 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
         Then only a subset of entire source code is highlithed here
         It's a problem for multiline text highlighting like
         - multiline comment in C /*  ...  */
-        - multiline string in Pyhton  '''  ...  '''
+        - multiline string in Python  '''  ...  '''
 
         The thing is the current item to parse may not know the previous/next lines define begin/end of multiline text
         """
@@ -2510,6 +2517,9 @@ class WCESyntaxHighlighter(QSyntaxHighlighter):
 
         self.__editor.checkIfHighlighted(self.currentBlock(), not notCurrentLine)
         tokens = self.currentBlock().userData().tokens()
+
+        if not tokens or tokens.length() == 0:
+            return
 
         cursor = self.__editor.textCursor()
         cursorPosition = cursor.selectionEnd()
