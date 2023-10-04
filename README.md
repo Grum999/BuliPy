@@ -314,6 +314,8 @@ Open *BuliPy* PyKrita API documentation in browser (local files).
 ### Krita Scripting School
 Open *Krita Scripting School* website in browser.
 
+### PyKrita Python definition for IDE
+If your IDE support Python language and can interpret python files, you can download [krita.py](https://github.com/Grum999/BuliPy/blob/main/bulipy/bulipy/bp/resources/docs/krita.py) from repository and use it for your IDE.
 
 </details>
 
@@ -347,7 +349,7 @@ Not tested on windows & MacOs
 
 ### What's new?
 
-_[2023-10-03] Version 0.1.0b_ *[Show detailed release content](./releases-notes/RELEASE-0.1.0b.md)*
+_[2023-10-04] Version 0.1.0b_ *[Show detailed release content](./releases-notes/RELEASE-0.1.0b.md)*
 - First implemented/released version!
 
 
@@ -362,14 +364,13 @@ Since krita 5.2, for some user like me, typing dead keys like circumflex charact
 ### What’s next?
 
 > ***BuliPy* plugin is not an IDE**
-> Even if it provides more functionnalities than *Scripter*, it's not the goal to have a complete IDE 🙂
+> Even if it provides more functionnalities than default *Scripter*, it's not the goal to have a complete IDE 🙂
 
 Some stuff I still have to implement
 - Improve search (search next, pre-fill search text with current selected text)
 - Split window (view mutliple document at the same time)
 - Theme editor (let user define is own color syntax setup)
 - Theme integration (currently 'dark' themes are supported, 'light' themes are partially supported)
-- Improve clipboard (allow to activate/deactivate, auto-cleanup on session start, autocleanup rules)
 - Manipulate document: filter from rules
 - Manipulate document: Pretiffy function for JSON/XML
 
