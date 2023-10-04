@@ -47,7 +47,7 @@ class BPLanguageDefPython(LanguageDef):
         KEYWORD_OPERATOR = ('kwrd_operator', 'A keyword operator')
 
         BUILTIN_FUNC = ('builtin_fct', 'Built-in function')
-        # BUILTIN_EXCEPTION = ('builtin_except', 'Built-in exception')
+        BUILTIN_EXCEPTION = ('builtin_except', 'Built-in exception')
 
         OPERATORS = ('operators', 'Operators like plus, minus, divide, ...')
 
@@ -97,33 +97,6 @@ class BPLanguageDefPython(LanguageDef):
                           caseInsensitive=True,
                           ignoreIndent=True),
 
-            # ---
-            # https://docs.python.org/3.10/reference/lexical_analysis.html#keywords
-            TokenizerRule(BPLanguageDefPython.ITokenType.KEYWORD,
-                          r"\b(?:"
-                          r"yield|"
-                          r"with|while|"
-                          r"try|"
-                          r"return|raise|"
-                          r"pass|"
-                          r"nonlocal|"
-                          r"lambda|"
-                          r"import|if|"
-                          r"global|"
-                          r"from|for|finally|"
-                          r"except|else|elif|"
-                          r"del|def|"
-                          r"continue|class|"
-                          r"break|"
-                          r"await|async|assert|as"
-                          r")\b",
-                          caseInsensitive=False,
-                          ignoreIndent=True),
-            TokenizerRule(BPLanguageDefPython.ITokenType.KEYWORD_OPERATOR,
-                          r"\b(?:and|in|is|or|not)\b",
-                          caseInsensitive=False,
-                          ignoreIndent=True),
-
             # --
             # https://docs.python.org/3.10/library/functions.html
             TokenizerRule(BPLanguageDefPython.ITokenType.BUILTIN_FUNC,
@@ -152,42 +125,6 @@ class BPLanguageDefPython(LanguageDef):
                           caseInsensitive=False,
                           ignoreIndent=True),
 
-            # --
-            # https://docs.python.org/3.10/library/exceptions.html
-            # TokenizerRule(BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION,
-            #              r"\b(?:"
-            #              r"ZeroDivisionError|"
-            #              r"Warning|"
-            #              r"ValueError|"
-            #              r"UserWarning|UnicodeWarning|UnicodeTranslateError|UnicodeError|UnicodeEncodeError|UnicodeDecodeError|UnboundLocalError|"
-            #              r"TypeError|TimeoutError|TabError|"
-            #              r"SystemExit|SystemError|SyntaxWarning|SyntaxError|StopIteration|StopAsyncIteration|"
-            #              r"RuntimeWarning|RuntimeError|ResourceWarning|ReferenceError|RecursionError|"
-            #              r"ProcessLookupError|PermissionError|PendingDeprecationWarning|"
-            #              r"OverflowError|OSError|"
-            #              r"NotImplementedError|NotADirectoryError|NameError|"
-            #              r"ModuleNotFoundError|MemoryError|"
-            #              r"LookupError|"
-            #              r"KeyboardInterrupt|KeyError|"
-            #              r"IsADirectoryError|InterruptedError|IndexError|IndentationError|ImportWarning|ImportError|"
-            #              r"GeneratorExit|"
-            #              r"FutureWarning|FloatingPointError|FileNotFoundError|FileExistsError|"
-            #              r"Exception|EncodingWarning|EOFError|"
-            #              r"DeprecationWarning|"
-            #              r"ConnectionResetError|ConnectionRefusedError|ConnectionError|ConnectionAbortedError|ChildProcessError|"
-            #              r"BytesWarning|BufferError|BrokenPipeError|BlockingIOError|BaseException|"
-            #              r"AttributeError|AssertionError|ArithmeticError"
-            #              r")\b",
-            #              caseInsensitive=False),
-
-            # --
-            # https://docs.python.org/3.10/library/constants.html
-            # https://docs.python.org/3.10/reference/lexical_analysis.html#soft-keywords
-            TokenizerRule(BPLanguageDefPython.ITokenType.KEYWORD_CONSTANT,
-                          r"\b(?:Ellipsis|False|None|True|NotImplemented|case|match|_)\b",
-                          caseInsensitive=False,
-                          ignoreIndent=True),
-
             # ---
             # https://docs.python.org/3.10/reference/lexical_analysis.html#integer-literals (+Imaginary literals)
             # https://docs.python.org/3.10/reference/lexical_analysis.html#floating-point-literals (+Imaginary literals)
@@ -210,6 +147,41 @@ class BPLanguageDefPython(LanguageDef):
             # https://docs.python.org/3.10/reference/lexical_analysis.html#identifiers
             TokenizerRule(BPLanguageDefPython.ITokenType.IDENTIFIER,
                           r"\b(?:[a-zA-Z_][a-zA-Z0-9_]*)\b",
+                          subTypes=[
+                                    # https://docs.python.org/3.10/library/constants.html
+                                    # https://docs.python.org/3.10/reference/lexical_analysis.html#soft-keywords
+                                    (BPLanguageDefPython.ITokenType.KEYWORD_CONSTANT, ['None', 'False', 'True', 'case', 'match', '_', 'Ellipsis', 'NotImplemented']),
+                                    # https://docs.python.org/3.10/reference/lexical_analysis.html#keywords
+                                    (BPLanguageDefPython.ITokenType.KEYWORD_OPERATOR, ['and', 'in', 'is', 'or', 'not']),
+                                    (BPLanguageDefPython.ITokenType.KEYWORD, ['for', 'if', 'else', 'elif', 'return',
+                                                                              'def', 'class',
+                                                                              'with', 'as', 'while', 'try', 'except',
+                                                                              'continue', 'break',
+                                                                              'import', 'from', 'pass',
+                                                                              'lambda', 'global', 'yield',
+                                                                              'finally', 'del',
+                                                                              'nonlocal', 'raise',
+                                                                              'await', 'async', 'assert']),
+                                    # https://docs.python.org/3.10/library/exceptions.html
+                                    (BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION, ['ZeroDivisionError', 'Warning', 'ValueError',
+                                                                                        'UserWarning', 'UnicodeWarning', 'UnicodeTranslateError', 'UnicodeError',
+                                                                                        'UnicodeEncodeError', 'UnicodeDecodeError', 'UnboundLocalError',
+                                                                                        'TypeError', 'TimeoutError', 'TabError', 'SystemExit', 'SystemError', 'SyntaxWarning',
+                                                                                        'SyntaxError', 'StopIteration', 'StopAsyncIteration', 'RuntimeWarning',
+                                                                                        'RuntimeError', 'ResourceWarning', 'ReferenceError', 'RecursionError',
+                                                                                        'ProcessLookupError', 'PermissionError', 'PendingDeprecationWarning',
+                                                                                        'OverflowError', 'OSError', 'NotImplementedError', 'NotADirectoryError',
+                                                                                        'NameError', 'ModuleNotFoundError', 'MemoryError', 'LookupError',
+                                                                                        'KeyboardInterrupt', 'KeyError', 'IsADirectoryError', 'InterruptedError',
+                                                                                        'IndexError', 'IndentationError', 'ImportWarning', 'ImportError',
+                                                                                        'GeneratorExit', 'FutureWarning', 'FloatingPointError', 'FileNotFoundError',
+                                                                                        'FileExistsError', 'Exception', 'EncodingWarning', 'EOFError',
+                                                                                        'DeprecationWarning', 'ConnectionResetError', 'ConnectionRefusedError',
+                                                                                        'ConnectionError', 'ConnectionAbortedError', 'ChildProcessError',
+                                                                                        'BytesWarning', 'BufferError', 'BrokenPipeError', 'BlockingIOError',
+                                                                                        'BaseException', 'AttributeError', 'AssertionError', 'ArithmeticError'
+                                                                                        ]),
+                                    ],
                           caseInsensitive=False,
                           ignoreIndent=True),
 
@@ -279,6 +251,8 @@ class BPLanguageDefPython(LanguageDef):
             (BPLanguageDefPython.ITokenType.DECL_CLASS, '#ffe066', True, False),
             (BPLanguageDefPython.ITokenType.DECL_FUNC, '#ffe066', True, False),
 
+            (BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION, '#ef5438', True, False),
+
             (BPLanguageDefPython.ITokenType.IDENTIFIER, '#e6e6e6', False, False),
             (BPLanguageDefPython.ITokenType.DECORATOR, '#ffffe6', True, True),
 
@@ -310,6 +284,8 @@ class BPLanguageDefPython(LanguageDef):
 
             (BPLanguageDefPython.ITokenType.DECL_CLASS, '#00019C', True, False),
             (BPLanguageDefPython.ITokenType.DECL_FUNC, '#00019C', True, False),
+
+            (BPLanguageDefPython.ITokenType.BUILTIN_EXCEPTION, '#ef5438', True, False),
 
             (BPLanguageDefPython.ITokenType.IDENTIFIER, '#333333', False, True),
             (BPLanguageDefPython.ITokenType.DECORATOR, '#8D8D7F', True, True),
