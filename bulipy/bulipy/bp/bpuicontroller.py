@@ -376,6 +376,10 @@ class BPUIController(QObject):
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_FONTSIZE,          BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE))
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_COLUMN,       BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN))
         self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_SORT_ORDER,        BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_ACTIVE,            BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_ACTIVE))
+        self.__dwClipboard.setOption(BPDockWidgetClipboard.OPTION_STARTUPCLEAR,      BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_STARTUPCLEAR))
+        if BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_STARTUPCLEAR):
+            self.__dwClipboard.clear()
 
         self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_BTN_REGEX,         BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED))
         self.__dwQuickPyKritaApi.setOption(BPDockWidgetQuickKritaApi.OPTION_BTN_CASESENSITIVE, BPSettings.get(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED))
@@ -911,6 +915,8 @@ class BPUIController(QObject):
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_FONTSIZE))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_COLUMN))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_SORT_ORDER))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_ACTIVE, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_ACTIVE))
+        BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_STARTUPCLEAR, self.__dwClipboard.option(BPDockWidgetClipboard.OPTION_STARTUPCLEAR))
 
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_BTN_REGEX))
         BPSettings.set(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED, self.__dwQuickPyKritaApi.option(BPDockWidgetQuickKritaApi.OPTION_BTN_CASESENSITIVE))

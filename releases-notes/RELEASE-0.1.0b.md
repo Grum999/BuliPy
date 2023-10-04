@@ -1,4 +1,4 @@
-# BuliBrushSwitch :: Release 0.1.0b [2023-01-03]
+# BuliBrushSwitch :: Release 0.1.0b [2023-10-04]
 
 First release :-)
 
