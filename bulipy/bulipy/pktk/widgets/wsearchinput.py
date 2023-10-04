@@ -42,7 +42,10 @@ from PyQt5.QtWidgets import (
     )
 
 
-from ..modules.utils import replaceLineEditClearButton
+from ..modules.utils import (
+        replaceLineEditClearButton,
+        regExIsValid
+    )
 from ..modules.listutils import (
         EXTRASELECTION_FILTER_REMOVE,
         filterExtraSelections
@@ -584,6 +587,11 @@ class SearchFromPlainTextEdit:
         extraSelections = self.__getExtraSelections(SearchFromPlainTextEdit.EXTRASELECTIONTYPE_HIGHLIGHTEDSEARCH, False)
         extraSelectionsFoundAll = []
 
+        if options & SearchOptions.REGEX == SearchOptions.REGEX:
+            if not regExIsValid(text):
+                # force to exit search
+                text = None
+
         if (text is None or text == '') and options & SearchOptions.HIGHLIGHT == SearchOptions.HIGHLIGHT:
             # clear current selections
             self.__extraSelectionsFoundAll = []
@@ -596,10 +604,10 @@ class SearchFromPlainTextEdit:
         if options & SearchOptions.CASESENSITIVE == SearchOptions.CASESENSITIVE:
             findFlags |= QTextDocument.FindCaseSensitively
         if options & SearchOptions.REGEX == SearchOptions.REGEX:
-            text = QRegularExpression(text)
+            text = QRegularExpression(text, QRegularExpression.MultilineOption | QRegularExpression.UseUnicodePropertiesOption | QRegularExpression.DotMatchesEverythingOption)
 
         cursor = self.__plainTextEdit.document().find(text, 0, QTextDocument.FindFlags(findFlags))
-        while cursor.position() > 0:
+        while cursor.selectionStart() > -1:
             extraSelection = QTextEdit.ExtraSelection()
 
             extraSelection.cursor = cursor
@@ -607,7 +615,13 @@ class SearchFromPlainTextEdit:
             extraSelection.format.setProperty(QTextFormat.UserProperty, SearchFromPlainTextEdit.EXTRASELECTIONTYPE_HIGHLIGHTEDSEARCH)
 
             extraSelectionsFoundAll.append(extraSelection)
-            cursor = self.__plainTextEdit.document().find(text, cursor, QTextDocument.FindFlags(findFlags))
+            cursor = self.__plainTextEdit.document().find(text, cursor.selectionEnd(), QTextDocument.FindFlags(findFlags))
+            while cursor.selectionStart() > -1 and cursor.selectionStart() == cursor.selectionEnd():
+                # why!??
+                if not cursor.movePosition(QTextCursor.Right):
+                    cursor = QTextCursor()
+                    break
+                cursor = self.__plainTextEdit.document().find(text, cursor.selectionEnd(), QTextDocument.FindFlags(findFlags))
 
         if options & SearchOptions.HIGHLIGHT == SearchOptions.HIGHLIGHT:
             self.__extraSelectionsFoundAll = extraSelectionsFoundAll
