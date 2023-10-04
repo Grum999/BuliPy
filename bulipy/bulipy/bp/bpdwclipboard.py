@@ -70,13 +70,15 @@ class BPDockWidgetClipboard(WDockWidget):
     OPTION_BTN_WHOLEWORD =           0b00000000000_00100
     OPTION_BTN_BACKWARD =            0b00000000000_01000
     OPTION_BTN_HIGHLIGHT =           0b00000000000_10000
-    # available bits:                        <--->
+    # available bits:                         <-->
     OPTION_TXT_SEARCH =              0b10000000000_00000
     OPTION_FONTSIZE =                0b01000000000_00000
     OPTION_FONTNAME =                0b00100000000_00000
     OPTION_SORT_COLUMN =             0b00010000000_00000
     OPTION_SORT_ORDER =              0b00001000000_00000
-    # available bits:                        <--->
+    OPTION_ACTIVE =                  0b00000100000_00000
+    OPTION_STARTUPCLEAR =            0b00000010000_00000
+    # available bits:                         <-->
 
     ROLE_HASH =             Qt.UserRole + 1
     ROLE_TOKENS =           Qt.UserRole + 2
@@ -132,8 +134,8 @@ class BPDockWidgetClipboard(WDockWidget):
         self.__foundTextFmt.setBackground(QBrush(QColor('#2b961f')))
         self.__foundTextFmt.setForeground(QBrush(QColor('#f5eb00')))
 
-        self.__documents.textCopyToClipboard.connect(self.__addText)
-        self.__documents.textCutToClipboard.connect(self.__addText)
+        self.__documents.textCopyToClipboard.connect(self.addText)
+        self.__documents.textCutToClipboard.connect(self.addText)
 
         self.__widget = QWidget(self)
         self.__widget.setMinimumWidth(200)
@@ -175,6 +177,7 @@ class BPDockWidgetClipboard(WDockWidget):
         self.__btClear.setAutoRaise(True)
         self.__btClear.setIcon(buildIcon('pktk:clear'))
         self.__btClear.setToolTip(i18n('Clear clipboard'))
+        self.__btClear.setPopupMode(QToolButton.MenuButtonPopup)
         self.__btClear.clicked.connect(self.__clipboardClear)
 
         self.__btRemove = QToolButton(self)
@@ -207,6 +210,20 @@ class BPDockWidgetClipboard(WDockWidget):
 
         self.__twClipboardItemDelegate = BPDockWidgetClipboardItemDelegate(self.__avgLineHeight, font, self)
         self.__twClipboard.setItemDelegate(self.__twClipboardItemDelegate)
+
+        self.__actionStartupClear = QAction(i18n('Clear clipboard at startup'), self)
+        self.__actionStartupClear.setCheckable(True)
+        self.__actionStartupClear.setChecked(False)
+        self.__actionStartupClear.setStatusTip(i18n('When checked, clipboard content is cleared at startup'))
+        self.__actionActive = QAction(i18n('Activate clipboard'), self)
+        self.__actionActive.setCheckable(True)
+        self.__actionActive.setChecked(True)
+        self.__actionActive.setStatusTip(i18n('When checked, clipboard is active'))
+
+        self.__menuClearOptions = QMenu(self.__btClear)
+        self.__menuClearOptions.addAction(self.__actionStartupClear)
+        self.__menuClearOptions.addAction(self.__actionActive)
+        self.__btClear.setMenu(self.__menuClearOptions)
 
         self.updateStatus()
         self.setWidget(self.__widget)
@@ -283,7 +300,8 @@ class BPDockWidgetClipboard(WDockWidget):
 
     def __updateButtons(self):
         """Update buttons according to current items & selection"""
-        self.__btClear.setEnabled(self.__twClipboard.topLevelItemCount() > 0)
+        # need button enabled to let user access menu to activate/deactivate clipboard
+        # self.__btClear.setEnabled(self.__twClipboard.topLevelItemCount() > 0)
         self.__btRemove.setEnabled(len(self.__twClipboard.selectedItems()) > 0)
         self.__btPushBack.setEnabled(len(self.__twClipboard.selectedItems()) > 0)
         self.__updateNfo()
@@ -554,6 +572,8 @@ class BPDockWidgetClipboard(WDockWidget):
             BPDockWidgetClipboard.OPTION_FONTNAME               String
             BPDockWidgetClipboard.OPTION_SORT_COLUMN            Integer
             BPDockWidgetClipboard.OPTION_SORT_ORDER             Integer
+            BPDockWidgetClipboard.OPTION_ACTIVE                 Boolean
+            BPDockWidgetClipboard.OPTION_STARTUPCLEAR           Boolean
         """
         if optionId & BPDockWidgetClipboard.OPTION_BTN_REGEX == BPDockWidgetClipboard.OPTION_BTN_REGEX:
             return self.__siSearch.options() & SearchOptions.REGEX == SearchOptions.REGEX
@@ -575,6 +595,10 @@ class BPDockWidgetClipboard(WDockWidget):
             return self.__twClipboard.sortColumn()
         elif optionId & BPDockWidgetClipboard.OPTION_SORT_ORDER == BPDockWidgetClipboard.OPTION_SORT_ORDER:
             return self.__twClipboard.header().sortIndicatorOrder()
+        elif optionId & BPDockWidgetClipboard.OPTION_ACTIVE == BPDockWidgetClipboard.OPTION_ACTIVE:
+            return self.__actionActive.isChecked()
+        elif optionId & BPDockWidgetClipboard.OPTION_STARTUPCLEAR == BPDockWidgetClipboard.OPTION_STARTUPCLEAR:
+            return self.__actionStartupClear.isChecked()
 
     def setOption(self, optionId, value):
         """Set option value
@@ -588,6 +612,8 @@ class BPDockWidgetClipboard(WDockWidget):
             BPDockWidgetClipboard.OPTION_FONTNAME               String
             BPDockWidgetClipboard.OPTION_SORT_COLUMN            Integer
             BPDockWidgetClipboard.OPTION_SORT_ORDER             Integer
+            BPDockWidgetClipboard.OPTION_ACTIVE                 Boolean
+            BPDockWidgetClipboard.OPTION_STARTUPCLEAR           Boolean
         """
         if optionId & BPDockWidgetClipboard.OPTION_BTN_REGEX == BPDockWidgetClipboard.OPTION_BTN_REGEX:
             if value:
@@ -624,6 +650,21 @@ class BPDockWidgetClipboard(WDockWidget):
             self.__twClipboard.sortItems(value, self.__twClipboard.header().sortIndicatorOrder())
         elif optionId & BPDockWidgetClipboard.OPTION_SORT_ORDER == BPDockWidgetClipboard.OPTION_SORT_ORDER:
             self.__twClipboard.sortItems(self.__twClipboard.sortColumn(), value)
+        elif optionId & BPDockWidgetClipboard.OPTION_ACTIVE == BPDockWidgetClipboard.OPTION_ACTIVE:
+            self.__actionActive.setChecked(value)
+        elif optionId & BPDockWidgetClipboard.OPTION_STARTUPCLEAR == BPDockWidgetClipboard.OPTION_STARTUPCLEAR:
+            self.__actionStartupClear.setChecked(value)
+
+    def addText(self, document, text, dateTime=None):
+        """Add/Update text in clipboard list"""
+        if not self.__actionActive.isChecked():
+            # clipboard is not active, to not add anything
+            return
+        self.__addText(document, text, dateTime)
+
+    def clear(self):
+        """Remove all items"""
+        self.__clipboardClear()
 
 
 class BPDockWidgetClipboardItemDelegate(QStyledItemDelegate):

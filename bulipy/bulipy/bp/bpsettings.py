@@ -146,6 +146,8 @@ class BPSettingsKey(SettingsKey):
     SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE =                  'session.tools.dockers.clipboard.output.fontSize'
     SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN =                       'session.tools.dockers.clipboard.sort.column'
     SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER =                        'session.tools.dockers.clipboard.sort.order'
+    SESSION_TOOLS_DOCKERS_CLIPBRD_ACTIVE =                            'session.tools.dockers.clipboard.active'
+    SESSION_TOOLS_DOCKERS_CLIPBRD_STARTUPCLEAR =                      'session.tools.dockers.clipboard.clear.startup'
 
     # docker "PyKritaApi"; keep in memory search options
     SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED =          'session.tools.dockers.pyKritaApi.search.buttons.regex.checked'
@@ -253,7 +255,8 @@ class BPSettings(Settings):
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_OUTPUT_FONT_SIZE,                 12,                   SettingsFmt(int)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_COLUMN,                      0,                    SettingsFmt(int, [0, 1])),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_SORT_ORDER,                       Qt.AscendingOrder,    SettingsFmt(int, [Qt.AscendingOrder, Qt.DescendingOrder])),
-
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_ACTIVE,                           True,                 SettingsFmt(bool)),
+            SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_CLIPBRD_STARTUPCLEAR,                     False,                SettingsFmt(bool)),
 
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_REGEX_CHECKED,         False,             SettingsFmt(bool)),
             SettingsRule(BPSettingsKey.SESSION_TOOLS_DOCKERS_PYKRITAAPI_SEARCH_BTN_CASESENSITIVE_CHECKED, False,             SettingsFmt(bool)),
