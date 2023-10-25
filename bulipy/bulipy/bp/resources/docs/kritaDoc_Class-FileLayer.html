@@ -4,11 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="generator" content="BuliPy/build_docs.py"/>
-        <meta name="buildDoc:git:tagName" content="5.1.6"/>
-        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
-        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.1.6 API - Class FileLayer</title>
+        <title>Krita 5.2.0 API - Class FileLayer</title>
         <style>
         :root {
 --blue: #007bff;
@@ -250,8 +250,8 @@ font-style: italic;
     </head>
     <body class='class'>
         <h1>Class description - <span class='className'>FileLayer</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/FileLayer.h'>FileLayer.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 4.1.2</span></span></div>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/FileLayer.h'>FileLayer.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'><p>The FileLayer class A file layer is a layer that can reference an external image and show said reference in the layer stack.</p><p></p><p>If the external image is updated, Krita will try to update the file layer image as well.</p></div>
         
         <h2>Methods</h2>
@@ -267,13 +267,18 @@ font-style: italic;
                             </a>
                         </span>
 <span class='methodList'>
+                            <a href='#scalingFilter'>
+                                <span class='methodName'>scalingFilter</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
                             <a href='#scalingMethod'>
                                 <span class='methodName'>scalingMethod</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
                             </a>
                         </span>
 <span class='methodList'>
                             <a href='#setProperties'>
-                                <span class='methodName'>setProperties</span><span class='methodSep'>(</span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"None"</span><span class='methodSep'>)</span>
+                                <span class='methodName'>setProperties</span><span class='methodSep'>(</span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"None"</span><span class="methodSep">, </span><span class='methodParamName'>scalingFilter</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"Bicubic"</span><span class='methodSep'>)</span>
                             </a>
                         </span>
 <span class='methodList'>
@@ -315,6 +320,22 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
+            <a class='className' id="scalingFilter">scalingFilter</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>returns the filter with which the file referenced is scaled.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
             <a class='className' id="scalingMethod">scalingMethod</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
             
         </div>
@@ -331,15 +352,15 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
-            <a class='className' id="setProperties">setProperties</a><span class='methodSep'>(</span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"None"</span><span class='methodSep'>)</span>
+            <a class='className' id="setProperties">setProperties</a><span class='methodSep'>(</span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"None"</span><span class="methodSep">, </span><span class='methodParamName'>scalingFilter</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"Bicubic"</span><span class='methodSep'>)</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
             <p>Change the properties of the file layer.</p>
 <h3>Parameters</h3>
         <table class='paramList'>
-            <tr><td class='paramName'><span class='methodParamName'>fileName</span></td><td><p>- A String containing the absolute file name.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingMethod</span></td><td><p>- a string with the scaling method, defaults to "None",</p><p> other options are "ToImageSize" and "ToImagePPI"</p></td></tr>
+            <tr><td class='paramName'><span class='methodParamName'>fileName</span></td><td><p>- A String containing the absolute file name.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingMethod</span></td><td><p>- a string with the scaling method, defaults to "None",</p><p> other options are "ToImageSize" and "ToImagePPI"</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingFilter</span></td><td><p>- a string with the scaling filter, defaults to "Bicubic",</p><p> other options are "Hermite", "NearestNeighbor", "Bilinear", "Bell", "BSpline", "Lanczos3", "Mitchell"</p></td></tr>
         </table>
         
         </div>

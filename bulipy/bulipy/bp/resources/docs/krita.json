@@ -64,7 +64,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -136,7 +137,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -203,7 +205,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -269,7 +272,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -341,7 +345,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -407,7 +412,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -473,7 +479,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -545,7 +552,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -611,7 +619,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -683,7 +692,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -749,7 +759,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -821,7 +832,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -887,7 +899,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -970,7 +983,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1042,7 +1056,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1108,7 +1123,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1174,7 +1190,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1240,7 +1257,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1306,7 +1324,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1378,7 +1397,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1455,7 +1475,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1538,10 +1559,57 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief sourceNode\n@return the node the clone layer is based on.\n",
+     "hash": "a90d30c574879725e6cd7270717818892462f55a8684ad66a0197441ebf7d8f1",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "sourceNode",
+     "parameters": [],
+     "returned": "Node",
+     "sourceCodeLine": 55,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setSourceNode\n@param node the node to use as the source of the clone layer.\n",
+     "hash": "1e5526bd3f7ff9c39fb124b491871bbce450cc34621e4fdf16db9d989351b86a",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setSourceNode",
+     "parameters": [
+      {
+       "default": null,
+       "name": "node",
+       "type": "Node"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 61,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -1553,7 +1621,561 @@
      "040000"
     ],
     "updated": [
-     "040000"
+     "040000",
+     "050200"
+    ]
+   }
+  },
+  "ColorizeMask": {
+   "description": "@brief The ColorizeMask class\nA colorize mask is a mask type node that can be used\nto color in line art.\n\n@code\nwindow = Krita.instance().activeWindow()\ndoc = Krita.instance().createDocument(10, 3, \"Test\", \"RGBA\", \"U8\", \"\", 120.0)\nwindow.addView(doc)\nroot = doc.rootNode();\nnode = doc.createNode(\"layer\", \"paintLayer\")\nroot.addChildNode(node, None)\nnodeData = QByteArray.fromBase64(b\"AAAAAAAAAAAAAAAAEQYMBhEGDP8RBgz/EQYMAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARBgz5EQYM/xEGDAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQYMAhEGDAkRBgwCAAAAAAAAAAAAAAAA\");\nnode.setPixelData(nodeData,0,0,10,3)\n\ncols = [ ManagedColor('RGBA','U8',''), ManagedColor('RGBA','U8','') ]\ncols[0].setComponents([0.65490198135376, 0.345098048448563, 0.474509805440903, 1.0]);\ncols[1].setComponents([0.52549022436142, 0.666666686534882, 1.0, 1.0]);\nkeys = [\n        QByteArray.fromBase64(b\"/48AAAAAAAAAAAAAAAAAAAAAAACmCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"),\n        QByteArray.fromBase64(b\"AAAAAAAAAACO9ocAAAAAAAAAAAAAAAAAAAAAAMD/uQAAAAAAAAAAAAAAAAAAAAAAGoMTAAAAAAAAAAAA\")\n        ]\n\nmask = doc.createColorizeMask('c1')\nnode.addChildNode(mask,None)\nmask.setEditKeyStrokes(True)\n\nmask.setUseEdgeDetection(True)\nmask.setEdgeDetectionSize(4.0)\nmask.setCleanUpAmount(70.0)\nmask.setLimitToDeviceBounds(True)\nmask.initializeKeyStrokeColors(cols)\n\nfor col,key in zip(cols,keys):\n    mask.setKeyStrokePixelData(key,col,0,0,20,3)\n\nmask.updateMask()\nmask.setEditKeyStrokes(False);\nmask.setShowOutput(True);\n@endcode\n",
+   "extend": "Node",
+   "fileName": "ColorizeMask.h",
+   "methods": [
+    {
+     "accesType": "public",
+     "description": "@brief type Krita has several types of nodes, split in layers and masks. Group\nlayers can contain other layers, any layer can contain masks.\n\n@return colorizemask\n\nIf the Node object isn't wrapping a valid Krita layer or mask object, and\nempty string is returned.\n",
+     "hash": "226aa2d89f7ed35849e85e1d3ae781376d81a10772581cc9fba246207270245e",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": true,
+     "name": "type",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 79,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief keyStrokesColors\nColors used in the Colorize Mask's keystrokes.\n@return a ManagedColor list containing the colors of keystrokes.\n",
+     "hash": "60300ab2b0413de30f6c734c354b68674697c3d3ef7bd1a71fcaedce5d1b7a81",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "keyStrokesColors",
+     "parameters": [],
+     "returned": "list[ManagedColor]",
+     "sourceCodeLine": 86,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief initializeKeyStrokeColors\nSet the colors to use for the Colorize Mask's keystrokes.\n@param colors a list of ManagedColor to use for the keystrokes.\n@param transparentIndex index of the color that should be marked as transparent.\n",
+     "hash": "890cce9765b10ce7a2bc231fb44b45b0499b4b29b65742e93a909a9f1a106442",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "initializeKeyStrokeColors",
+     "parameters": [
+      {
+       "default": null,
+       "name": "colors",
+       "type": "list[ManagedColor]"
+      },
+      {
+       "default": "1",
+       "name": "transparentIndex",
+       "type": "int"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 94,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief removeKeyStroke\nRemove a color from the Colorize Mask's keystrokes.\n@param color a ManagedColor to be removed from the keystrokes.\n",
+     "hash": "47b629c10bb2fcce25542738bba52916e57b4ff5ad188e0e8980596c81d8a6ec",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "removeKeyStroke",
+     "parameters": [
+      {
+       "default": null,
+       "name": "color",
+       "type": "ManagedColor"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 101,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief transparencyIndex\nIndex of the transparent color.\n@return an integer containing the index of the current color marked as transparent.\n",
+     "hash": "bbd94715d1fdc3472c87ee9501e091e59d73c49ef33902e5c709e0070c864fd9",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "transparencyIndex",
+     "parameters": [],
+     "returned": "int",
+     "sourceCodeLine": 108,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief keyStrokePixelData\nreads the given rectangle from the keystroke image data and returns it as a byte\narray. The pixel data starts top-left, and is ordered row-first.\n@param color a ManagedColor to get keystrokes pixeldata from.\n@param x x position from where to start reading\n@param y y position from where to start reading\n@param w row length to read\n@param h number of rows to read\n@return a QByteArray with the pixel data. The byte array may be empty.\n",
+     "hash": "3d5da07d50b0ceab0043c6dcf1f45af24ac8535b2758c907edaead816bbf65bf",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "keyStrokePixelData",
+     "parameters": [
+      {
+       "default": null,
+       "name": "color",
+       "type": "ManagedColor"
+      },
+      {
+       "default": null,
+       "name": "x",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "y",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "w",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "h",
+       "type": "int"
+      }
+     ],
+     "returned": "QByteArray",
+     "sourceCodeLine": 121,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setKeyStrokePixelData\nwrites the given bytes, of which there must be enough, into the\nkeystroke, the keystroke's original pixels are overwritten\n\n@param value the byte array representing the pixels. There must be enough bytes available.\nKrita will take the raw pointer from the QByteArray and start reading, not stopping before\n(number of channels * size of channel * w * h) bytes are read.\n\n@param color a ManagedColor to set keystrokes pixeldata for.\n@param x the x position to start writing from\n@param y the y position to start writing from\n@param w the width of each row\n@param h the number of rows to write\n@return true if writing the pixeldata worked\n",
+     "hash": "a34723748ef670664a06ee08751a86ff69b81201e1ef01ba3b02f188f7c32f99",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setKeyStrokePixelData",
+     "parameters": [
+      {
+       "default": null,
+       "name": "value",
+       "type": "QByteArray"
+      },
+      {
+       "default": null,
+       "name": "color",
+       "type": "ManagedColor"
+      },
+      {
+       "default": null,
+       "name": "x",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "y",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "w",
+       "type": "int"
+      },
+      {
+       "default": null,
+       "name": "h",
+       "type": "int"
+      }
+     ],
+     "returned": "bool",
+     "sourceCodeLine": 139,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setUseEdgeDetection\nActivate this for line art with large solid areas, for example shadows on an object.\n@param value true to enable edge detection, false to disable.\n",
+     "hash": "531b130bd2e1009b2f184795a91240df87f501afe493971e66f13167ee113c3f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setUseEdgeDetection",
+     "parameters": [
+      {
+       "default": null,
+       "name": "value",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 146,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief useEdgeDetection\n@return true if Edge detection is enabled, false if disabled.\n",
+     "hash": "835c108f833464254dca8307c3f003589b9924cd9b9f4eb3eb3ebfa2c945231f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "useEdgeDetection",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 152,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setEdgeDetectionSize\nSet the value to the thinnest line on the image.\n@param value a float value of the edge size to detect in pixels.\n",
+     "hash": "8654c6462f3037ef8d6217a74cf95aaa5cf22e8f68e97852c0d58a9f31654b41",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setEdgeDetectionSize",
+     "parameters": [
+      {
+       "default": null,
+       "name": "value",
+       "type": "float"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 159,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief edgeDetectionSize\n@return a float value of the edge detection size in pixels.\n",
+     "hash": "cbb6f43a09bcfe13baffe0364d4dab2660c447a7c68141c334d8c582582dc257",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "edgeDetectionSize",
+     "parameters": [],
+     "returned": "float",
+     "sourceCodeLine": 165,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setCleanUpAmount\nThis will attempt to handle messy strokes that overlap the line art where they shouldn't.\n@param value a float value from 0.0 to 100.00 where 0.0 is no cleanup is done and 100.00 is most aggressive.\n",
+     "hash": "5ec6377442beb01f1fe5c4386c853d1bb64c1f1da0e0dba594b0fcd5ffe74071",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setCleanUpAmount",
+     "parameters": [
+      {
+       "default": null,
+       "name": "value",
+       "type": "float"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 172,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief cleanUpAmount\n@return a float value of 0.0 to 100.0 representing the cleanup amount where 0.0 is no cleanup is done and 100.00 is most aggressive.\n",
+     "hash": "c3341ec308c9002bd77464eaee478daa666552e8ecf36a0f58611093db6b1a46",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "cleanUpAmount",
+     "parameters": [],
+     "returned": "float",
+     "sourceCodeLine": 178,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setLimitToDeviceBounds\nLimit the colorize mask to the combined layer bounds of the strokes and the line art it is filling. This can speed up the use of the mask on complicated compositions, such as comic pages.\n@param value set true to enabled limit bounds, false to disable.\n",
+     "hash": "8d7036df4311c8d3b72f6b4edc24c34f36721ebd7ae13e8d7e5508df94afebee",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setLimitToDeviceBounds",
+     "parameters": [
+      {
+       "default": null,
+       "name": "value",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 185,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief limitToDeviceBounds\n@return true if limit bounds is enabled, false if disabled.\n",
+     "hash": "a8901ef8bb119df37a1c117d7f850e5c7052610f9b31d8427b0b1d53319fb244",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "limitToDeviceBounds",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 191,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief updateMask\nProcess the Colorize Mask's keystrokes and generate a projection of the computed colors.\n@param force force an update\n",
+     "hash": "49a77f1ee7944347ec21d7a053ae628cf32e0cf50a6a7b76400952fbc4596bbb",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "updateMask",
+     "parameters": [
+      {
+       "default": "False",
+       "name": "force",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 198,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "",
+     "hash": "0197ad55be50ee71e492ae56c53f866667149c662c8a5d9592101c3c6bd2b00c",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "resetCache",
+     "parameters": [],
+     "returned": "void",
+     "sourceCodeLine": 200,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief showOutput\nShow output mode allows the user to see the result of the Colorize Mask's algorithm.\n@return true if edit show coloring mode is enabled, false if disabled.\n",
+     "hash": "29b2cfecc4c4fde53722d2a12416828aa9258f2e326913675fbcbf7907cb291e",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "showOutput",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 207,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setShowOutput\nToggle Colorize Mask's show output mode.\n@param enabled set true to enable show coloring mode and false to disable it.\n",
+     "hash": "e9c0210e4d9fd5f57733128d8bdb4ee32e8c82890e76c008f94e348c9ccca2bd",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setShowOutput",
+     "parameters": [
+      {
+       "default": null,
+       "name": "enabled",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 214,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief editKeyStrokes\nEdit keystrokes mode allows the user to modify keystrokes on the active Colorize Mask.\n@return true if edit keystrokes mode is enabled, false if disabled.\n",
+     "hash": "e9b6193d4f36454a742efc50ab02d58bc7478c6563ec981c3a32c34214e77da2",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "editKeyStrokes",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 221,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setEditKeyStrokes\nToggle Colorize Mask's edit keystrokes mode.\n@param enabled set true to enable edit keystrokes mode and false to disable it.\n",
+     "hash": "b1618367712508ab08ae0df01054073f945048ad0647f7554b4e607f87049f7f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setEditKeyStrokes",
+     "parameters": [
+      {
+       "default": null,
+       "name": "enabled",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 228,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    }
+   ],
+   "name": "ColorizeMask",
+   "sourceCodeLine": 59,
+   "tagRef": {
+    "available": [
+     "050200"
+    ],
+    "updated": [
+     "050200"
     ]
    }
   },
@@ -1621,7 +2243,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1693,7 +2316,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1787,7 +2411,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -1854,7 +2479,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -1920,7 +2546,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2060,7 +2687,7 @@
      "name": "horizontalGuides",
      "parameters": [],
      "returned": "list[float]",
-     "sourceCodeLine": 48,
+     "sourceCodeLine": 50,
      "tagRef": {
       "available": [
        "040000",
@@ -2109,7 +2736,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2126,7 +2754,7 @@
      "name": "verticalGuides",
      "parameters": [],
      "returned": "list[float]",
-     "sourceCodeLine": 54,
+     "sourceCodeLine": 56,
      "tagRef": {
       "available": [
        "040000",
@@ -2175,7 +2803,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2192,7 +2821,7 @@
      "name": "guidesVisible",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 61,
+     "sourceCodeLine": 63,
      "tagRef": {
       "available": [
        "040000",
@@ -2241,7 +2870,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -2259,7 +2889,7 @@
      "name": "guidesLocked",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 67,
+     "sourceCodeLine": 69,
      "tagRef": {
       "available": [
        "040000",
@@ -2308,7 +2938,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2325,7 +2956,7 @@
      "name": "clone",
      "parameters": [],
      "returned": "Document",
-     "sourceCodeLine": 75,
+     "sourceCodeLine": 77,
      "tagRef": {
       "available": [
        "040000",
@@ -2374,7 +3005,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2391,7 +3023,7 @@
      "name": "batchmode",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 81,
+     "sourceCodeLine": 83,
      "tagRef": {
       "available": [
        "040000",
@@ -2440,7 +3072,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2463,7 +3096,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 87,
+     "sourceCodeLine": 89,
      "tagRef": {
       "available": [
        "040000",
@@ -2512,7 +3145,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -2530,7 +3164,7 @@
      "name": "activeNode",
      "parameters": [],
      "returned": "Node",
-     "sourceCodeLine": 93,
+     "sourceCodeLine": 95,
      "tagRef": {
       "available": [
        "040000",
@@ -2579,7 +3213,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2602,7 +3237,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 99,
+     "sourceCodeLine": 101,
      "tagRef": {
       "available": [
        "040000",
@@ -2651,7 +3286,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2668,7 +3304,7 @@
      "name": "topLevelNodes",
      "parameters": [],
      "returned": "list[Node]",
-     "sourceCodeLine": 104,
+     "sourceCodeLine": 106,
      "tagRef": {
       "available": [
        "040000",
@@ -2717,7 +3353,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2740,7 +3377,7 @@
       }
      ],
      "returned": "Node",
-     "sourceCodeLine": 111,
+     "sourceCodeLine": 113,
      "tagRef": {
       "available": [
        "040000",
@@ -2789,7 +3426,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2806,7 +3444,7 @@
      "name": "colorDepth",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 131,
+     "sourceCodeLine": 133,
      "tagRef": {
       "available": [
        "040000",
@@ -2855,7 +3493,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2872,7 +3511,7 @@
      "name": "colorModel",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 146,
+     "sourceCodeLine": 148,
      "tagRef": {
       "available": [
        "040000",
@@ -2921,7 +3560,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -2938,7 +3578,7 @@
      "name": "colorProfile",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 151,
+     "sourceCodeLine": 153,
      "tagRef": {
       "available": [
        "040000",
@@ -2987,7 +3627,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3010,7 +3651,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 161,
+     "sourceCodeLine": 163,
      "tagRef": {
       "available": [
        "040000",
@@ -3059,7 +3700,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3092,7 +3734,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 188,
+     "sourceCodeLine": 190,
      "tagRef": {
       "available": [
        "040000",
@@ -3141,7 +3783,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3158,7 +3801,7 @@
      "name": "documentInfo",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 250,
+     "sourceCodeLine": 252,
      "tagRef": {
       "available": [
        "040000",
@@ -3207,7 +3850,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3230,7 +3874,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 259,
+     "sourceCodeLine": 261,
      "tagRef": {
       "available": [
        "040000",
@@ -3279,7 +3923,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3296,7 +3941,7 @@
      "name": "fileName",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 264,
+     "sourceCodeLine": 266,
      "tagRef": {
       "available": [
        "040000",
@@ -3345,7 +3990,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3368,7 +4014,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 269,
+     "sourceCodeLine": 271,
      "tagRef": {
       "available": [
        "040000",
@@ -3417,7 +4063,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3434,7 +4081,7 @@
      "name": "height",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 274,
+     "sourceCodeLine": 276,
      "tagRef": {
       "available": [
        "040000",
@@ -3483,7 +4130,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3506,7 +4154,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 279,
+     "sourceCodeLine": 281,
      "tagRef": {
       "available": [
        "040000",
@@ -3555,7 +4203,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3572,7 +4221,7 @@
      "name": "name",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 284,
+     "sourceCodeLine": 286,
      "tagRef": {
       "available": [
        "040000",
@@ -3621,7 +4270,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -3645,7 +4295,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 289,
+     "sourceCodeLine": 291,
      "tagRef": {
       "available": [
        "040000",
@@ -3694,7 +4344,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -3712,7 +4363,7 @@
      "name": "resolution",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 294,
+     "sourceCodeLine": 296,
      "tagRef": {
       "available": [
        "040000",
@@ -3761,7 +4412,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3784,7 +4436,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 299,
+     "sourceCodeLine": 301,
      "tagRef": {
       "available": [
        "040000",
@@ -3833,7 +4485,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3850,7 +4503,7 @@
      "name": "rootNode",
      "parameters": [],
      "returned": "Node",
-     "sourceCodeLine": 306,
+     "sourceCodeLine": 308,
      "tagRef": {
       "available": [
        "040000",
@@ -3899,7 +4552,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3916,7 +4570,7 @@
      "name": "selection",
      "parameters": [],
      "returned": "Selection",
-     "sourceCodeLine": 312,
+     "sourceCodeLine": 314,
      "tagRef": {
       "available": [
        "040000",
@@ -3965,7 +4619,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -3988,7 +4643,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 318,
+     "sourceCodeLine": 320,
      "tagRef": {
       "available": [
        "040000",
@@ -4037,7 +4692,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4054,7 +4710,7 @@
      "name": "width",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 323,
+     "sourceCodeLine": 325,
      "tagRef": {
       "available": [
        "040000",
@@ -4103,7 +4759,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4126,7 +4783,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 328,
+     "sourceCodeLine": 330,
      "tagRef": {
       "available": [
        "040000",
@@ -4175,7 +4832,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4192,7 +4850,7 @@
      "name": "xOffset",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 333,
+     "sourceCodeLine": 335,
      "tagRef": {
       "available": [
        "040000",
@@ -4241,7 +4899,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4264,7 +4923,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 338,
+     "sourceCodeLine": 340,
      "tagRef": {
       "available": [
        "040000",
@@ -4313,7 +4972,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4331,7 +4991,7 @@
      "name": "yOffset",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 343,
+     "sourceCodeLine": 345,
      "tagRef": {
       "available": [
        "040000",
@@ -4380,7 +5040,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4403,7 +5064,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 348,
+     "sourceCodeLine": 350,
      "tagRef": {
       "available": [
        "040000",
@@ -4452,7 +5113,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4470,7 +5132,7 @@
      "name": "xRes",
      "parameters": [],
      "returned": "float",
-     "sourceCodeLine": 355,
+     "sourceCodeLine": 357,
      "tagRef": {
       "available": [
        "040000",
@@ -4519,7 +5181,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4543,7 +5206,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 361,
+     "sourceCodeLine": 363,
      "tagRef": {
       "available": [
        "040000",
@@ -4592,7 +5255,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4610,7 +5274,7 @@
      "name": "yRes",
      "parameters": [],
      "returned": "float",
-     "sourceCodeLine": 367,
+     "sourceCodeLine": 369,
      "tagRef": {
       "available": [
        "040000",
@@ -4659,7 +5323,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4683,7 +5348,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 373,
+     "sourceCodeLine": 375,
      "tagRef": {
       "available": [
        "040000",
@@ -4732,7 +5397,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -4771,7 +5437,7 @@
       }
      ],
      "returned": "QByteArray",
-     "sourceCodeLine": 407,
+     "sourceCodeLine": 409,
      "tagRef": {
       "available": [
        "040000",
@@ -4820,7 +5486,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4837,7 +5504,7 @@
      "name": "close",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 418,
+     "sourceCodeLine": 420,
      "tagRef": {
       "available": [
        "040000",
@@ -4886,7 +5553,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -4924,7 +5592,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 428,
+     "sourceCodeLine": 430,
      "tagRef": {
       "available": [
        "040000",
@@ -4973,7 +5641,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -5002,7 +5671,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 469,
+     "sourceCodeLine": 471,
      "tagRef": {
       "available": [
        "040000",
@@ -5051,7 +5720,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5068,7 +5738,7 @@
      "name": "flatten",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 474,
+     "sourceCodeLine": 476,
      "tagRef": {
       "available": [
        "040000",
@@ -5117,7 +5787,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5155,7 +5826,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 484,
+     "sourceCodeLine": 486,
      "tagRef": {
       "available": [
        "040000",
@@ -5204,7 +5875,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5247,7 +5919,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 505,
+     "sourceCodeLine": 507,
      "tagRef": {
       "available": [
        "040000",
@@ -5296,7 +5968,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5319,7 +5992,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 512,
+     "sourceCodeLine": 514,
      "tagRef": {
       "available": [
        "040000",
@@ -5368,7 +6041,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5396,7 +6070,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 519,
+     "sourceCodeLine": 521,
      "tagRef": {
       "available": [
        "040000",
@@ -5445,7 +6119,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5462,7 +6137,7 @@
      "name": "save",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 526,
+     "sourceCodeLine": 528,
      "tagRef": {
       "available": [
        "040000",
@@ -5511,7 +6186,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5534,7 +6210,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 534,
+     "sourceCodeLine": 536,
      "tagRef": {
       "available": [
        "040000",
@@ -5583,7 +6259,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -5612,7 +6289,7 @@
       }
      ],
      "returned": "Node",
-     "sourceCodeLine": 578,
+     "sourceCodeLine": 580,
      "tagRef": {
       "available": [
        "040000",
@@ -5661,7 +6338,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5684,7 +6362,7 @@
       }
      ],
      "returned": "GroupLayer",
-     "sourceCodeLine": 586,
+     "sourceCodeLine": 588,
      "tagRef": {
       "available": [
        "040000",
@@ -5733,7 +6411,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5742,8 +6421,8 @@
     },
     {
      "accesType": "public",
-     "description": "@brief createFileLayer returns a layer that shows an external image.\n@param name name of the file layer.\n@param fileName the absolute filename of the file referenced. Symlinks will be resolved.\n@param scalingMethod how the dimensions of the file are interpreted\n       can be either \"None\", \"ImageToSize\" or \"ImageToPPI\"\n@return a FileLayer\n",
-     "hash": "c07b5165b2cac2adb5927173034f63767c8cd930343c4b6103ae6719dfaf9be9",
+     "description": "@brief createFileLayer returns a layer that shows an external image.\n@param name name of the file layer.\n@param fileName the absolute filename of the file referenced. Symlinks will be resolved.\n@param scalingMethod how the dimensions of the file are interpreted\n       can be either \"None\", \"ImageToSize\" or \"ImageToPPI\"\n@param scalingFilter filter used to scale the file\n       can be \"Bicubic\", \"Hermite\", \"NearestNeighbor\", \"Bilinear\", \"Bell\", \"BSpline\", \"Lanczos3\", \"Mitchell\"\n@return a FileLayer\n",
+     "hash": "3234a04f2ff7913ee0c6a0b06234f1b5f5f78b43b83a53ce332b686bf3d2c81b",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -5763,10 +6442,15 @@
        "default": null,
        "name": "scalingMethod",
        "type": "str"
+      },
+      {
+       "default": "\"Bicubic\"",
+       "name": "scalingFilter",
+       "type": "str"
       }
      ],
      "returned": "FileLayer",
-     "sourceCodeLine": 595,
+     "sourceCodeLine": 599,
      "tagRef": {
       "available": [
        "040000",
@@ -5815,10 +6499,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
@@ -5848,7 +6534,7 @@
       }
      ],
      "returned": "FilterLayer",
-     "sourceCodeLine": 605,
+     "sourceCodeLine": 609,
      "tagRef": {
       "available": [
        "040000",
@@ -5897,7 +6583,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -5935,7 +6622,7 @@
       }
      ],
      "returned": "FillLayer",
-     "sourceCodeLine": 629,
+     "sourceCodeLine": 633,
      "tagRef": {
       "available": [
        "040000",
@@ -5984,7 +6671,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -6012,7 +6700,7 @@
       }
      ],
      "returned": "CloneLayer",
-     "sourceCodeLine": 637,
+     "sourceCodeLine": 641,
      "tagRef": {
       "available": [
        "040000",
@@ -6061,7 +6749,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -6084,7 +6773,7 @@
       }
      ],
      "returned": "VectorLayer",
-     "sourceCodeLine": 645,
+     "sourceCodeLine": 649,
      "tagRef": {
       "available": [
        "040000",
@@ -6133,7 +6822,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -6166,7 +6856,7 @@
       }
      ],
      "returned": "FilterMask",
-     "sourceCodeLine": 665,
+     "sourceCodeLine": 669,
      "tagRef": {
       "available": [
        "040000",
@@ -6248,7 +6938,9 @@
        "050105",
        "050105",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -6317,7 +7009,9 @@
        "050105",
        "050105",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200"
       ]
      }
     },
@@ -6337,7 +7031,7 @@
       }
      ],
      "returned": "SelectionMask",
-     "sourceCodeLine": 673,
+     "sourceCodeLine": 677,
      "tagRef": {
       "available": [
        "040000",
@@ -6386,7 +7080,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -6424,7 +7119,7 @@
       }
      ],
      "returned": "QImage",
-     "sourceCodeLine": 687,
+     "sourceCodeLine": 707,
      "tagRef": {
       "available": [
        "040000",
@@ -6473,7 +7168,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -6501,72 +7197,6 @@
       }
      ],
      "returned": "QImage",
-     "sourceCodeLine": 696,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "[low-level] Lock the image without waiting for all the internal job queues are processed\n\nWARNING: Don't use it unless you really know what you are doing! Use barrierLock() instead!\n\nWaits for all the **currently running** internal jobs to complete and locks the image\nfor writing. Please note that this function does **not** wait for all the internal\nqueues to process, so there might be some non-finished actions pending. It means that\nyou just postpone these actions until you unlock() the image back. Until then, then image\nmight easily be frozen in some inconsistent state.\n\nThe only sane usage for this function is to lock the image for **emergency**\nprocessing, when some internal action or scheduler got hung up, and you just want\nto fetch some data from the image without races.\n\nIn all other cases, please use barrierLock() instead!\n",
-     "hash": "c0f17e5edd62d1c6ca82b646c65acf43932fb332ca25675cd2bb983a42e7acef",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "lock",
-     "parameters": [],
-     "returned": "void",
      "sourceCodeLine": 716,
      "tagRef": {
       "available": [
@@ -6616,7 +7246,75 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "[low-level] Lock the image without waiting for all the internal job queues are processed\n\nWARNING: Don't use it unless you really know what you are doing! Use barrierLock() instead!\n\nWaits for all the **currently running** internal jobs to complete and locks the image\nfor writing. Please note that this function does **not** wait for all the internal\nqueues to process, so there might be some non-finished actions pending. It means that\nyou just postpone these actions until you unlock() the image back. Until then, then image\nmight easily be frozen in some inconsistent state.\n\nThe only sane usage for this function is to lock the image for **emergency**\nprocessing, when some internal action or scheduler got hung up, and you just want\nto fetch some data from the image without races.\n\nIn all other cases, please use barrierLock() instead!\n",
+     "hash": "c0f17e5edd62d1c6ca82b646c65acf43932fb332ca25675cd2bb983a42e7acef",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "lock",
+     "parameters": [],
+     "returned": "void",
+     "sourceCodeLine": 736,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -6634,7 +7332,7 @@
      "name": "unlock",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 723,
+     "sourceCodeLine": 743,
      "tagRef": {
       "available": [
        "040000",
@@ -6683,7 +7381,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -6693,15 +7392,15 @@
     },
     {
      "accesType": "public",
-     "description": "Wait for all the internal image jobs to complete and return without locking\nthe image. This function is handly for tests or other synchronous actions,\nwhen one needs to wait for the result of his actions.\n",
-     "hash": "aa7d0ec1fc8cc71142405b6c61aa060a695873ee2ef246b4eb6111ebf4492506",
+     "description": "Wait for all the internal image jobs to complete and return without locking\nthe image. This function is handy for tests or other synchronous actions,\nwhen one needs to wait for the result of his actions.\n",
+     "hash": "f27f11080b9d0d367186003adbe42d220fbe5e39067e5cb439eddd5d640deca0",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
      "name": "waitForDone",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 730,
+     "sourceCodeLine": 750,
      "tagRef": {
       "available": [
        "040000",
@@ -6750,11 +7449,13 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
-       "040300"
+       "040300",
+       "050200"
       ]
      }
     },
@@ -6768,7 +7469,7 @@
      "name": "tryBarrierLock",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 741,
+     "sourceCodeLine": 761,
      "tagRef": {
       "available": [
        "040000",
@@ -6817,7 +7518,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -6878,224 +7580,6 @@
      "name": "refreshProjection",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 747,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@brief setHorizontalGuides\nreplace all existing horizontal guides with the entries in the list.\n@param lines a list of floats containing the new guides.\n",
-     "hash": "f46dc64a3fc9f2fe180127a3c386701ca21b4d564ad0c66dcde018751cb14ea8",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "setHorizontalGuides",
-     "parameters": [
-      {
-       "default": null,
-       "name": "lines",
-       "type": "list[float]"
-      }
-     ],
-     "returned": "void",
-     "sourceCodeLine": 754,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000",
-       "040200"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@brief setVerticalGuides\nreplace all existing horizontal guides with the entries in the list.\n@param lines a list of floats containing the new guides.\n",
-     "hash": "3d7dc03c84530b0032e88492f727aa01b054b04f04a8e4313a2a7133b6bdfe7b",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "setVerticalGuides",
-     "parameters": [
-      {
-       "default": null,
-       "name": "lines",
-       "type": "list[float]"
-      }
-     ],
-     "returned": "void",
-     "sourceCodeLine": 760,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000",
-       "040200"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@brief setGuidesVisible\nset guides visible on this document.\n@param visible whether or not the guides are visible.\n",
-     "hash": "75168b64716d32a96b8f7a872c5f14fc075f86f75e4a2fcc72d29e39943b82f3",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "setGuidesVisible",
-     "parameters": [
-      {
-       "default": null,
-       "name": "visible",
-       "type": "bool"
-      }
-     ],
-     "returned": "void",
      "sourceCodeLine": 767,
      "tagRef": {
       "available": [
@@ -7145,7 +7629,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -7154,17 +7639,17 @@
     },
     {
      "accesType": "public",
-     "description": "@brief setGuidesLocked\nset guides locked on this document\n@param locked whether or not to lock the guides on this document.\n",
-     "hash": "f9cfb1dd69349de59197bada428728efb4a1bf436aa1f71261c9c1e6d072c307",
+     "description": "@brief setHorizontalGuides\nreplace all existing horizontal guides with the entries in the list.\n@param lines a list of floats containing the new guides.\n",
+     "hash": "f46dc64a3fc9f2fe180127a3c386701ca21b4d564ad0c66dcde018751cb14ea8",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
-     "name": "setGuidesLocked",
+     "name": "setHorizontalGuides",
      "parameters": [
       {
        "default": null,
-       "name": "locked",
-       "type": "bool"
+       "name": "lines",
+       "type": "list[float]"
       }
      ],
      "returned": "void",
@@ -7217,7 +7702,229 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000",
+       "040200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setVerticalGuides\nreplace all existing horizontal guides with the entries in the list.\n@param lines a list of floats containing the new guides.\n",
+     "hash": "3d7dc03c84530b0032e88492f727aa01b054b04f04a8e4313a2a7133b6bdfe7b",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setVerticalGuides",
+     "parameters": [
+      {
+       "default": null,
+       "name": "lines",
+       "type": "list[float]"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 780,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000",
+       "040200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setGuidesVisible\nset guides visible on this document.\n@param visible whether or not the guides are visible.\n",
+     "hash": "75168b64716d32a96b8f7a872c5f14fc075f86f75e4a2fcc72d29e39943b82f3",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setGuidesVisible",
+     "parameters": [
+      {
+       "default": null,
+       "name": "visible",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 787,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief setGuidesLocked\nset guides locked on this document\n@param locked whether or not to lock the guides on this document.\n",
+     "hash": "f9cfb1dd69349de59197bada428728efb4a1bf436aa1f71261c9c1e6d072c307",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setGuidesLocked",
+     "parameters": [
+      {
+       "default": null,
+       "name": "locked",
+       "type": "bool"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 794,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -7234,7 +7941,7 @@
      "name": "backgroundColor",
      "parameters": [],
      "returned": "QColor",
-     "sourceCodeLine": 196,
+     "sourceCodeLine": 198,
      "tagRef": {
       "available": [
        "040002",
@@ -7281,7 +7988,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040002"
@@ -7330,7 +8038,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 205,
+     "sourceCodeLine": 207,
      "tagRef": {
       "available": [
        "040003",
@@ -7376,7 +8084,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040003"
@@ -7393,7 +8102,7 @@
      "name": "modified",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 779,
+     "sourceCodeLine": 799,
      "tagRef": {
       "available": [
        "040102",
@@ -7435,7 +8144,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040102"
@@ -7452,7 +8162,7 @@
      "name": "bounds",
      "parameters": [],
      "returned": "QRect",
-     "sourceCodeLine": 791,
+     "sourceCodeLine": 811,
      "tagRef": {
       "available": [
        "040200",
@@ -7487,7 +8197,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7520,7 +8231,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 804,
+     "sourceCodeLine": 824,
      "tagRef": {
       "available": [
        "040200",
@@ -7555,7 +8266,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7572,7 +8284,7 @@
      "name": "framesPerSecond",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 810,
+     "sourceCodeLine": 830,
      "tagRef": {
       "available": [
        "040200",
@@ -7607,7 +8319,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7630,7 +8343,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 815,
+     "sourceCodeLine": 835,
      "tagRef": {
       "available": [
        "040200",
@@ -7665,7 +8378,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7688,7 +8402,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 820,
+     "sourceCodeLine": 840,
      "tagRef": {
       "available": [
        "040200",
@@ -7723,7 +8437,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7740,7 +8455,7 @@
      "name": "fullClipRangeStartTime",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 826,
+     "sourceCodeLine": 846,
      "tagRef": {
       "available": [
        "040200",
@@ -7775,7 +8490,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7798,7 +8514,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 832,
+     "sourceCodeLine": 852,
      "tagRef": {
       "available": [
        "040200",
@@ -7833,7 +8549,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7850,7 +8567,7 @@
      "name": "fullClipRangeEndTime",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 838,
+     "sourceCodeLine": 858,
      "tagRef": {
       "available": [
        "040200",
@@ -7885,7 +8602,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7902,7 +8620,7 @@
      "name": "animationLength",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 844,
+     "sourceCodeLine": 864,
      "tagRef": {
       "available": [
        "040200",
@@ -7937,7 +8655,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -7965,7 +8684,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 849,
+     "sourceCodeLine": 869,
      "tagRef": {
       "available": [
        "040200",
@@ -8000,7 +8719,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -8017,7 +8737,7 @@
      "name": "playBackStartTime",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 855,
+     "sourceCodeLine": 875,
      "tagRef": {
       "available": [
        "040200",
@@ -8052,7 +8772,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -8069,7 +8790,7 @@
      "name": "playBackEndTime",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 861,
+     "sourceCodeLine": 881,
      "tagRef": {
       "available": [
        "040200",
@@ -8104,7 +8825,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -8121,7 +8843,7 @@
      "name": "currentTime",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 867,
+     "sourceCodeLine": 887,
      "tagRef": {
       "available": [
        "040200",
@@ -8156,7 +8878,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -8179,7 +8902,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 872,
+     "sourceCodeLine": 892,
      "tagRef": {
       "available": [
        "040200",
@@ -8214,7 +8937,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -8237,7 +8961,7 @@
       }
      ],
      "returned": "Node",
-     "sourceCodeLine": 119,
+     "sourceCodeLine": 121,
      "tagRef": {
       "available": [
        "040405",
@@ -8256,7 +8980,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040405"
@@ -8279,7 +9004,7 @@
       }
      ],
      "returned": "TransformMask",
-     "sourceCodeLine": 681,
+     "sourceCodeLine": 693,
      "tagRef": {
       "available": [
        "050000",
@@ -8294,7 +9019,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8311,7 +9037,7 @@
      "name": "annotationTypes",
      "parameters": [],
      "returned": "list[str]",
-     "sourceCodeLine": 878,
+     "sourceCodeLine": 898,
      "tagRef": {
       "available": [
        "050000",
@@ -8326,7 +9052,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8349,7 +9076,7 @@
       }
      ],
      "returned": "str",
-     "sourceCodeLine": 885,
+     "sourceCodeLine": 905,
      "tagRef": {
       "available": [
        "050000",
@@ -8364,7 +9091,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8387,7 +9115,7 @@
       }
      ],
      "returned": "QByteArray",
-     "sourceCodeLine": 893,
+     "sourceCodeLine": 913,
      "tagRef": {
       "available": [
        "050000",
@@ -8402,7 +9130,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8435,7 +9164,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 901,
+     "sourceCodeLine": 921,
      "tagRef": {
       "available": [
        "050000",
@@ -8450,7 +9179,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8473,7 +9203,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 907,
+     "sourceCodeLine": 927,
      "tagRef": {
       "available": [
        "050000",
@@ -8488,7 +9218,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -8511,23 +9242,76 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 785,
+     "sourceCodeLine": 805,
      "tagRef": {
       "available": [
        "050102",
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050102"
       ]
      }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief createTransparencyMask\nCreates a transparency mask, which can be used to assign transparency to regions.\n@param name - the name of the layer.\n@return a TransparencyMask\n",
+     "hash": "723f6df276b8132fd43c29fe06dc5ab55d0eddbff6aa483f1036baad0760d05a",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "createTransparencyMask",
+     "parameters": [
+      {
+       "default": null,
+       "name": "name",
+       "type": "str"
+      }
+     ],
+     "returned": "TransparencyMask",
+     "sourceCodeLine": 685,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief createColorizeMask\nCreates a colorize mask, which can be used to color fill via keystrokes.\n@param name - the name of the layer.\n@return a TransparencyMask\n",
+     "hash": "69a43b1054e38a72d074e92342d55c12097faf93622021e2110f93affd92f8b2",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "createColorizeMask",
+     "parameters": [
+      {
+       "default": null,
+       "name": "name",
+       "type": "str"
+      }
+     ],
+     "returned": "ColorizeMask",
+     "sourceCodeLine": 701,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
     }
    ],
    "name": "Document",
-   "sourceCodeLine": 31,
+   "sourceCodeLine": 33,
    "tagRef": {
     "available": [
      "040000"
@@ -8540,7 +9324,8 @@
      "040200",
      "040405",
      "050000",
-     "050102"
+     "050102",
+     "050200"
     ]
    }
   },
@@ -8608,7 +9393,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -8680,7 +9466,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -8714,7 +9501,7 @@
      "name": "type",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 48,
+     "sourceCodeLine": 49,
      "tagRef": {
       "available": [
        "040000",
@@ -8763,7 +9550,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -8772,8 +9560,8 @@
     },
     {
      "accesType": "public",
-     "description": "@brief setProperties\nChange the properties of the file layer.\n@param fileName - A String containing the absolute file name.\n@param scalingMethod - a string with the scaling method, defaults to \"None\",\n other options are \"ToImageSize\" and \"ToImagePPI\"\n",
-     "hash": "b571a2fc8c9de6fc3496ca13c2ac9cb8bf4758becaff9caebe9cb9e51c89a563",
+     "description": "@brief setProperties\nChange the properties of the file layer.\n@param fileName - A String containing the absolute file name.\n@param scalingMethod - a string with the scaling method, defaults to \"None\",\n other options are \"ToImageSize\" and \"ToImagePPI\"\n@param scalingFilter - a string with the scaling filter, defaults to \"Bicubic\",\n other options are \"Hermite\", \"NearestNeighbor\", \"Bilinear\", \"Bell\", \"BSpline\", \"Lanczos3\", \"Mitchell\"\n",
+     "hash": "a864c738f235db5fa6d79bff568824a54e296063e29a23ae6c2b07ec0cee5abc",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -8788,10 +9576,15 @@
        "default": "\"None\"",
        "name": "scalingMethod",
        "type": "str"
+      },
+      {
+       "default": "\"Bicubic\"",
+       "name": "scalingFilter",
+       "type": "str"
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 57,
+     "sourceCodeLine": 60,
      "tagRef": {
       "available": [
        "040000",
@@ -8840,10 +9633,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
@@ -8857,7 +9652,7 @@
      "name": "path",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 68,
+     "sourceCodeLine": 71,
      "tagRef": {
       "available": [
        "040000",
@@ -8906,7 +9701,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -8923,7 +9719,7 @@
      "name": "scalingMethod",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 80,
+     "sourceCodeLine": 83,
      "tagRef": {
       "available": [
        "040000",
@@ -8972,7 +9768,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -8990,7 +9787,7 @@
      "name": "resetCache",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 62,
+     "sourceCodeLine": 65,
      "tagRef": {
       "available": [
        "040102",
@@ -9032,10 +9829,31 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040102"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief scalingFilter\nreturns the filter with which the file referenced is scaled.\n",
+     "hash": "59ecb5d9fb3b7b03c99ebb933639be6513209023fcf14972af0ff0403c198938",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "scalingFilter",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 89,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -9048,7 +9866,8 @@
     ],
     "updated": [
      "040000",
-     "040102"
+     "040102",
+     "050200"
     ]
    }
   },
@@ -9116,7 +9935,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9193,7 +10013,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9259,7 +10080,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9325,7 +10147,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9408,7 +10231,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9480,7 +10304,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9546,7 +10371,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9618,7 +10444,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9710,7 +10537,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -9803,7 +10631,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -9824,7 +10653,7 @@
    }
   },
   "FilterLayer": {
-   "description": "@brief The FilterLayer class\nA filter layer will, when compositing, take the composited\nimage up to the point of the loction of the filter layer\nin the stack, create a copy and apply a filter.\n\nThis means you can use blending modes on the filter layers,\nwhich will be used to blend the filtered image with the original.\n\nSimilarly, you can activate things like alpha inheritance, or\nyou can set grayscale pixeldata on the filter layer to act as\na mask.\n\nFilter layers can be animated.\n",
+   "description": "@brief The FilterLayer class\nA filter layer will, when compositing, take the composited\nimage up to the point of the location of the filter layer\nin the stack, create a copy and apply a filter.\n\nThis means you can use blending modes on the filter layers,\nwhich will be used to blend the filtered image with the original.\n\nSimilarly, you can activate things like alpha inheritance, or\nyou can set grayscale pixeldata on the filter layer to act as\na mask.\n\nFilter layers can be animated.\n",
    "extend": "Node",
    "fileName": "FilterLayer.h",
    "methods": [
@@ -9887,7 +10716,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -9959,7 +10789,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10025,7 +10856,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10108,7 +10940,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10180,7 +11013,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10246,7 +11080,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10329,7 +11164,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10401,7 +11237,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10467,7 +11304,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10550,7 +11388,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10616,7 +11455,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10699,7 +11539,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -10771,7 +11612,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -10849,7 +11691,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -10923,7 +11766,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -11007,7 +11851,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11079,7 +11924,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11145,7 +11991,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11217,7 +12064,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11283,7 +12131,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11355,7 +12204,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11421,7 +12271,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11487,7 +12338,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11559,7 +12411,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11625,7 +12478,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11697,7 +12551,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11763,7 +12618,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11840,7 +12696,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11912,7 +12769,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -11978,7 +12836,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12044,7 +12903,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12110,7 +12970,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12176,7 +13037,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12242,7 +13104,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12314,7 +13177,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12380,7 +13244,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12482,7 +13347,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -12555,7 +13421,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12621,7 +13488,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12693,7 +13561,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12759,7 +13628,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12831,7 +13701,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12913,7 +13784,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -12995,7 +13867,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13067,7 +13940,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13133,7 +14007,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13205,7 +14080,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13272,7 +14148,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040100"
@@ -13313,7 +14190,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400"
@@ -13365,7 +14243,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400"
@@ -13391,7 +14270,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050100"
@@ -13414,7 +14294,7 @@
    }
   },
   "ManagedColor": {
-   "description": "@brief The ManagedColor class is a class to handle colors that are color managed.\nA managed color is a color of which we know the model(RGB, LAB, CMYK, etc), the bitdepth and\nthe specific properties of its colorspace, such as the whitepoint, chromacities, trc, etc, as represented\nby the color profile.\n\nKrita has two color management systems. LCMS and OCIO.\nLCMS is the one handling the ICC profile stuff, and the major one handling that ManagedColor deals with.\nOCIO support is only in the display of the colors. ManagedColor has some support for it in colorForCanvas()\n\nAll colors in Krita are color managed. QColors are understood as RGB-type colors in the sRGB space.\n\nWe recommend you make a color like this:\n\n@code\ncolorYellow = ManagedColor(\"RGBA\", \"U8\", \"\")\nQVector<float> yellowComponents = colorYellow.components()\nyellowComponents[0] = 1.0\nyellowComponents[1] = 1.0\nyellowComponents[2] = 0\nyellowComponents[3] = 1.0\n\ncolorYellow.setComponents(yellowComponents)\nQColor yellow = colorYellow.colorForCanvas(canvas)\n@endcode\n",
+   "description": "@brief The ManagedColor class is a class to handle colors that are color managed.\nA managed color is a color of which we know the model(RGB, LAB, CMYK, etc), the bitdepth and\nthe specific properties of its colorspace, such as the whitepoint, chromaticities, trc, etc, as represented\nby the color profile.\n\nKrita has two color management systems. LCMS and OCIO.\nLCMS is the one handling the ICC profile stuff, and the major one handling that ManagedColor deals with.\nOCIO support is only in the display of the colors. ManagedColor has some support for it in colorForCanvas()\n\nAll colors in Krita are color managed. QColors are understood as RGB-type colors in the sRGB space.\n\nWe recommend you make a color like this:\n\n@code\ncolorYellow = ManagedColor(\"RGBA\", \"U8\", \"\")\nQVector<float> yellowComponents = colorYellow.components()\nyellowComponents[0] = 1.0\nyellowComponents[1] = 1.0\nyellowComponents[2] = 0\nyellowComponents[3] = 1.0\n\ncolorYellow.setComponents(yellowComponents)\nQColor yellow = colorYellow.colorForCanvas(canvas)\n@endcode\n",
    "extend": "QObject",
    "fileName": "ManagedColor.h",
    "methods": [
@@ -13498,7 +14378,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13570,7 +14451,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13636,7 +14518,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13702,7 +14585,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13768,7 +14652,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13840,7 +14725,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13922,7 +14808,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -13988,7 +14875,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14054,7 +14942,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14126,7 +15015,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14192,7 +15082,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -14266,7 +15157,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -14335,7 +15227,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -14389,7 +15282,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040300"
@@ -14473,7 +15367,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14539,7 +15434,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14611,7 +15507,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14677,7 +15574,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14749,7 +15647,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14815,7 +15714,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14824,15 +15724,15 @@
     },
     {
      "accesType": "public",
-     "description": "Return a list of child nodes of the current node. The nodes are ordered from the bottommost up.\nThe function is not recursive.\n",
-     "hash": "a84a69417fdb0d3d81b18ed4d37762a19a1fc310ca3f19efff3ea5734e3c4d92",
+     "description": "@brief childNodes\n@return returns a list of child nodes of the current node. The nodes are ordered from the bottommost up.\nThe function is not recursive.\n",
+     "hash": "7eee29cd88bf54abf7ab0e3e11bac4836fd1fda4b2910c6521cbb27f4f0214a4",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
      "name": "childNodes",
      "parameters": [],
      "returned": "list[Node]",
-     "sourceCodeLine": 77,
+     "sourceCodeLine": 78,
      "tagRef": {
       "available": [
        "040000",
@@ -14881,10 +15781,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
@@ -14909,7 +15811,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 85,
+     "sourceCodeLine": 97,
      "tagRef": {
       "available": [
        "040000",
@@ -14958,7 +15860,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -14981,7 +15884,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 91,
+     "sourceCodeLine": 103,
      "tagRef": {
       "available": [
        "040000",
@@ -15030,7 +15933,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15053,72 +15957,6 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 98,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "colorDepth A string describing the color depth of the image:\n<ul>\n<li>U8: unsigned 8 bits integer, the most common type</li>\n<li>U16: unsigned 16 bits integer</li>\n<li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li>\n<li>F32: 32 bits floating point</li>\n</ul>\n@return the color depth.\n",
-     "hash": "715836fcdecec25381cb7b1bfa32b67ba464a81f7a9129881617e39716e35a0f",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "colorDepth",
-     "parameters": [],
-     "returned": "str",
      "sourceCodeLine": 110,
      "tagRef": {
       "available": [
@@ -15168,7 +16006,75 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "colorDepth A string describing the color depth of the image:\n<ul>\n<li>U8: unsigned 8 bits integer, the most common type</li>\n<li>U16: unsigned 16 bits integer</li>\n<li>F16: half, 16 bits floating point. Only available if Krita was built with OpenEXR</li>\n<li>F32: 32 bits floating point</li>\n</ul>\n@return the color depth.\n",
+     "hash": "715836fcdecec25381cb7b1bfa32b67ba464a81f7a9129881617e39716e35a0f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "colorDepth",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 122,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15185,7 +16091,7 @@
      "name": "colorModel",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 125,
+     "sourceCodeLine": 137,
      "tagRef": {
       "available": [
        "040000",
@@ -15234,7 +16140,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15251,7 +16158,7 @@
      "name": "colorProfile",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 130,
+     "sourceCodeLine": 142,
      "tagRef": {
       "available": [
        "040000",
@@ -15300,7 +16207,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15323,7 +16231,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 139,
+     "sourceCodeLine": 151,
      "tagRef": {
       "available": [
        "040000",
@@ -15372,7 +16280,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -15406,138 +16315,6 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 162,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@brief Krita layers can be animated, i.e., have frames.\n@return return true if the layer has frames. Currently, the scripting framework\ndoes not give access to the animation features.\n",
-     "hash": "4c75ca5512eaed115711d546ca6010155ac33d6b2179c5ddf7e60f9e6c32c697",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "animated",
-     "parameters": [],
-     "returned": "bool",
-     "sourceCodeLine": 169,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@brief enableAnimation make the current layer animated, so it can have frames.\n",
-     "hash": "200a12bfd75e31e8e0a49e6ae637486a9c2c09b1a41425005174c6be8be50845",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "enableAnimation",
-     "parameters": [],
-     "returned": "void",
      "sourceCodeLine": 174,
      "tagRef": {
       "available": [
@@ -15587,7 +16364,142 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief Krita layers can be animated, i.e., have frames.\n@return return true if the layer has frames. Currently, the scripting framework\ndoes not give access to the animation features.\n",
+     "hash": "4c75ca5512eaed115711d546ca6010155ac33d6b2179c5ddf7e60f9e6c32c697",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "animated",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 181,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief enableAnimation make the current layer animated, so it can have frames.\n",
+     "hash": "200a12bfd75e31e8e0a49e6ae637486a9c2c09b1a41425005174c6be8be50845",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "enableAnimation",
+     "parameters": [],
+     "returned": "void",
+     "sourceCodeLine": 186,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15610,138 +16522,6 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 190,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "returns the collapsed state of this node\n",
-     "hash": "80c86a9f136b90c8f618e778f2048b83967bd04be5d0f3c5a1aad773b0df1d92",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "collapsed",
-     "parameters": [],
-     "returned": "bool",
-     "sourceCodeLine": 195,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "Sets a color label index associated to the layer.  The actual\ncolor of the label and the number of available colors is\ndefined by Krita GUI configuration.\n",
-     "hash": "13aef6d42b2f358a97f4e358ed396591a906cec2934c2b5309f2b02c9d1793fc",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "colorLabel",
-     "parameters": [],
-     "returned": "int",
      "sourceCodeLine": 202,
      "tagRef": {
       "available": [
@@ -15791,7 +16571,142 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "returns the collapsed state of this node\n",
+     "hash": "80c86a9f136b90c8f618e778f2048b83967bd04be5d0f3c5a1aad773b0df1d92",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "collapsed",
+     "parameters": [],
+     "returned": "bool",
+     "sourceCodeLine": 207,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "Sets a color label index associated to the layer.  The actual\ncolor of the label and the number of available colors is\ndefined by Krita GUI configuration.\n",
+     "hash": "13aef6d42b2f358a97f4e358ed396591a906cec2934c2b5309f2b02c9d1793fc",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "colorLabel",
+     "parameters": [],
+     "returned": "int",
+     "sourceCodeLine": 214,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15814,7 +16729,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 210,
+     "sourceCodeLine": 222,
      "tagRef": {
       "available": [
        "040000",
@@ -15863,7 +16778,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15880,7 +16796,7 @@
      "name": "inheritAlpha",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 216,
+     "sourceCodeLine": 228,
      "tagRef": {
       "available": [
        "040000",
@@ -15929,7 +16845,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -15952,7 +16869,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 221,
+     "sourceCodeLine": 233,
      "tagRef": {
       "available": [
        "040000",
@@ -16001,7 +16918,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16018,7 +16936,7 @@
      "name": "locked",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 227,
+     "sourceCodeLine": 239,
      "tagRef": {
       "available": [
        "040000",
@@ -16067,7 +16985,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16090,72 +17009,6 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 232,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "@return the user-visible name of this node.\n",
-     "hash": "ad50a2ec9e534c81659aeb300aae94e89aa122a6e9d945c65200faaa1d7ac598",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "name",
-     "parameters": [],
-     "returned": "str",
      "sourceCodeLine": 244,
      "tagRef": {
       "available": [
@@ -16205,7 +17058,75 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@return the user-visible name of this node.\n",
+     "hash": "ad50a2ec9e534c81659aeb300aae94e89aa122a6e9d945c65200faaa1d7ac598",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "name",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 256,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16228,7 +17149,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 249,
+     "sourceCodeLine": 261,
      "tagRef": {
       "available": [
        "040000",
@@ -16277,7 +17198,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16294,7 +17216,7 @@
      "name": "opacity",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 254,
+     "sourceCodeLine": 266,
      "tagRef": {
       "available": [
        "040000",
@@ -16343,7 +17265,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16366,7 +17289,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 259,
+     "sourceCodeLine": 271,
      "tagRef": {
       "available": [
        "040000",
@@ -16415,7 +17338,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16432,7 +17356,7 @@
      "name": "parentNode",
      "parameters": [],
      "returned": "Node",
-     "sourceCodeLine": 264,
+     "sourceCodeLine": 276,
      "tagRef": {
       "available": [
        "040000",
@@ -16481,7 +17405,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16498,7 +17423,7 @@
      "name": "type",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 289,
+     "sourceCodeLine": 301,
      "tagRef": {
       "available": [
        "040000",
@@ -16547,7 +17472,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16564,7 +17490,7 @@
      "name": "icon",
      "parameters": [],
      "returned": "QIcon",
-     "sourceCodeLine": 295,
+     "sourceCodeLine": 307,
      "tagRef": {
       "available": [
        "040000",
@@ -16613,7 +17539,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16630,7 +17557,7 @@
      "name": "visible",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 300,
+     "sourceCodeLine": 312,
      "tagRef": {
       "available": [
        "040000",
@@ -16679,7 +17606,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16702,7 +17630,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 310,
+     "sourceCodeLine": 322,
      "tagRef": {
       "available": [
        "040000",
@@ -16751,7 +17679,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16789,7 +17718,7 @@
       }
      ],
      "returned": "QByteArray",
-     "sourceCodeLine": 354,
+     "sourceCodeLine": 366,
      "tagRef": {
       "available": [
        "040000",
@@ -16838,7 +17767,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16881,7 +17811,7 @@
       }
      ],
      "returned": "QByteArray",
-     "sourceCodeLine": 365,
+     "sourceCodeLine": 377,
      "tagRef": {
       "available": [
        "040000",
@@ -16930,7 +17860,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -16968,7 +17899,7 @@
       }
      ],
      "returned": "QByteArray",
-     "sourceCodeLine": 409,
+     "sourceCodeLine": 421,
      "tagRef": {
       "available": [
        "040000",
@@ -17017,7 +17948,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17060,7 +17992,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 434,
+     "sourceCodeLine": 446,
      "tagRef": {
       "available": [
        "040000",
@@ -17109,7 +18041,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17127,7 +18060,7 @@
      "name": "bounds",
      "parameters": [],
      "returned": "QRect",
-     "sourceCodeLine": 440,
+     "sourceCodeLine": 452,
      "tagRef": {
       "available": [
        "040000",
@@ -17176,7 +18109,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17204,7 +18138,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 445,
+     "sourceCodeLine": 457,
      "tagRef": {
       "available": [
        "040000",
@@ -17253,7 +18187,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17270,7 +18205,7 @@
      "name": "position",
      "parameters": [],
      "returned": "QPoint",
-     "sourceCodeLine": 453,
+     "sourceCodeLine": 465,
      "tagRef": {
       "available": [
        "040000",
@@ -17319,7 +18254,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17337,7 +18273,7 @@
      "name": "remove",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 458,
+     "sourceCodeLine": 470,
      "tagRef": {
       "available": [
        "040000",
@@ -17386,7 +18322,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17403,7 +18340,7 @@
      "name": "duplicate",
      "parameters": [],
      "returned": "Node",
-     "sourceCodeLine": 464,
+     "sourceCodeLine": 476,
      "tagRef": {
       "available": [
        "040000",
@@ -17452,7 +18389,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17496,7 +18434,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 478,
+     "sourceCodeLine": 490,
      "tagRef": {
       "available": [
        "040000",
@@ -17545,7 +18483,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17563,7 +18502,7 @@
      "name": "mergeDown",
      "parameters": [],
      "returned": "Node",
-     "sourceCodeLine": 484,
+     "sourceCodeLine": 496,
      "tagRef": {
       "available": [
        "040000",
@@ -17612,7 +18551,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17651,7 +18591,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 503,
+     "sourceCodeLine": 515,
      "tagRef": {
       "available": [
        "040000",
@@ -17700,7 +18640,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -17724,7 +18665,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 509,
+     "sourceCodeLine": 521,
      "tagRef": {
       "available": [
        "040000",
@@ -17773,7 +18714,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17811,7 +18753,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 518,
+     "sourceCodeLine": 530,
      "tagRef": {
       "available": [
        "040000",
@@ -17860,7 +18802,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17888,7 +18831,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 525,
+     "sourceCodeLine": 537,
      "tagRef": {
       "available": [
        "040000",
@@ -17937,7 +18880,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -17965,7 +18909,7 @@
       }
      ],
      "returned": "QImage",
-     "sourceCodeLine": 534,
+     "sourceCodeLine": 546,
      "tagRef": {
       "available": [
        "040000",
@@ -18014,7 +18958,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18031,7 +18976,7 @@
      "name": "hasExtents",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 238,
+     "sourceCodeLine": 250,
      "tagRef": {
       "available": [
        "040100",
@@ -18075,7 +19020,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040100"
@@ -18182,7 +19128,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 305,
+     "sourceCodeLine": 317,
      "tagRef": {
       "available": [
        "040200",
@@ -18217,7 +19163,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -18234,7 +19181,7 @@
      "name": "uniqueId",
      "parameters": [],
      "returned": "QUuid",
-     "sourceCodeLine": 559,
+     "sourceCodeLine": 571,
      "tagRef": {
       "available": [
        "040405",
@@ -18253,7 +19200,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040405",
@@ -18277,7 +19225,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 180,
+     "sourceCodeLine": 192,
      "tagRef": {
       "available": [
        "050000",
@@ -18292,7 +19240,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -18309,7 +19258,7 @@
      "name": "isPinnedToTimeline",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 185,
+     "sourceCodeLine": 197,
      "tagRef": {
       "available": [
        "050000",
@@ -18324,7 +19273,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -18333,15 +19283,15 @@
     },
     {
      "accesType": "public",
-     "description": "@brief layerStyleToAsl retreive the current layer's style in ASL format.\n@return a QString in ASL format representing the layer style.\n",
-     "hash": "73e0e0a910ea62225794ac9bde06f6d2ac32c16d8db342e473edb30d9b6f51fa",
+     "description": "@brief layerStyleToAsl retrieve the current layer's style in ASL format.\n@return a QString in ASL format representing the layer style.\n",
+     "hash": "1a793c5c420008678d030472414cf7b22786b906ffca5f5fa044cc632764bc86",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
      "name": "layerStyleToAsl",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 540,
+     "sourceCodeLine": 552,
      "tagRef": {
       "available": [
        "050000",
@@ -18356,10 +19306,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "050000"
+       "050000",
+       "050200"
       ]
      }
     },
@@ -18379,7 +19331,7 @@
       }
      ],
      "returned": "bool",
-     "sourceCodeLine": 547,
+     "sourceCodeLine": 559,
      "tagRef": {
       "available": [
        "050000",
@@ -18394,7 +19346,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -18411,7 +19364,7 @@
      "name": "index",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 553,
+     "sourceCodeLine": 565,
      "tagRef": {
       "available": [
        "050000",
@@ -18426,10 +19379,57 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief findChildNodes\n@param name name of the child node to search for. Leaving this blank will return all nodes.\n@param recursive whether or not to search recursively. Defaults to false.\n@param partialMatch return if the name partially contains the string (case insensitive). Defaults to false.\n@param type filter returned nodes based on type\n@param colorLabelIndex filter returned nodes based on color label index\n@return returns a list of child nodes and grand child nodes of the current node that match the search criteria.\n",
+     "hash": "53feef4e985cd1332a10472503e2cebcce9916e5c4750eab3e5bc4c928bb4d72",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "findChildNodes",
+     "parameters": [
+      {
+       "default": "\"\"",
+       "name": "name",
+       "type": "str"
+      },
+      {
+       "default": "False",
+       "name": "recursive",
+       "type": "bool"
+      },
+      {
+       "default": "False",
+       "name": "partialMatch",
+       "type": "bool"
+      },
+      {
+       "default": "\"\"",
+       "name": "type",
+       "type": "str"
+      },
+      {
+       "default": "0",
+       "name": "colorLabelIndex",
+       "type": "int"
+      }
+     ],
+     "returned": "list[Node]",
+     "sourceCodeLine": 89,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -18445,7 +19445,8 @@
      "040100",
      "040200",
      "040405",
-     "050000"
+     "050000",
+     "050200"
     ]
    }
   },
@@ -18513,7 +19514,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18585,7 +19587,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18651,7 +19654,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18723,7 +19727,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18795,7 +19800,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18867,7 +19873,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -18939,7 +19946,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19011,7 +20019,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19067,7 +20076,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -19134,7 +20144,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19182,7 +20193,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040300"
@@ -19272,7 +20284,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19338,7 +20351,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19404,7 +20418,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19476,7 +20491,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19542,7 +20558,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19614,7 +20631,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19680,7 +20698,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -19690,7 +20709,7 @@
     {
      "accesType": "public",
      "description": "@brief addGroup\n@param name of the new group\n@return whether adding the group was successful.\n",
-     "hash": "b17b6c86693f22d13aba41ca890b980352352247ff147240aab2f791b4e73d5d",
+     "hash": "db43cf0d61a44ce54714db54c823882f3dee231194b756bb50ecfa31dad40176",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -19702,7 +20721,7 @@
        "type": "str"
       }
      ],
-     "returned": "bool",
+     "returned": "void",
      "sourceCodeLine": 88,
      "tagRef": {
       "available": [
@@ -19752,17 +20771,19 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
     {
      "accesType": "public",
      "description": "@brief removeGroup\n@param name the name of the group to remove.\n@param keepColors whether or not to delete all the colors inside, or to move them to the default group.\n@return\n",
-     "hash": "c58afd236a0ef8466fc014e0c1f5bee92bf77b27a8e9407db79273dd9c011e4c",
+     "hash": "3b1b65b48eec14e57267698aaa9f17cc2ec1b63afac770db057a3df07f200d84",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -19779,7 +20800,7 @@
        "type": "bool"
       }
      ],
-     "returned": "bool",
+     "returned": "void",
      "sourceCodeLine": 95,
      "tagRef": {
       "available": [
@@ -19829,10 +20850,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
@@ -19895,7 +20918,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20011,7 +21035,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -20022,7 +21047,7 @@
     {
      "accesType": "public",
      "description": "@brief changeGroupName\nchange the group name.\n@param oldGroupName the old groupname to change.\n@param newGroupName the new name to change it into.\n@return whether successful. Reasons for failure include not knowing have oldGroupName\n",
-     "hash": "869d67aa2b975ccf48e49af8a68b62b8b5918ae7371a69bd1821a3ac3181f8c3",
+     "hash": "bce6e38b5a1649518ac76ff495feb86e24a86991f72063fb58fa74f962d496db",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -20039,7 +21064,7 @@
        "type": "str"
       }
      ],
-     "returned": "bool",
+     "returned": "void",
      "sourceCodeLine": 138,
      "tagRef": {
       "available": [
@@ -20089,17 +21114,19 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
     {
      "accesType": "public",
      "description": "@brief moveGroup\nmove the group to before groupNameInsertBefore.\n@param groupName group to move.\n@param groupNameInsertBefore group to inset before.\n@return whether successful. Reasons for failure include either group not existing.\n",
-     "hash": "87f0b526f0386ff6d8c44b7a9045bc8a98affd90bb2a8e9418e2e058357c20f6",
+     "hash": "fee422956fd937ca206442b7030cd799fba954223a4d20d896fcfe05cad8b0ec",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -20116,7 +21143,7 @@
        "type": "str"
       }
      ],
-     "returned": "bool",
+     "returned": "void",
      "sourceCodeLine": 146,
      "tagRef": {
       "available": [
@@ -20166,10 +21193,12 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
-       "040000"
+       "040000",
+       "050200"
       ]
      }
     },
@@ -20232,7 +21261,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20290,7 +21320,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -20353,7 +21384,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -20416,7 +21448,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -20506,7 +21539,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20578,7 +21612,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20650,7 +21685,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20716,7 +21752,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20782,7 +21819,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20854,7 +21892,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -20912,7 +21951,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -20970,7 +22010,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -20987,6 +22028,95 @@
     "updated": [
      "040000",
      "040200"
+    ]
+   }
+  },
+  "Preset": {
+   "description": "@brief The Preset class\nPreset is a resource object that stores brush preset data.\n\nAn example for printing the current brush preset and all its settings:\n\n@code\nfrom krita import *\n\nview = Krita.instance().activeWindow().activeView()\npreset = Preset(view.currentBrushPreset())\n\nprint ( preset.toXML() )\n@endcode\n",
+   "extend": "QObject",
+   "fileName": "Preset.h",
+   "methods": [
+    {
+     "accesType": "public",
+     "description": "",
+     "hash": "46492a10b56b8a0593e790b5072c4fd1719dfda37da8ed92ad77e9ac9841e72f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "Preset",
+     "parameters": [
+      {
+       "default": null,
+       "name": "resource",
+       "type": "Resource"
+      }
+     ],
+     "returned": "Preset",
+     "sourceCodeLine": 37,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief toXML\nconvert the preset settings into a preset formatted xml.\n@return the xml in a string.\n",
+     "hash": "2f7d17dd8377581b9b98e7f9f8a9966a3ab8baca76ec855231710dbfebc0a306",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "toXML",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 45,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief fromXML\nconvert the preset settings into a preset formatted xml.\n@param xml valid xml preset string.\n",
+     "hash": "773c55097d72b41e22bfbc3fbcd660df9b85b567979d6946c610f5b495b166b7",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "fromXML",
+     "parameters": [
+      {
+       "default": null,
+       "name": "xml",
+       "type": "str"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 52,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    }
+   ],
+   "name": "Preset",
+   "sourceCodeLine": 34,
+   "tagRef": {
+    "available": [
+     "050200"
+    ],
+    "updated": [
+     "050200"
     ]
    }
   },
@@ -21060,7 +22190,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21126,7 +22257,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21198,7 +22330,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21270,7 +22403,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21353,7 +22487,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21419,7 +22554,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21491,7 +22627,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21557,7 +22694,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21623,7 +22761,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21695,7 +22834,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -21859,7 +22999,9 @@
        "050105",
        "050105",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200"
       ],
       "updated": [
        "050000",
@@ -21887,7 +23029,9 @@
        "050105",
        "050105",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200"
       ]
      }
     }
@@ -21959,7 +23103,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400"
@@ -21968,8 +23113,8 @@
     },
     {
      "accesType": "public",
-     "description": "@brief Clears out scratchpad with color specfified set during setup\n",
-     "hash": "fa6a76d762421b4bc64d2396b72a3e4b8cf10b1370900937bfeca7c9526fb3ea",
+     "description": "@brief Clears out scratchpad with color specified set during setup\n",
+     "hash": "3d06eaed25a8196c3db57b4c0a17b457ad5037a02d327472c89be3083c097629",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -22000,11 +23145,13 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
-       "050000"
+       "050000",
+       "050200"
       ]
      }
     },
@@ -22048,7 +23195,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
@@ -22096,7 +23244,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
@@ -22144,7 +23293,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
@@ -22192,7 +23342,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
@@ -22240,7 +23391,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
@@ -22250,8 +23402,8 @@
     },
     {
      "accesType": "public",
-     "description": "@brief Take what is on the scratchpad area and grab image\n@return the image data from the scratchpage\n",
-     "hash": "4f62a29a8e016cb5241a9913a9b6761ccf95ea427e1ca7cb379298accb421b65",
+     "description": "@brief Take what is on the scratchpad area and grab image\n@return the image data from the scratchpad\n",
+     "hash": "76d19cb5c269a5d11bf7eabfbe95e7db94568b98a552a8a8b357263dae8f52f8",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
@@ -22282,11 +23434,13 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
-       "050000"
+       "050000",
+       "050200"
       ]
      }
     }
@@ -22366,7 +23520,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22432,7 +23587,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22498,7 +23654,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22564,7 +23721,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22641,7 +23799,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22707,7 +23866,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22779,7 +23939,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22851,7 +24012,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -22923,7 +24085,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23005,7 +24168,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23071,7 +24235,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23137,7 +24302,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23214,7 +24380,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23286,7 +24453,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23363,7 +24531,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23445,7 +24614,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23511,7 +24681,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23577,7 +24748,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23654,7 +24826,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23746,7 +24919,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23823,7 +24997,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23895,7 +25070,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -23967,7 +25143,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24039,7 +25216,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24111,7 +25289,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24198,7 +25377,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24290,7 +25470,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24348,7 +25529,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -24390,7 +25572,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040300",
@@ -24476,7 +25659,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24542,7 +25726,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24614,7 +25799,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24648,7 +25834,7 @@
      "name": "name",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 51,
+     "sourceCodeLine": 55,
      "tagRef": {
       "available": [
        "040000",
@@ -24697,7 +25883,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24720,7 +25907,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 57,
+     "sourceCodeLine": 61,
      "tagRef": {
       "available": [
        "040000",
@@ -24769,7 +25956,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24786,7 +25974,7 @@
      "name": "type",
      "parameters": [],
      "returned": "str",
-     "sourceCodeLine": 63,
+     "sourceCodeLine": 67,
      "tagRef": {
       "available": [
        "040000",
@@ -24835,7 +26023,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24852,7 +26041,7 @@
      "name": "visible",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 105,
+     "sourceCodeLine": 109,
      "tagRef": {
       "available": [
        "040000",
@@ -24901,7 +26090,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24924,7 +26114,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 111,
+     "sourceCodeLine": 115,
      "tagRef": {
       "available": [
        "040000",
@@ -24973,7 +26163,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -24990,7 +26181,7 @@
      "name": "boundingBox",
      "parameters": [],
      "returned": "QRectF",
-     "sourceCodeLine": 117,
+     "sourceCodeLine": 121,
      "tagRef": {
       "available": [
        "040000",
@@ -25039,7 +26230,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -25056,7 +26248,7 @@
      "name": "position",
      "parameters": [],
      "returned": "QPointF",
-     "sourceCodeLine": 123,
+     "sourceCodeLine": 127,
      "tagRef": {
       "available": [
        "040000",
@@ -25105,7 +26297,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -25128,7 +26321,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 129,
+     "sourceCodeLine": 133,
      "tagRef": {
       "available": [
        "040000",
@@ -25177,7 +26370,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -25205,7 +26399,7 @@
       }
      ],
      "returned": "str",
-     "sourceCodeLine": 167,
+     "sourceCodeLine": 177,
      "tagRef": {
       "available": [
        "040000",
@@ -25254,7 +26448,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -25272,7 +26467,7 @@
      "name": "zIndex",
      "parameters": [],
      "returned": "int",
-     "sourceCodeLine": 69,
+     "sourceCodeLine": 73,
      "tagRef": {
       "available": [
        "050000",
@@ -25287,7 +26482,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25310,7 +26506,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 75,
+     "sourceCodeLine": 79,
      "tagRef": {
       "available": [
        "050000",
@@ -25325,7 +26521,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25342,7 +26539,7 @@
      "name": "selectable",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 81,
+     "sourceCodeLine": 85,
      "tagRef": {
       "available": [
        "050000",
@@ -25357,7 +26554,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25380,7 +26578,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 87,
+     "sourceCodeLine": 91,
      "tagRef": {
       "available": [
        "050000",
@@ -25395,7 +26593,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25412,7 +26611,7 @@
      "name": "geometryProtected",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 93,
+     "sourceCodeLine": 97,
      "tagRef": {
       "available": [
        "050000",
@@ -25427,7 +26626,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25450,7 +26650,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 99,
+     "sourceCodeLine": 103,
      "tagRef": {
       "available": [
        "050000",
@@ -25465,7 +26665,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25482,7 +26683,7 @@
      "name": "transformation",
      "parameters": [],
      "returned": "QTransform",
-     "sourceCodeLine": 135,
+     "sourceCodeLine": 139,
      "tagRef": {
       "available": [
        "050000",
@@ -25497,7 +26698,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25520,7 +26722,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 141,
+     "sourceCodeLine": 145,
      "tagRef": {
       "available": [
        "050000",
@@ -25535,7 +26737,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25552,7 +26755,7 @@
      "name": "remove",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 146,
+     "sourceCodeLine": 156,
      "tagRef": {
       "available": [
        "050000",
@@ -25567,7 +26770,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25584,7 +26788,7 @@
      "name": "update",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 151,
+     "sourceCodeLine": 161,
      "tagRef": {
       "available": [
        "050000",
@@ -25599,7 +26803,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25622,7 +26827,7 @@
       }
      ],
      "returned": "void",
-     "sourceCodeLine": 157,
+     "sourceCodeLine": 167,
      "tagRef": {
       "available": [
        "050000",
@@ -25637,7 +26842,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25654,7 +26860,7 @@
      "name": "select",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 172,
+     "sourceCodeLine": 182,
      "tagRef": {
       "available": [
        "050000",
@@ -25669,7 +26875,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25686,7 +26893,7 @@
      "name": "deselect",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 177,
+     "sourceCodeLine": 187,
      "tagRef": {
       "available": [
        "050000",
@@ -25701,7 +26908,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -25718,7 +26926,7 @@
      "name": "isSelected",
      "parameters": [],
      "returned": "bool",
-     "sourceCodeLine": 183,
+     "sourceCodeLine": 193,
      "tagRef": {
       "available": [
        "050000",
@@ -25733,10 +26941,51 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief transformation the 2D transformation matrix of the shape including all grandparent transforms.\n@return the 2D transformation matrix.\n",
+     "hash": "0c7142cb17942bc938700163bb4a5cd5c5b126c05e40fcd8e94ca815f8f34fe7",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "absoluteTransformation",
+     "parameters": [],
+     "returned": "QTransform",
+     "sourceCodeLine": 151,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief parentShape\n@return the parent GroupShape of the current shape.\n",
+     "hash": "36ffe2c8378a1996a8fb1177e48fce1f4689f7d633aae73fe7e47083ac74fd5f",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "parentShape",
+     "parameters": [],
+     "returned": "Shape",
+     "sourceCodeLine": 199,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -25749,7 +26998,8 @@
     ],
     "updated": [
      "040000",
-     "050000"
+     "050000",
+     "050200"
     ]
    }
   },
@@ -25873,7 +27123,10 @@
        "050105",
        "050106",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200",
+       "050200"
       ],
       "updated": [
        "040200",
@@ -25971,7 +27224,10 @@
        "050105",
        "050106",
        "050106",
-       "050106"
+       "050106",
+       "050200",
+       "050200",
+       "050200"
       ]
      }
     },
@@ -26066,7 +27322,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26124,7 +27381,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26176,7 +27434,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26234,7 +27493,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26286,7 +27546,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26344,7 +27605,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26396,7 +27658,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26454,7 +27717,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26506,7 +27770,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040200"
@@ -26555,7 +27820,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -26587,10 +27853,57 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief toXML\n@return a string containing XML formated transform parameters.\n",
+     "hash": "1ebb6fdf71b98793b91cb78484d837327498c699d1877cc7896019cb95fcbfda",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "toXML",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 50,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief fromXML set the transform of the transform mask from XML formatted data.\nThe xml must have a valid id\n\ndumbparams - placeholder for static transform masks\ntooltransformparams - static transform mask\nanimatedtransformparams - animated transform mask\n\n@code\n<!DOCTYPE transform_params>\n<transform_params>\n  <main id=\"tooltransformparams\"/>\n  <data mode=\"0\">\n   <free_transform>\n    <transformedCenter type=\"pointf\" x=\"12.3102137276208\" y=\"11.0727768562035\"/>\n    <originalCenter type=\"pointf\" x=\"20\" y=\"20\"/>\n    <rotationCenterOffset type=\"pointf\" x=\"0\" y=\"0\"/>\n    <transformAroundRotationCenter value=\"0\" type=\"value\"/>\n    <aX value=\"0\" type=\"value\"/>\n    <aY value=\"0\" type=\"value\"/>\n    <aZ value=\"0\" type=\"value\"/>\n    <cameraPos z=\"1024\" type=\"vector3d\" x=\"0\" y=\"0\"/>\n    <scaleX value=\"1\" type=\"value\"/>\n    <scaleY value=\"1\" type=\"value\"/>\n    <shearX value=\"0\" type=\"value\"/>\n    <shearY value=\"0\" type=\"value\"/>\n    <keepAspectRatio value=\"0\" type=\"value\"/>\n    <flattenedPerspectiveTransform m23=\"0\" m31=\"0\" m32=\"0\" type=\"transform\" m33=\"1\" m12=\"0\" m13=\"0\" m22=\"1\" m11=\"1\" m21=\"0\"/>\n    <filterId value=\"Bicubic\" type=\"value\"/>\n   </free_transform>\n  </data>\n</transform_params>\n@endcode\n@param xml a valid formated XML string with proper main and data elements.\n@return a true response if successful, a false response if failed.\n",
+     "hash": "c40bcaccd68fcff3474dda8ab8d8c961a77e36caa8aa2235f8b1b86dc133b2cf",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "fromXML",
+     "parameters": [
+      {
+       "default": null,
+       "name": "xml",
+       "type": "str"
+      }
+     ],
+     "returned": "bool",
+     "sourceCodeLine": 88,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -26602,7 +27915,91 @@
      "050000"
     ],
     "updated": [
-     "050000"
+     "050000",
+     "050200"
+    ]
+   }
+  },
+  "TransparencyMask": {
+   "description": "@brief The TransparencyMask class\nA transparency mask is a mask type node that can be used\nto show and hide parts of a layer.\n\n",
+   "extend": "Node",
+   "fileName": "TransparencyMask.h",
+   "methods": [
+    {
+     "accesType": "public",
+     "description": "@brief type Krita has several types of nodes, split in layers and masks. Group\nlayers can contain other layers, any layer can contain masks.\n\n@return transparencymask\n\nIf the Node object isn't wrapping a valid Krita layer or mask object, and\nempty string is returned.\n",
+     "hash": "e3fc5b74697aca06d613cd6dddb821aaa54018b48b718c8d05296bec3fc7dc74",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": true,
+     "name": "type",
+     "parameters": [],
+     "returned": "str",
+     "sourceCodeLine": 43,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "",
+     "hash": "01209a619c1585c6b62a9ae15b68fd0932e44c81cf037d4dc1de3a1ec52b2555",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "selection",
+     "parameters": [],
+     "returned": "Selection",
+     "sourceCodeLine": 45,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "",
+     "hash": "d36d70665396960e9de1b85d9017d9d9608bd7196e485276e50ecd25d9642d24",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "setSelection",
+     "parameters": [
+      {
+       "default": null,
+       "name": "selection",
+       "type": "Selection"
+      }
+     ],
+     "returned": "void",
+     "sourceCodeLine": 47,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    }
+   ],
+   "name": "TransparencyMask",
+   "sourceCodeLine": 23,
+   "tagRef": {
+    "available": [
+     "050200"
+    ],
+    "updated": [
+     "050200"
     ]
    }
   },
@@ -26670,7 +28067,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -26736,7 +28134,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -26768,7 +28167,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
@@ -26806,10 +28206,104 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "050000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief shapeAtPoint\ncheck if the position is located within any non-group shape's boundingBox() on the current layer.\n@param position a QPointF of the position.\n@return the shape at the position, or None if no shape is found.\n",
+     "hash": "e4590576492109765cc44484867a7973a9153554357863af7aa807f2d26b72af",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "shapeAtPosition",
+     "parameters": [
+      {
+       "default": null,
+       "name": "position",
+       "type": "QPointF"
+      }
+     ],
+     "returned": "Shape",
+     "sourceCodeLine": 77,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief shapeInRect\nget all non-group shapes that the shape's boundingBox() intersects or is contained within a given rectangle on the current layer.\n@param rect a QRectF\n@param omitHiddenShapes true if non-visible() shapes should be omitted, false if they should be included. \\p omitHiddenShapes defaults to true.\n@param containedMode false if only shapes that are within or intersect with the outline should be included, true if only shapes that are fully contained within the outline should be included. \\p containedMode defaults to false\n@return returns a list of shapes.\n",
+     "hash": "0b122d9eec69fd83c4c175f9d5c6c1fe98d479a4c189f4b0112abd7eeab6a123",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "shapesInRect",
+     "parameters": [
+      {
+       "default": null,
+       "name": "rect",
+       "type": "QRectF"
+      },
+      {
+       "default": "True",
+       "name": "omitHiddenShapes",
+       "type": "bool"
+      },
+      {
+       "default": "False",
+       "name": "containedMode",
+       "type": "bool"
+      }
+     ],
+     "returned": "list[Shape]",
+     "sourceCodeLine": 87,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief createGroupShape\ncombine a list of top level shapes into a group.\n@param name the name of the shape.\n@param shapes list of top level shapes.\n@return if successful, a GroupShape object will be returned.\n",
+     "hash": "4df0285ad34a9f8d9916fccc2f5195fe75aed282a9c909a5bfecfdc9325c918a",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "createGroupShape",
+     "parameters": [
+      {
+       "default": null,
+       "name": "name",
+       "type": "str"
+      },
+      {
+       "default": null,
+       "name": "shapes",
+       "type": "list[Shape]"
+      }
+     ],
+     "returned": "Shape",
+     "sourceCodeLine": 96,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -26822,7 +28316,8 @@
     ],
     "updated": [
      "040000",
-     "050000"
+     "050000",
+     "050200"
     ]
    }
   },
@@ -26890,7 +28385,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -26956,7 +28452,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27022,7 +28519,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27088,7 +28586,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27154,7 +28653,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27226,7 +28726,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27319,7 +28820,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27412,7 +28914,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27478,7 +28981,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27550,7 +29054,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27616,7 +29121,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27688,7 +29194,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27754,7 +29261,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27826,7 +29334,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27892,7 +29401,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -27964,7 +29474,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28030,7 +29541,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28102,7 +29614,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28168,7 +29681,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28240,7 +29754,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28306,7 +29821,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28378,7 +29894,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28444,7 +29961,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28516,7 +30034,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28582,7 +30101,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28654,7 +30174,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28720,7 +30241,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -28784,7 +30306,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040002"
@@ -28848,7 +30371,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040002"
@@ -28896,7 +30420,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040300"
@@ -28958,11 +30483,72 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400",
        "050000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief flakeToDocumentTransform\nThe transformation of the document relative to the view without rotation and mirroring\n@return QTransform\n",
+     "hash": "400379ad94dd57afe7e4be026b974ffb0772e6fddc61a546ab266693889e1f1b",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "flakeToDocumentTransform",
+     "parameters": [],
+     "returned": "QTransform",
+     "sourceCodeLine": 155,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief flakeToCanvasTransform\nThe transformation of the canvas relative to the view without rotation and mirroring\n@return QTransform\n",
+     "hash": "c7f8e25874e7808ae6185bc3a49cb6455eb2fd06fd56366bd5e6fc2a866d80d1",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "flakeToCanvasTransform",
+     "parameters": [],
+     "returned": "QTransform",
+     "sourceCodeLine": 162,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief flakeToImageTransform\nThe transformation of the image relative to the view without rotation and mirroring\n@return QTransform\n",
+     "hash": "355e3d0eaf56e1276ec0980578383d5c9716efd7c6075b12daf20ae0e70ec93a",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "flakeToImageTransform",
+     "parameters": [],
+     "returned": "QTransform",
+     "sourceCodeLine": 169,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -28977,7 +30563,8 @@
      "040000",
      "040002",
      "040300",
-     "040400"
+     "040400",
+     "050200"
     ]
    }
   },
@@ -29045,7 +30632,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29062,7 +30650,7 @@
      "name": "views",
      "parameters": [],
      "returned": "list[View]",
-     "sourceCodeLine": 44,
+     "sourceCodeLine": 50,
      "tagRef": {
       "available": [
        "040000",
@@ -29111,7 +30699,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29134,78 +30723,6 @@
       }
      ],
      "returned": "View",
-     "sourceCodeLine": 49,
-     "tagRef": {
-      "available": [
-       "040000",
-       "040001",
-       "040002",
-       "040003",
-       "040004",
-       "040100",
-       "040101",
-       "040102",
-       "040103",
-       "040104",
-       "040105",
-       "040106",
-       "040107",
-       "040108",
-       "040200",
-       "040201",
-       "040202",
-       "040203",
-       "040204",
-       "040205",
-       "040206",
-       "040207",
-       "040208",
-       "040209",
-       "040300",
-       "040400",
-       "040401",
-       "040402",
-       "040403",
-       "040404",
-       "040405",
-       "040406",
-       "040407",
-       "040408",
-       "050000",
-       "050001",
-       "050002",
-       "050005",
-       "050006",
-       "050008",
-       "050100",
-       "050101",
-       "050102",
-       "050103",
-       "050104",
-       "050105",
-       "050106"
-      ],
-      "updated": [
-       "040000"
-      ]
-     }
-    },
-    {
-     "accesType": "public",
-     "description": "Make the given view active in this window. If the view\ndoes not belong to this window, nothing happens.\n",
-     "hash": "18e52bcdefcaaff6aed61d47f801a10cb9963a19c28fcdd9b455a328c39e7d84",
-     "isSignal": false,
-     "isStatic": false,
-     "isVirtual": false,
-     "name": "showView",
-     "parameters": [
-      {
-       "default": null,
-       "name": "view",
-       "type": "View"
-      }
-     ],
-     "returned": "void",
      "sourceCodeLine": 55,
      "tagRef": {
       "available": [
@@ -29255,7 +30772,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29264,14 +30782,20 @@
     },
     {
      "accesType": "public",
-     "description": "@return the currently active view or 0 if no view is active\n",
-     "hash": "011ddce7c9341d5d850ec51fe1a01c66ec97113e0106055f0190889a3876a0a0",
+     "description": "Make the given view active in this window. If the view\ndoes not belong to this window, nothing happens.\n",
+     "hash": "18e52bcdefcaaff6aed61d47f801a10cb9963a19c28fcdd9b455a328c39e7d84",
      "isSignal": false,
      "isStatic": false,
      "isVirtual": false,
-     "name": "activeView",
-     "parameters": [],
-     "returned": "View",
+     "name": "showView",
+     "parameters": [
+      {
+       "default": null,
+       "name": "view",
+       "type": "View"
+      }
+     ],
+     "returned": "void",
      "sourceCodeLine": 61,
      "tagRef": {
       "available": [
@@ -29321,7 +30845,75 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
+      ],
+      "updated": [
+       "040000"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@return the currently active view or 0 if no view is active\n",
+     "hash": "011ddce7c9341d5d850ec51fe1a01c66ec97113e0106055f0190889a3876a0a0",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "activeView",
+     "parameters": [],
+     "returned": "View",
+     "sourceCodeLine": 67,
+     "tagRef": {
+      "available": [
+       "040000",
+       "040001",
+       "040002",
+       "040003",
+       "040004",
+       "040100",
+       "040101",
+       "040102",
+       "040103",
+       "040104",
+       "040105",
+       "040106",
+       "040107",
+       "040108",
+       "040200",
+       "040201",
+       "040202",
+       "040203",
+       "040204",
+       "040205",
+       "040206",
+       "040207",
+       "040208",
+       "040209",
+       "040300",
+       "040400",
+       "040401",
+       "040402",
+       "040403",
+       "040404",
+       "040405",
+       "040406",
+       "040407",
+       "040408",
+       "050000",
+       "050001",
+       "050002",
+       "050005",
+       "050006",
+       "050008",
+       "050100",
+       "050101",
+       "050102",
+       "050103",
+       "050104",
+       "050105",
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29338,7 +30930,7 @@
      "name": "activate",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 66,
+     "sourceCodeLine": 72,
      "tagRef": {
       "available": [
        "040000",
@@ -29387,7 +30979,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29404,7 +30997,7 @@
      "name": "close",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 73,
+     "sourceCodeLine": 79,
      "tagRef": {
       "available": [
        "040000",
@@ -29453,7 +31046,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29486,7 +31080,7 @@
       }
      ],
      "returned": "QAction",
-     "sourceCodeLine": 86,
+     "sourceCodeLine": 92,
      "tagRef": {
       "available": [
        "040000",
@@ -29535,7 +31129,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000",
@@ -29553,7 +31148,7 @@
      "name": "windowClosed",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 90,
+     "sourceCodeLine": 96,
      "tagRef": {
       "available": [
        "040000",
@@ -29602,7 +31197,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040000"
@@ -29619,7 +31215,7 @@
      "name": "themeChanged",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 93,
+     "sourceCodeLine": 99,
      "tagRef": {
       "available": [
        "040400",
@@ -29643,7 +31239,8 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400"
@@ -29660,7 +31257,7 @@
      "name": "activeViewChanged",
      "parameters": [],
      "returned": "void",
-     "sourceCodeLine": 96,
+     "sourceCodeLine": 102,
      "tagRef": {
       "available": [
        "040400",
@@ -29684,10 +31281,31 @@
        "050103",
        "050104",
        "050105",
-       "050106"
+       "050106",
+       "050200"
       ],
       "updated": [
        "040400"
+      ]
+     }
+    },
+    {
+     "accesType": "public",
+     "description": "@brief dockers\n@return a list of all the dockers belonging to this window\n",
+     "hash": "3b0834fdbba4f55e7b1a424441408122dc5e62f82d7169ccc3ecf6ef16c9d3b0",
+     "isSignal": false,
+     "isStatic": false,
+     "isVirtual": false,
+     "name": "dockers",
+     "parameters": [],
+     "returned": "list[QDockWidget]",
+     "sourceCodeLine": 45,
+     "tagRef": {
+      "available": [
+       "050200"
+      ],
+      "updated": [
+       "050200"
       ]
      }
     }
@@ -29700,7 +31318,8 @@
     ],
     "updated": [
      "040000",
-     "040400"
+     "040400",
+     "050200"
     ]
    }
   }
@@ -29987,6 +31606,12 @@
    "hash": "6a72b3503238bdfbc72f903b41cc2c97064da469",
    "processed": true,
    "tag": "5.1.6"
+  },
+  "050200": {
+   "date": "2023-10-13",
+   "hash": "1d16de46b01426233324dc2eb6775f081b4a8ddd",
+   "processed": true,
+   "tag": "v5.2.0"
   }
  }
 }

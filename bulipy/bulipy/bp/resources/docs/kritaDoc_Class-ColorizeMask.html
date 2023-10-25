@@ -1,0 +1,747 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="generator" content="BuliPy/build_docs.py"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
+
+        <title>Krita 5.2.0 API - Class ColorizeMask</title>
+        <style>
+        :root {
+--blue: #007bff;
+--indigo: #6610f2;
+--purple: #6f42c1;
+--pink: #e83e8c;
+--red: #dc3545;
+--orange: #fd7e14;
+--yellow: #ffc107;
+--green: #28a745;
+--teal: #20c997;
+--cyan: #17a2b8;
+--white: #fff;
+--gray: #bdc3c7;
+--gray-dark: #343a40;
+--primary: #54a3d8;
+--secondary: #bdc3c7;
+--success: #28a745;
+--info: #17a2b8;
+--warning: #ffc107;
+--danger: #dc3545;
+--light: #f8f9fa;
+--dark: #343a40;
+
+--body-color: #eff0f1;
+--body-bg: #232629;
+--border-color: #16181b;
+        }
+
+        body {
+color: var(--body-color);
+background-color: var(--body-bg);
+font-family: sans-serif;
+        }
+
+        body.index {
+margin: 0;
+        }
+
+        body.class {
+margin: 0.5em;
+        }
+
+        a {
+text-decoration: none;
+color: var(--primary);
+        }
+
+        a:visited {
+color: var(--orange);
+        }
+
+        body h1:first-child {
+margin-top: 0;
+        }
+
+        h1, h2, h3 {
+background-color: rgba(255,255,255,0.125);
+padding: 0.15em 0.25em;
+border-radius: 0.1em;
+        }
+
+        div.methodList span.methodList:first-child {
+border-top: 1px dotted rgba(128,128,128,0.25);
+        }
+        div.methodList span.methodList {
+display: block;
+margin-left: 1em;
+line-height: 1.5em;
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+font-family: monospace;
+        }
+        div.methodList span.methodList:hover {
+background-color: var(--dark);
+        }
+
+        .className {
+font-weight: bold;
+font-family: monospace;
+        }
+        .buildFrom a {
+font-family: monospace;
+        }
+        .docRefTags {
+padding: 0.15em;
+        }
+        .refTag::after {
+content: "";
+white-space: pre;
+        }
+        .refTag {
+background-color: rgba(84, 163, 216, 0.25);
+font-size: 85%;
+border-radius: 0.2em;
+margin-right: 0.25em;
+overflow: hidden;
+display: inline-block;
+line-height: 1.5em;
+        }
+        .refTag .refTagTag {
+font-weight: bold;
+padding: 0.15em 0.35em;
+        }
+        .refTag .refTagSymbol {
+padding: 0.15em;
+background: rgba(84, 163, 216, 0.5);
+        }
+        .methodDef {
+margin-left: 1em;
+background-color: rgba(128,128,128,0.05);
+margin-bottom: 2em;
+border-radius: 0.15em;
+overflow: hidden;
+        }
+        .methodDef:hover {
+background-color: rgba(255,255,255,0.05);
+        }
+        .methodDef .def {
+font-family: monospace;
+font-size: 110%;
+background-color: rgba(255,255,255,0.075);
+padding: 0.15em;
+        }
+        .methodSep {
+color: var(--pink);
+        }
+        .methodParameterType {
+color: var(--teal);
+        }
+        .methodParameterDefault {
+color: var(--cyan);
+        }
+        .methodParamName {
+color: var(--gray);
+        }
+        .rightTag::after {
+float: right;
+display: block;
+font-size: 70%;
+padding: 0.15em;
+border-radius: 0.15em;
+line-height: 1em;
+margin: 2px 2px 2px 0px;
+        }
+        .rightTag.isStatic::after {
+background-color: var(--green);
+content: "Static";
+        }
+        .rightTag.isSignal::after {
+background-color: var(--pink);
+content: "Signal";
+        }
+        .rightTag.isVirtual::after {
+background-color: var(--blue);
+content: "Virtual";
+        }
+        .docString {
+padding: 0.5em 0.5em 0.5em 2em;
+        }
+        .docString p {
+margin: 0;
+        }
+        .docString p + p,
+        .docString p + h3,
+        .docString table + h3 {
+margin-top: 0.5em;
+        }
+        .docString h3 {
+margin: 0;
+max-width: 150px;
+background-color: rgba(128,128,128,0.1);
+        }
+        .docString ul {
+margin-top: 0.25em;
+margin-bottom: 0.25em;
+        }
+        table.paramList {
+border: 1px solid rgba(128,128,128,0.1);
+width: 100%;
+border-collapse: collapse;
+        }
+        table.paramList tr {
+border-bottom: 1px dotted rgba(128,128,128,0.25);
+vertical-align: top;
+        }
+        table td.paramName {
+font-family: monospace;
+width: 250px;
+        }
+
+        .noDescriptionProvided {
+font-style: italic;
+opacity: 0.35;
+        }
+
+        .code {
+font-family: mono;
+border: 2px dashed rgba(128,128,128,0.45);
+padding: 0.5em;
+margin: 0.5em 0;
+        }
+        .code p {
+white-space: pre;
+        }
+
+        .leftMenu {
+display: inline-block;
+position: absolute;
+width: 16vw;
+background: var(--dark);
+height: 100vh;
+        }
+        .leftMenu ul {
+padding: 0 1.25em;
+margin: 0.25em 0;
+        }
+        .leftMenu ul li {
+list-style-type: disclosure-closed;
+        }
+        .frameContent {
+width: 84vw;
+height: 100vh;
+display: block;
+padding: 0;
+margin: 0 0 0 16vw;
+border: none;
+        }
+        .leftMenu h3 {
+margin: 0;
+        }
+
+        .bulipy {
+font-size: 65%;
+display: block;
+text-align: right;
+font-style: italic;
+        }
+    </style>
+    </head>
+    <body class='class'>
+        <h1>Class description - <span class='className'>ColorizeMask</span></h1>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/ColorizeMask.h'>ColorizeMask.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'><p>The ColorizeMask class A colorize mask is a mask type node that can be used to color in line art.</p><p></p><p><div class='code'>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">window</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Krita</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">instance</span><span style=" color:#ff66d9;">().</span><span style=" color:#e6e6e6;">activeWindow</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">doc</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Krita</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">instance</span><span style=" color:#ff66d9;">().</span><span style=" color:#e6e6e6;">createDocument</span><span style=" color:#ff66d9;">(</span><span style=" color:#c9986a;">10</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;Test&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;RGBA&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;U8&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">120.0</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">window</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">addView</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">doc</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">root</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">doc</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">rootNode</span><span style=" color:#ff66d9;">();</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">node</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">doc</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">createNode</span><span style=" color:#ff66d9;">(</span><span style=" color:#98c379;">&quot;layer&quot;</span><span style=" color:#ff66d9;">,</span> <span style=" color:#98c379;">&quot;paintLayer&quot;</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">root</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">addChildNode</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">node</span><span style=" color:#ff66d9;">,</span> <span style=" font-weight:600; color:#dd7892;">None</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">nodeData</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">QByteArray</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">fromBase64</span><span style=" color:#ff66d9;">(</span><span style=" color:#56b6c2;">b&quot;AAAAAAAAAAAAAAAAEQYMBhEGDP8RBgz/EQYMAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARBgz5EQYM/xEGDAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQYMAhEGDAkRBgwCAAAAAAAAAAAAAAAA&quot;</span><span style=" color:#ff66d9;">);</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">node</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setPixelData</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">nodeData</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">0</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">0</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">10</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">)</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">cols</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#ff66d9;">[</span> <span style=" color:#e6e6e6;">ManagedColor</span><span style=" color:#ff66d9;">(</span><span style=" color:#98c379;">'RGBA'</span><span style=" color:#ff66d9;">,</span><span style=" color:#98c379;">'U8'</span><span style=" color:#ff66d9;">,</span><span style=" color:#98c379;">''</span><span style=" color:#ff66d9;">),</span> <span style=" color:#e6e6e6;">ManagedColor</span><span style=" color:#ff66d9;">(</span><span style=" color:#98c379;">'RGBA'</span><span style=" color:#ff66d9;">,</span><span style=" color:#98c379;">'U8'</span><span style=" color:#ff66d9;">,</span><span style=" color:#98c379;">''</span><span style=" color:#ff66d9;">)</span> <span style=" color:#ff66d9;">]</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">cols</span><span style=" color:#ff66d9;">[</span><span style=" color:#c9986a;">0</span><span style=" color:#ff66d9;">].</span><span style=" color:#e6e6e6;">setComponents</span><span style=" color:#ff66d9;">([</span><span style=" color:#c9986a;">0.65490198135376</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">0.345098048448563</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">0.474509805440903</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">1.0</span><span style=" color:#ff66d9;">]);</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">cols</span><span style=" color:#ff66d9;">[</span><span style=" color:#c9986a;">1</span><span style=" color:#ff66d9;">].</span><span style=" color:#e6e6e6;">setComponents</span><span style=" color:#ff66d9;">([</span><span style=" color:#c9986a;">0.52549022436142</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">0.666666686534882</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">1.0</span><span style=" color:#ff66d9;">,</span> <span style=" color:#c9986a;">1.0</span><span style=" color:#ff66d9;">]);</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">keys</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#ff66d9;">[</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">        <span style=" color:#e6e6e6;">QByteArray</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">fromBase64</span><span style=" color:#ff66d9;">(</span><span style=" color:#56b6c2;">b&quot;/48AAAAAAAAAAAAAAAAAAAAAAACmCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;</span><span style=" color:#ff66d9;">),</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">        <span style=" color:#e6e6e6;">QByteArray</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">fromBase64</span><span style=" color:#ff66d9;">(</span><span style=" color:#56b6c2;">b&quot;AAAAAAAAAACO9ocAAAAAAAAAAAAAAAAAAAAAAMD/uQAAAAAAAAAAAAAAAAAAAAAAGoMTAAAAAAAAAAAA&quot;</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">        <span style=" color:#ff66d9;">]</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">doc</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">createColorizeMask</span><span style=" color:#ff66d9;">(</span><span style=" color:#98c379;">'c1'</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">node</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">addChildNode</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">,</span><span style=" font-weight:600; color:#dd7892;">None</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setEditKeyStrokes</span><span style=" color:#ff66d9;">(</span><span style=" font-weight:600; color:#dd7892;">True</span><span style=" color:#ff66d9;">)</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setUseEdgeDetection</span><span style=" color:#ff66d9;">(</span><span style=" font-weight:600; color:#dd7892;">True</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setEdgeDetectionSize</span><span style=" color:#ff66d9;">(</span><span style=" color:#c9986a;">4.0</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setCleanUpAmount</span><span style=" color:#ff66d9;">(</span><span style=" color:#c9986a;">70.0</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setLimitToDeviceBounds</span><span style=" color:#ff66d9;">(</span><span style=" font-weight:600; color:#dd7892;">True</span><span style=" color:#ff66d9;">)</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">initializeKeyStrokeColors</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">cols</span><span style=" color:#ff66d9;">)</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">for</span> <span style=" color:#e6e6e6;">col</span><span style=" color:#ff66d9;">,</span><span style=" color:#e6e6e6;">key</span> <span style=" font-weight:600; color:#ff99ff;">in</span> <span style=" color:#80bfff;">zip</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">cols</span><span style=" color:#ff66d9;">,</span><span style=" color:#e6e6e6;">keys</span><span style=" color:#ff66d9;">):</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setKeyStrokePixelData</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">key</span><span style=" color:#ff66d9;">,</span><span style=" color:#e6e6e6;">col</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">0</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">0</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">20</span><span style=" color:#ff66d9;">,</span><span style=" color:#c9986a;">3</span><span style=" color:#ff66d9;">)</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">updateMask</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setEditKeyStrokes</span><span style=" color:#ff66d9;">(</span><span style=" font-weight:600; color:#dd7892;">False</span><span style=" color:#ff66d9;">);</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">mask</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">setShowOutput</span><span style=" color:#ff66d9;">(</span><span style=" font-weight:600; color:#dd7892;">True</span><span style=" color:#ff66d9;">);</span></p></div></p></div>
+        
+        <h2>Methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#cleanUpAmount'>
+                                <span class='methodName'>cleanUpAmount</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>float</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#edgeDetectionSize'>
+                                <span class='methodName'>edgeDetectionSize</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>float</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#editKeyStrokes'>
+                                <span class='methodName'>editKeyStrokes</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#initializeKeyStrokeColors'>
+                                <span class='methodName'>initializeKeyStrokeColors</span><span class='methodSep'>(</span><span class='methodParamName'>colors</span><span class='methodSep'>: </span><span class='methodParameterType'>list[ManagedColor]</span><span class="methodSep">, </span><span class='methodParamName'>transparentIndex</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'> = </span><span class='methodParameterDefault'>1</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#keyStrokePixelData'>
+                                <span class='methodName'>keyStrokePixelData</span><span class='methodSep'>(</span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#keyStrokesColors'>
+                                <span class='methodName'>keyStrokesColors</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[ManagedColor]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#limitToDeviceBounds'>
+                                <span class='methodName'>limitToDeviceBounds</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#removeKeyStroke'>
+                                <span class='methodName'>removeKeyStroke</span><span class='methodSep'>(</span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#resetCache'>
+                                <span class='methodName'>resetCache</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setCleanUpAmount'>
+                                <span class='methodName'>setCleanUpAmount</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setEdgeDetectionSize'>
+                                <span class='methodName'>setEdgeDetectionSize</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setEditKeyStrokes'>
+                                <span class='methodName'>setEditKeyStrokes</span><span class='methodSep'>(</span><span class='methodParamName'>enabled</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setKeyStrokePixelData'>
+                                <span class='methodName'>setKeyStrokePixelData</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setLimitToDeviceBounds'>
+                                <span class='methodName'>setLimitToDeviceBounds</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setShowOutput'>
+                                <span class='methodName'>setShowOutput</span><span class='methodSep'>(</span><span class='methodParamName'>enabled</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#setUseEdgeDetection'>
+                                <span class='methodName'>setUseEdgeDetection</span><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#showOutput'>
+                                <span class='methodName'>showOutput</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#transparencyIndex'>
+                                <span class='methodName'>transparencyIndex</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#updateMask'>
+                                <span class='methodName'>updateMask</span><span class='methodSep'>(</span><span class='methodParamName'>force</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>False</span><span class='methodSep'>)</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#useEdgeDetection'>
+                                <span class='methodName'>useEdgeDetection</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+    </div>
+    
+        <h2>Re-implemented methods</h2>
+    <div class='methodList'>
+        <span class='methodList'>
+                            <a href='#type'>
+                                <span class='methodName'>type</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+    </div>
+    
+        
+        <h1>Member documentation</h1>
+        <div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="cleanUpAmount">cleanUpAmount</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>float</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a float value of 0.0 to 100.0 representing the cleanup amount where 0.0 is no cleanup is done and 100.00 is most aggressive.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="edgeDetectionSize">edgeDetectionSize</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>float</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a float value of the edge detection size in pixels.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="editKeyStrokes">editKeyStrokes</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Edit keystrokes mode allows the user to modify keystrokes on the active Colorize Mask.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if edit keystrokes mode is enabled, false if disabled.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="initializeKeyStrokeColors">initializeKeyStrokeColors</a><span class='methodSep'>(</span><span class='methodParamName'>colors</span><span class='methodSep'>: </span><span class='methodParameterType'>list[ManagedColor]</span><span class="methodSep">, </span><span class='methodParamName'>transparentIndex</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'> = </span><span class='methodParameterDefault'>1</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Set the colors to use for the Colorize Mask's keystrokes.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>colors</span></td><td><p>a list of ManagedColor to use for the keystrokes.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>transparentIndex</span></td><td><p>index of the color that should be marked as transparent.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="keyStrokePixelData">keyStrokePixelData</a><span class='methodSep'>(</span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QByteArray</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>reads the given rectangle from the keystroke image data and returns it as a byte array. The pixel data starts top-left, and is ordered row-first.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>color</span></td><td><p>a ManagedColor to get keystrokes pixeldata from.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>x position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>y position from where to start reading</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>row length to read</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>number of rows to read</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a QByteArray with the pixel data. The byte array may be empty.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="keyStrokesColors">keyStrokesColors</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[ManagedColor]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Colors used in the Colorize Mask's keystrokes.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a ManagedColor list containing the colors of keystrokes.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="limitToDeviceBounds">limitToDeviceBounds</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if limit bounds is enabled, false if disabled.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="removeKeyStroke">removeKeyStroke</a><span class='methodSep'>(</span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Remove a color from the Colorize Mask's keystrokes.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>color</span></td><td><p>a ManagedColor to be removed from the keystrokes.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="resetCache">resetCache</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setCleanUpAmount">setCleanUpAmount</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>This will attempt to handle messy strokes that overlap the line art where they shouldn't.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>a float value from 0.0 to 100.00 where 0.0 is no cleanup is done and 100.00 is most aggressive.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setEdgeDetectionSize">setEdgeDetectionSize</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>float</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Set the value to the thinnest line on the image.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>a float value of the edge size to detect in pixels.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setEditKeyStrokes">setEditKeyStrokes</a><span class='methodSep'>(</span><span class='methodParamName'>enabled</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Toggle Colorize Mask's edit keystrokes mode.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>enabled</span></td><td><p>set true to enable edit keystrokes mode and false to disable it.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setKeyStrokePixelData">setKeyStrokePixelData</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>QByteArray</span><span class="methodSep">, </span><span class='methodParamName'>color</span><span class='methodSep'>: </span><span class='methodParameterType'>ManagedColor</span><span class="methodSep">, </span><span class='methodParamName'>x</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>y</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>w</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class="methodSep">, </span><span class='methodParamName'>h</span><span class='methodSep'>: </span><span class='methodParameterType'>int</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>writes the given bytes, of which there must be enough, into the keystroke, the keystroke's original pixels are overwritten</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>the byte array representing the pixels. There must be enough bytes available. Krita will take the raw pointer from the QByteArray and start reading, not stopping before (number of channels * size of channel * w * h) bytes are read.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>color</span></td><td><p>a ManagedColor to set keystrokes pixeldata for.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>x</span></td><td><p>the x position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>y</span></td><td><p>the y position to start writing from</p></td></tr><tr><td class='paramName'><span class='methodParamName'>w</span></td><td><p>the width of each row</p></td></tr><tr><td class='paramName'><span class='methodParamName'>h</span></td><td><p>the number of rows to write</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if writing the pixeldata worked</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setLimitToDeviceBounds">setLimitToDeviceBounds</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Limit the colorize mask to the combined layer bounds of the strokes and the line art it is filling. This can speed up the use of the mask on complicated compositions, such as comic pages.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>set true to enabled limit bounds, false to disable.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setShowOutput">setShowOutput</a><span class='methodSep'>(</span><span class='methodParamName'>enabled</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Toggle Colorize Mask's show output mode.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>enabled</span></td><td><p>set true to enable show coloring mode and false to disable it.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="setUseEdgeDetection">setUseEdgeDetection</a><span class='methodSep'>(</span><span class='methodParamName'>value</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Activate this for line art with large solid areas, for example shadows on an object.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>value</span></td><td><p>true to enable edge detection, false to disable.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="showOutput">showOutput</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Show output mode allows the user to see the result of the Colorize Mask's algorithm.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if edit show coloring mode is enabled, false if disabled.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="transparencyIndex">transparencyIndex</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>int</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Index of the transparent color.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>an integer containing the index of the current color marked as transparent.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="type">type</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <span class='rightTag isVirtual'></span>
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Krita has several types of nodes, split in layers and masks. Group layers can contain other layers, any layer can contain masks.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>colorizemask</p><p></p><p>If the Node object isn't wrapping a valid Krita layer or mask object, and empty string is returned.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="updateMask">updateMask</a><span class='methodSep'>(</span><span class='methodParamName'>force</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>False</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Process the Colorize Mask's keystrokes and generate a projection of the computed colors.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>force</span></td><td><p>force an update</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="useEdgeDetection">useEdgeDetection</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>true if Edge detection is enabled, false if disabled.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+    </body>
+</html>

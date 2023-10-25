@@ -4,11 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="generator" content="BuliPy/build_docs.py"/>
-        <meta name="buildDoc:git:tagName" content="5.1.6"/>
-        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
-        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.1.6 API - Class TransformMask</title>
+        <title>Krita 5.2.0 API - Class TransformMask</title>
         <style>
         :root {
 --blue: #007bff;
@@ -250,8 +250,8 @@ font-style: italic;
     </head>
     <body class='class'>
         <h1>Class description - <span class='className'>TransformMask</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/TransformMask.h'>TransformMask.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/TransformMask.h'>TransformMask.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'><p>The TransformMask class A transform mask is a mask type node that can be used to store transformations.</p></div>
         
         <h2>Methods</h2>
@@ -259,6 +259,16 @@ font-style: italic;
         <span class='methodList'>
                             <a href='#finalAffineTransform'>
                                 <span class='methodName'>finalAffineTransform</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QTransform</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#fromXML'>
+                                <span class='methodName'>fromXML</span><span class='methodSep'>(</span><span class='methodParamName'>xml</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#toXML'>
+                                <span class='methodName'>toXML</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
                             </a>
                         </span>
     </div>
@@ -284,6 +294,66 @@ font-style: italic;
             <h3>Return</h3>
         <table class='paramList'>
             <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="fromXML">fromXML</a><span class='methodSep'>(</span><span class='methodParamName'>xml</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>bool</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>set the transform of the transform mask from XML formatted data. The xml must have a valid id</p><p></p><p>dumbparams - placeholder for static transform masks tooltransformparams - static transform mask animatedtransformparams - animated transform mask</p><p></p><p><div class='code'>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#ff99ff;">&lt;</span><span style=" font-weight:600; font-style:italic; color:#d85151; background-color:#7b1b1b;">!DOCTYPE</span> <span style=" color:#e6e6e6;">transform_params</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">transform_params</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">main</span> <span style=" color:#e6e6e6;">id</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;tooltransformparams&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">data</span> <span style=" color:#e6e6e6;">mode</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">free_transform</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">transformedCenter</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;pointf&quot;</span> <span style=" color:#e6e6e6;">x</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;12.3102137276208&quot;</span> <span style=" color:#e6e6e6;">y</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;11.0727768562035&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">originalCenter</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;pointf&quot;</span> <span style=" color:#e6e6e6;">x</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;20&quot;</span> <span style=" color:#e6e6e6;">y</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;20&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">rotationCenterOffset</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;pointf&quot;</span> <span style=" color:#e6e6e6;">x</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">y</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">transformAroundRotationCenter</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">aX</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">aY</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">aZ</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">cameraPos</span> <span style=" color:#e6e6e6;">z</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1024&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;vector3d&quot;</span> <span style=" color:#e6e6e6;">x</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">y</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">scaleX</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">scaleY</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">shearX</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">shearY</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">keepAspectRatio</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">flattenedPerspectiveTransform</span> <span style=" color:#e6e6e6;">m23</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">m31</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">m32</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;transform&quot;</span> <span style=" color:#e6e6e6;">m33</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1&quot;</span> <span style=" color:#e6e6e6;">m12</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">m13</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span> <span style=" color:#e6e6e6;">m22</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1&quot;</span> <span style=" color:#e6e6e6;">m11</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;1&quot;</span> <span style=" color:#e6e6e6;">m21</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;0&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    <span style=" color:#ff99ff;">&lt;</span><span style=" color:#e6e6e6;">filterId</span> <span style=" color:#e6e6e6;">value</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;Bicubic&quot;</span> <span style=" color:#e6e6e6;">type</span><span style=" color:#ff99ff;">=</span><span style=" color:#98c379;">&quot;value&quot;</span><span style=" color:#ff99ff;">/&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   <span style=" color:#ff99ff;">&lt;/</span><span style=" color:#e6e6e6;">free_transform</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  <span style=" color:#ff99ff;">&lt;/</span><span style=" color:#e6e6e6;">data</span><span style=" color:#ff99ff;">&gt;</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#ff99ff;">&lt;/</span><span style=" color:#e6e6e6;">transform_params</span><span style=" color:#ff99ff;">&gt;</span></p></div></p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>xml</span></td><td><p>a valid formated XML string with proper main and data elements.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a true response if successful, a false response if failed.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="toXML">toXML</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a string containing XML formated transform parameters.</p></td></tr>
         </table>
         
         </div>

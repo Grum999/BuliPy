@@ -4,11 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="generator" content="BuliPy/build_docs.py"/>
-        <meta name="buildDoc:git:tagName" content="5.1.6"/>
-        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
-        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.1.6 API - Class VectorLayer</title>
+        <title>Krita 5.2.0 API - Class VectorLayer</title>
         <style>
         :root {
 --blue: #007bff;
@@ -250,8 +250,8 @@ font-style: italic;
     </head>
     <body class='class'>
         <h1>Class description - <span class='className'>VectorLayer</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/VectorLayer.h'>VectorLayer.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/VectorLayer.h'>VectorLayer.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'><p>The VectorLayer class A vector layer is a special layer that stores and shows vector shapes.</p><p></p><p>Vector shapes all have their coordinates in points, which is a unit that represents 1/72th of an inch. Keep this in mind wen parsing the bounding box and position data.</p></div>
         
         <h2>Methods</h2>
@@ -262,8 +262,23 @@ font-style: italic;
                             </a>
                         </span>
 <span class='methodList'>
+                            <a href='#createGroupShape'>
+                                <span class='methodName'>createGroupShape</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>shapes</span><span class='methodSep'>: </span><span class='methodParameterType'>list[Shape]</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Shape</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#shapeAtPosition'>
+                                <span class='methodName'>shapeAtPosition</span><span class='methodSep'>(</span><span class='methodParamName'>position</span><span class='methodSep'>: </span><span class='methodParameterType'>QPointF</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Shape</span>
+                            </a>
+                        </span>
+<span class='methodList'>
                             <a href='#shapes'>
                                 <span class='methodName'>shapes</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Shape]</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#shapesInRect'>
+                                <span class='methodName'>shapesInRect</span><span class='methodSep'>(</span><span class='methodParamName'>rect</span><span class='methodSep'>: </span><span class='methodParameterType'>QRectF</span><span class="methodSep">, </span><span class='methodParamName'>omitHiddenShapes</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>True</span><span class="methodSep">, </span><span class='methodParamName'>containedMode</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>False</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Shape]</span>
                             </a>
                         </span>
 <span class='methodList'>
@@ -307,6 +322,48 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
+            <a class='className' id="createGroupShape">createGroupShape</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>shapes</span><span class='methodSep'>: </span><span class='methodParameterType'>list[Shape]</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Shape</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>combine a list of top level shapes into a group.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>the name of the shape.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>shapes</span></td><td><p>list of top level shapes.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>if successful, a GroupShape object will be returned.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="shapeAtPosition">shapeAtPosition</a><span class='methodSep'>(</span><span class='methodParamName'>position</span><span class='methodSep'>: </span><span class='methodParameterType'>QPointF</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Shape</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>shapeAtPoint check if the position is located within any non-group shape's boundingBox() on the current layer.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>position</span></td><td><p>a QPointF of the position.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the shape at the position, or None if no shape is found.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
             <a class='className' id="shapes">shapes</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Shape]</span>
             
         </div>
@@ -316,6 +373,27 @@ font-style: italic;
 <h3>Return</h3>
         <table class='paramList'>
             <tr><td><p>the list of top-level shapes in this vector layer.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="shapesInRect">shapesInRect</a><span class='methodSep'>(</span><span class='methodParamName'>rect</span><span class='methodSep'>: </span><span class='methodParameterType'>QRectF</span><span class="methodSep">, </span><span class='methodParamName'>omitHiddenShapes</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>True</span><span class="methodSep">, </span><span class='methodParamName'>containedMode</span><span class='methodSep'>: </span><span class='methodParameterType'>bool</span><span class='methodSep'> = </span><span class='methodParameterDefault'>False</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>list[Shape]</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>shapeInRect get all non-group shapes that the shape's boundingBox() intersects or is contained within a given rectangle on the current layer.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>rect</span></td><td><p>a QRectF</p></td></tr><tr><td class='paramName'><span class='methodParamName'>omitHiddenShapes</span></td><td><p>true if non-visible() shapes should be omitted, false if they should be included. \p omitHiddenShapes defaults to true.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>containedMode</span></td><td><p>false if only shapes that are within or intersect with the outline should be included, true if only shapes that are fully contained within the outline should be included. \p containedMode defaults to false</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>returns a list of shapes.</p></td></tr>
         </table>
         
         </div>

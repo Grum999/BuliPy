@@ -4,11 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="generator" content="BuliPy/build_docs.py"/>
-        <meta name="buildDoc:git:tagName" content="5.1.6"/>
-        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
-        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.1.6 API - Class Shape</title>
+        <title>Krita 5.2.0 API - Class Shape</title>
         <style>
         :root {
 --blue: #007bff;
@@ -250,8 +250,8 @@ font-style: italic;
     </head>
     <body class='class'>
         <h1>Class description - <span class='className'>Shape</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/Shape.h'>Shape.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.0.0</span></span></div>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/Shape.h'>Shape.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'><p>The Shape class The shape class is a wrapper around Krita's vector objects.</p><p></p><p>Some example code to parse through interesting information in a given vector layer with shapes. <div class='code'>
 <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">import</span> <span style=" color:#e6e6e6;">sys</span></p>
 <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">from</span> <span style=" color:#e6e6e6;">krita</span> <span style=" font-weight:600; color:#c678dd;">import</span> <span style=" color:#ff99ff;">*</span></p>
@@ -270,6 +270,11 @@ font-style: italic;
         <h2>Methods</h2>
     <div class='methodList'>
         <span class='methodList'>
+                            <a href='#absoluteTransformation'>
+                                <span class='methodName'>absoluteTransformation</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QTransform</span>
+                            </a>
+                        </span>
+<span class='methodList'>
                             <a href='#boundingBox'>
                                 <span class='methodName'>boundingBox</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QRectF</span>
                             </a>
@@ -292,6 +297,11 @@ font-style: italic;
 <span class='methodList'>
                             <a href='#name'>
                                 <span class='methodName'>name</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#parentShape'>
+                                <span class='methodName'>parentShape</span><span class='methodSep'>(</span><span class='methodSep'>)</span>
                             </a>
                         </span>
 <span class='methodList'>
@@ -394,6 +404,22 @@ font-style: italic;
         <h1>Member documentation</h1>
         <div class='methodDef'>
         <div class='def'>
+            <a class='className' id="absoluteTransformation">absoluteTransformation</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QTransform</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>transformation the 2D transformation matrix of the shape including all grandparent transforms.</p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the 2D transformation matrix.</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
             <a class='className' id="boundingBox">boundingBox</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>QRectF</span>
             
         </div>
@@ -462,6 +488,22 @@ font-style: italic;
 <h3>Return</h3>
         <table class='paramList'>
             <tr><td><p>the name of the shape</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="parentShape">parentShape</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p></p>
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>the parent GroupShape of the current shape.</p></td></tr>
         </table>
         
         </div>

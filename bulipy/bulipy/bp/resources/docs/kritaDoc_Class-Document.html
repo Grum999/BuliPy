@@ -4,11 +4,11 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="generator" content="BuliPy/build_docs.py"/>
-        <meta name="buildDoc:git:tagName" content="5.1.6"/>
-        <meta name="buildDoc:git:tagDate" content="2023-05-26"/>
-        <meta name="buildDoc:git:tagHash" content="6a72b3503238bdfbc72f903b41cc2c97064da469"/>
+        <meta name="buildDoc:git:tagName" content="v5.2.0"/>
+        <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
+        <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.1.6 API - Class Document</title>
+        <title>Krita 5.2.0 API - Class Document</title>
         <style>
         :root {
 --blue: #007bff;
@@ -250,8 +250,8 @@ font-style: italic;
     </head>
     <body class='class'>
         <h1>Class description - <span class='className'>Document</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/6a72b3503238bdfbc72f903b41cc2c97064da469/libs/libkis/Document.h'>Document.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.1.2</span></span></div>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/Document.h'>Document.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'><p>The Document class encapsulates a Krita Document/Image. A Krita document is an Image with a filename. Libkis does not differentiate between a document and an image, like Krita does internally.</p></div>
         
         <h2>Methods</h2>
@@ -327,8 +327,13 @@ font-style: italic;
                             </a>
                         </span>
 <span class='methodList'>
+                            <a href='#createColorizeMask'>
+                                <span class='methodName'>createColorizeMask</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>ColorizeMask</span>
+                            </a>
+                        </span>
+<span class='methodList'>
                             <a href='#createFileLayer'>
-                                <span class='methodName'>createFileLayer</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>FileLayer</span>
+                                <span class='methodName'>createFileLayer</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingFilter</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"Bicubic"</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>FileLayer</span>
                             </a>
                         </span>
 <span class='methodList'>
@@ -364,6 +369,11 @@ font-style: italic;
 <span class='methodList'>
                             <a href='#createTransformMask'>
                                 <span class='methodName'>createTransformMask</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>TransformMask</span>
+                            </a>
+                        </span>
+<span class='methodList'>
+                            <a href='#createTransparencyMask'>
+                                <span class='methodName'>createTransparencyMask</span><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>TransparencyMask</span>
                             </a>
                         </span>
 <span class='methodList'>
@@ -986,15 +996,36 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
-            <a class='className' id="createFileLayer">createFileLayer</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>FileLayer</span>
+            <a class='className' id="createColorizeMask">createColorizeMask</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>ColorizeMask</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Creates a colorize mask, which can be used to color fill via keystrokes.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>- the name of the layer.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a TransparencyMask</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="createFileLayer">createFileLayer</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>fileName</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingMethod</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>scalingFilter</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'> = </span><span class='methodParameterDefault'>"Bicubic"</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>FileLayer</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
             <p>returns a layer that shows an external image.</p>
 <h3>Parameters</h3>
         <table class='paramList'>
-            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>name of the file layer.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>fileName</span></td><td><p>the absolute filename of the file referenced. Symlinks will be resolved.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingMethod</span></td><td><p>how the dimensions of the file are interpreted</p><p>       can be either "None", "ImageToSize" or "ImageToPPI"</p></td></tr>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>name of the file layer.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>fileName</span></td><td><p>the absolute filename of the file referenced. Symlinks will be resolved.</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingMethod</span></td><td><p>how the dimensions of the file are interpreted</p><p>       can be either "None", "ImageToSize" or "ImageToPPI"</p></td></tr><tr><td class='paramName'><span class='methodParamName'>scalingFilter</span></td><td><p>filter used to scale the file</p><p>       can be "Bicubic", "Hermite", "NearestNeighbor", "Bilinear", "Bell", "BSpline", "Lanczos3", "Mitchell"</p></td></tr>
         </table>
         
 <h3>Return</h3>
@@ -1063,7 +1094,7 @@ font-style: italic;
             <a class='className' id="createFilterMask">createFilterMask</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class="methodSep">, </span><span class='methodParamName'>filter</span><span class='methodSep'>: </span><span class='methodParameterType'>Filter</span><span class="methodSep">, </span><span class='methodParamName'>selection_source</span><span class='methodSep'>: </span><span class='methodParameterType'>Node</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>FilterMask</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.1.6</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
             <p>Creates a filter mask object that much like a filterlayer can apply a filter non-destructively.</p>
 <h3>Parameters</h3>
@@ -1165,6 +1196,27 @@ font-style: italic;
 <h3>Return</h3>
         <table class='paramList'>
             <tr><td><p>a TransformMask</p></td></tr>
+        </table>
+        
+        </div>
+    </div>
+    
+<div class='methodDef'>
+        <div class='def'>
+            <a class='className' id="createTransparencyMask">createTransparencyMask</a><span class='methodSep'>(</span><span class='methodParamName'>name</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>TransparencyMask</span>
+            
+        </div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'>
+            <p>Creates a transparency mask, which can be used to assign transparency to regions.</p>
+<h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>name</span></td><td><p>- the name of the layer.</p></td></tr>
+        </table>
+        
+<h3>Return</h3>
+        <table class='paramList'>
+            <tr><td><p>a TransparencyMask</p></td></tr>
         </table>
         
         </div>
@@ -2352,9 +2404,9 @@ font-style: italic;
             <a class='className' id="waitForDone">waitForDone</a><span class='methodSep'>(</span><span class='methodSep'>)</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 4.3.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span><span class='refTag' title='Last updated version'><span class='refTagSymbol'>&#8635;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
-            <p>Wait for all the internal image jobs to complete and return without locking the image. This function is handly for tests or other synchronous actions, when one needs to wait for the result of his actions.</p>
+            <p>Wait for all the internal image jobs to complete and return without locking the image. This function is handy for tests or other synchronous actions, when one needs to wait for the result of his actions.</p>
         </div>
     </div>
     

@@ -8,7 +8,7 @@
         <meta name="buildDoc:git:tagDate" content="2023-10-13"/>
         <meta name="buildDoc:git:tagHash" content="1d16de46b01426233324dc2eb6775f081b4a8ddd"/>
 
-        <title>Krita 5.2.0 API - Class FilterMask</title>
+        <title>Krita 5.2.0 API - Class Preset</title>
         <style>
         :root {
 --blue: #007bff;
@@ -249,26 +249,32 @@ font-style: italic;
     </style>
     </head>
     <body class='class'>
-        <h1>Class description - <span class='className'>FilterMask</span></h1>
-        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/FilterMask.h'>FilterMask.h</a></div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
-        <div class='docString'><p>The FilterMask class A filter mask, unlike a filter layer, will add a non-destructive filter to the composited image of the node it is attached to.</p><p></p><p>You can set grayscale pixeldata on the filter mask to adjust where the filter is applied.</p><p></p><p>Filtermasks can be animated.</p></div>
+        <h1>Class description - <span class='className'>Preset</span></h1>
+        <div class='buildFrom'>Build from <a target='_blank' href='https://invent.kde.org/graphics/krita/-/blob/1d16de46b01426233324dc2eb6775f081b4a8ddd/libs/libkis/Preset.h'>Preset.h</a></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
+        <div class='docString'><p>The Preset class Preset is a resource object that stores brush preset data.</p><p></p><p>An example for printing the current brush preset and all its settings:</p><p></p><p><div class='code'>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600; color:#c678dd;">from</span> <span style=" color:#e6e6e6;">krita</span> <span style=" font-weight:600; color:#c678dd;">import</span> <span style=" color:#ff99ff;">*</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">view</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Krita</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">instance</span><span style=" color:#ff66d9;">().</span><span style=" color:#e6e6e6;">activeWindow</span><span style=" color:#ff66d9;">().</span><span style=" color:#e6e6e6;">activeView</span><span style=" color:#ff66d9;">()</span></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">preset</span> <span style=" color:#ff99ff;">=</span> <span style=" color:#e6e6e6;">Preset</span><span style=" color:#ff66d9;">(</span><span style=" color:#e6e6e6;">view</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">currentBrushPreset</span><span style=" color:#ff66d9;">())</span></p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" color:#e6e6e6;">print</span> <span style=" color:#ff66d9;">(</span> <span style=" color:#e6e6e6;">preset</span><span style=" color:#ff66d9;">.</span><span style=" color:#e6e6e6;">toXML</span><span style=" color:#ff66d9;">()</span> <span style=" color:#ff66d9;">)</span></p></div></p></div>
         
         <h2>Methods</h2>
     <div class='methodList'>
         <span class='methodList'>
-                            <a href='#filter'>
-                                <span class='methodName'>filter</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Filter</span>
+                            <a href='#Preset'>
+                                <span class='methodName'>Preset</span><span class='methodSep'>(</span><span class='methodParamName'>resource</span><span class='methodSep'>: </span><span class='methodParameterType'>Resource</span><span class='methodSep'>)</span>
                             </a>
                         </span>
 <span class='methodList'>
-                            <a href='#setFilter'>
-                                <span class='methodName'>setFilter</span><span class='methodSep'>(</span><span class='methodParamName'>filter</span><span class='methodSep'>: </span><span class='methodParameterType'>Filter</span><span class='methodSep'>)</span>
+                            <a href='#fromXML'>
+                                <span class='methodName'>fromXML</span><span class='methodSep'>(</span><span class='methodParamName'>xml</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
                             </a>
                         </span>
 <span class='methodList'>
-                            <a href='#type'>
-                                <span class='methodName'>type</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+                            <a href='#toXML'>
+                                <span class='methodName'>toXML</span><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
                             </a>
                         </span>
     </div>
@@ -278,12 +284,17 @@ font-style: italic;
         <h1>Member documentation</h1>
         <div class='methodDef'>
         <div class='def'>
-            <a class='className' id="filter">filter</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>Filter</span>
+            <a class='className' id="Preset">Preset</a><span class='methodSep'>(</span><span class='methodParamName'>resource</span><span class='methodSep'>: </span><span class='methodParameterType'>Resource</span><span class='methodSep'>)</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
-            <h3>Return</h3>
+            <h3>Parameters</h3>
+        <table class='paramList'>
+            <tr><td class='paramName'><span class='methodParamName'>resource</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+        </table>
+        
+<h3>Return</h3>
         <table class='paramList'>
             <tr><td><p><span class='noDescriptionProvided'>(no description provided)</span></p></td></tr>
         </table>
@@ -293,14 +304,15 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
-            <a class='className' id="setFilter">setFilter</a><span class='methodSep'>(</span><span class='methodParamName'>filter</span><span class='methodSep'>: </span><span class='methodParameterType'>Filter</span><span class='methodSep'>)</span>
+            <a class='className' id="fromXML">fromXML</a><span class='methodSep'>(</span><span class='methodParamName'>xml</span><span class='methodSep'>: </span><span class='methodParameterType'>str</span><span class='methodSep'>)</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
-            <h3>Parameters</h3>
+            <p>convert the preset settings into a preset formatted xml.</p>
+<h3>Parameters</h3>
         <table class='paramList'>
-            <tr><td class='paramName'><span class='methodParamName'>filter</span></td><td><span class='noDescriptionProvided'>(no description provided)</span></td></tr>
+            <tr><td class='paramName'><span class='methodParamName'>xml</span></td><td><p>valid xml preset string.</p></td></tr>
         </table>
         
         </div>
@@ -308,15 +320,15 @@ font-style: italic;
     
 <div class='methodDef'>
         <div class='def'>
-            <a class='className' id="type">type</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
+            <a class='className' id="toXML">toXML</a><span class='methodSep'>(</span><span class='methodSep'>)</span><span class='methodSep'> &#10142; </span><span class='methodParameterType'>str</span>
             
         </div>
-        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 4.0.0</span></span></div>
+        <div class='docRefTags'><span class='refTag' title='First implemented version'><span class='refTagSymbol'>&#65291;</span><span class='refTagTag'>Krita 5.2.0</span></span></div>
         <div class='docString'>
-            <p>Krita has several types of nodes, split in layers and masks. Group layers can contain other layers, any layer can contain masks.</p>
+            <p>convert the preset settings into a preset formatted xml.</p>
 <h3>Return</h3>
         <table class='paramList'>
-            <tr><td><p>The type of the node. Valid types are: <ul></p><p> <li>paintlayer</p><p> <li>grouplayer</p><p> <li>filelayer</p><p> <li>filterlayer</p><p> <li>filllayer</p><p> <li>clonelayer</p><p> <li>vectorlayer</p><p> <li>transparencymask</p><p> <li>filtermask</p><p> <li>transformmask</p><p> <li>selectionmask</p><p> <li>colorizemask </ul></p><p></p><p>If the Node object isn't wrapping a valid Krita layer or mask object, and empty string is returned.</p></td></tr>
+            <tr><td><p>the xml in a string.</p></td></tr>
         </table>
         
         </div>

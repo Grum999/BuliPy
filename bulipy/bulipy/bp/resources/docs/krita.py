@@ -3,8 +3,8 @@
 # Can be used by IDE for auto-complete
 # Build from header files from Krita's libkis source code folder
 # 
-# Git tag:  5.1.6 (2023-05-26)
-# Git hash: 6a72b3503238bdfbc72f903b41cc2c97064da469
+# Git tag:  v5.2.0 (2023-10-13)
+# Git hash: 1d16de46b01426233324dc2eb6775f081b4a8ddd
 # --------------------------------------------------------------------------------
 
 from PyQt5.Qt import *
@@ -13,6 +13,7 @@ from PyQt5.Qt import *
 class Canvas: pass
 class Channel: pass
 class CloneLayer: pass
+class ColorizeMask: pass
 class DockWidget: pass
 class DockWidgetFactoryBase: pass
 class Document: pass
@@ -31,6 +32,7 @@ class Node: pass
 class Notifier: pass
 class Palette: pass
 class PaletteView: pass
+class Preset: pass
 class PresetChooser: pass
 class Resource: pass
 class Scratchpad: pass
@@ -39,6 +41,7 @@ class SelectionMask: pass
 class Shape: pass
 class Swatch: pass
 class TransformMask: pass
+class TransparencyMask: pass
 class VectorLayer: pass
 class View: pass
 class Window: pass
@@ -239,7 +242,24 @@ class CloneLayer(Node):
     If the original is updated, the clone layer will update too.
 
     @Implemented with: 4.0.0
+    @Updated with: 5.2.0
     """
+    # Source location, line 61
+    def setSourceNode(self, node: Node):
+        """@brief setSourceNode
+        @param node the node to use as the source of the clone layer.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 55
+    def sourceNode(self) -> Node:
+        """@brief sourceNode
+        @return the node the clone layer is based on.
+        @Implemented with: 5.2.0
+        """
+        pass
+
     # Source location, line 49
     def type(self) -> str:
         """@brief type Krita has several types of nodes, split in layers and masks. Group
@@ -248,6 +268,257 @@ class CloneLayer(Node):
         @return clonelayer
         @Virtual
         @Implemented with: 4.0.0
+        """
+        pass
+
+
+# Source
+# - File: ColorizeMask.h
+# - Line: 59
+class ColorizeMask(Node):
+    """@brief The ColorizeMask class
+    A colorize mask is a mask type node that can be used
+    to color in line art.
+
+    @code
+    window = Krita.instance().activeWindow()
+    doc = Krita.instance().createDocument(10, 3, "Test", "RGBA", "U8", "", 120.0)
+    window.addView(doc)
+    root = doc.rootNode();
+    node = doc.createNode("layer", "paintLayer")
+    root.addChildNode(node, None)
+    nodeData = QByteArray.fromBase64(b"AAAAAAAAAAAAAAAAEQYMBhEGDP8RBgz/EQYMAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARBgz5EQYM/xEGDAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQYMAhEGDAkRBgwCAAAAAAAAAAAAAAAA");
+    node.setPixelData(nodeData,0,0,10,3)
+
+    cols = [ ManagedColor('RGBA','U8',''), ManagedColor('RGBA','U8','') ]
+    cols[0].setComponents([0.65490198135376, 0.345098048448563, 0.474509805440903, 1.0]);
+    cols[1].setComponents([0.52549022436142, 0.666666686534882, 1.0, 1.0]);
+    keys = [
+            QByteArray.fromBase64(b"/48AAAAAAAAAAAAAAAAAAAAAAACmCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+            QByteArray.fromBase64(b"AAAAAAAAAACO9ocAAAAAAAAAAAAAAAAAAAAAAMD/uQAAAAAAAAAAAAAAAAAAAAAAGoMTAAAAAAAAAAAA")
+            ]
+
+    mask = doc.createColorizeMask('c1')
+    node.addChildNode(mask,None)
+    mask.setEditKeyStrokes(True)
+
+    mask.setUseEdgeDetection(True)
+    mask.setEdgeDetectionSize(4.0)
+    mask.setCleanUpAmount(70.0)
+    mask.setLimitToDeviceBounds(True)
+    mask.initializeKeyStrokeColors(cols)
+
+    for col,key in zip(cols,keys):
+        mask.setKeyStrokePixelData(key,col,0,0,20,3)
+
+    mask.updateMask()
+    mask.setEditKeyStrokes(False);
+    mask.setShowOutput(True);
+    @endcode
+
+    @Implemented with: 5.2.0
+    """
+    # Source location, line 178
+    def cleanUpAmount(self) -> float:
+        """@brief cleanUpAmount
+        @return a float value of 0.0 to 100.0 representing the cleanup amount where 0.0 is no cleanup is done and 100.00 is most aggressive.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 165
+    def edgeDetectionSize(self) -> float:
+        """@brief edgeDetectionSize
+        @return a float value of the edge detection size in pixels.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 221
+    def editKeyStrokes(self) -> bool:
+        """@brief editKeyStrokes
+        Edit keystrokes mode allows the user to modify keystrokes on the active Colorize Mask.
+        @return true if edit keystrokes mode is enabled, false if disabled.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 94
+    def initializeKeyStrokeColors(self, colors: list[ManagedColor], transparentIndex: int = 1):
+        """@brief initializeKeyStrokeColors
+        Set the colors to use for the Colorize Mask's keystrokes.
+        @param colors a list of ManagedColor to use for the keystrokes.
+        @param transparentIndex index of the color that should be marked as transparent.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 121
+    def keyStrokePixelData(self, color: ManagedColor, x: int, y: int, w: int, h: int) -> QByteArray:
+        """@brief keyStrokePixelData
+        reads the given rectangle from the keystroke image data and returns it as a byte
+        array. The pixel data starts top-left, and is ordered row-first.
+        @param color a ManagedColor to get keystrokes pixeldata from.
+        @param x x position from where to start reading
+        @param y y position from where to start reading
+        @param w row length to read
+        @param h number of rows to read
+        @return a QByteArray with the pixel data. The byte array may be empty.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 86
+    def keyStrokesColors(self) -> list[ManagedColor]:
+        """@brief keyStrokesColors
+        Colors used in the Colorize Mask's keystrokes.
+        @return a ManagedColor list containing the colors of keystrokes.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 191
+    def limitToDeviceBounds(self) -> bool:
+        """@brief limitToDeviceBounds
+        @return true if limit bounds is enabled, false if disabled.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 101
+    def removeKeyStroke(self, color: ManagedColor):
+        """@brief removeKeyStroke
+        Remove a color from the Colorize Mask's keystrokes.
+        @param color a ManagedColor to be removed from the keystrokes.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 200
+    def resetCache(self):
+        """@Implemented with: 5.2.0"""
+        pass
+
+    # Source location, line 172
+    def setCleanUpAmount(self, value: float):
+        """@brief setCleanUpAmount
+        This will attempt to handle messy strokes that overlap the line art where they shouldn't.
+        @param value a float value from 0.0 to 100.00 where 0.0 is no cleanup is done and 100.00 is most aggressive.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 159
+    def setEdgeDetectionSize(self, value: float):
+        """@brief setEdgeDetectionSize
+        Set the value to the thinnest line on the image.
+        @param value a float value of the edge size to detect in pixels.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 228
+    def setEditKeyStrokes(self, enabled: bool):
+        """@brief setEditKeyStrokes
+        Toggle Colorize Mask's edit keystrokes mode.
+        @param enabled set true to enable edit keystrokes mode and false to disable it.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 139
+    def setKeyStrokePixelData(self, value: QByteArray, color: ManagedColor, x: int, y: int, w: int, h: int) -> bool:
+        """@brief setKeyStrokePixelData
+        writes the given bytes, of which there must be enough, into the
+        keystroke, the keystroke's original pixels are overwritten
+
+        @param value the byte array representing the pixels. There must be enough bytes available.
+        Krita will take the raw pointer from the QByteArray and start reading, not stopping before
+        (number of channels * size of channel * w * h) bytes are read.
+
+        @param color a ManagedColor to set keystrokes pixeldata for.
+        @param x the x position to start writing from
+        @param y the y position to start writing from
+        @param w the width of each row
+        @param h the number of rows to write
+        @return true if writing the pixeldata worked
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 185
+    def setLimitToDeviceBounds(self, value: bool):
+        """@brief setLimitToDeviceBounds
+        Limit the colorize mask to the combined layer bounds of the strokes and the line art it is filling. This can speed up the use of the mask on complicated compositions, such as comic pages.
+        @param value set true to enabled limit bounds, false to disable.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 214
+    def setShowOutput(self, enabled: bool):
+        """@brief setShowOutput
+        Toggle Colorize Mask's show output mode.
+        @param enabled set true to enable show coloring mode and false to disable it.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 146
+    def setUseEdgeDetection(self, value: bool):
+        """@brief setUseEdgeDetection
+        Activate this for line art with large solid areas, for example shadows on an object.
+        @param value true to enable edge detection, false to disable.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 207
+    def showOutput(self) -> bool:
+        """@brief showOutput
+        Show output mode allows the user to see the result of the Colorize Mask's algorithm.
+        @return true if edit show coloring mode is enabled, false if disabled.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 108
+    def transparencyIndex(self) -> int:
+        """@brief transparencyIndex
+        Index of the transparent color.
+        @return an integer containing the index of the current color marked as transparent.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 79
+    def type(self) -> str:
+        """@brief type Krita has several types of nodes, split in layers and masks. Group
+        layers can contain other layers, any layer can contain masks.
+
+        @return colorizemask
+
+        If the Node object isn't wrapping a valid Krita layer or mask object, and
+        empty string is returned.
+        @Virtual
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 198
+    def updateMask(self, force: bool = False):
+        """@brief updateMask
+        Process the Colorize Mask's keystrokes and generate a projection of the computed colors.
+        @param force force an update
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 152
+    def useEdgeDetection(self) -> bool:
+        """@brief useEdgeDetection
+        @return true if Edge detection is enabled, false if disabled.
+        @Implemented with: 5.2.0
         """
         pass
 
@@ -355,16 +626,16 @@ class DockWidgetFactoryBase:
 
 # Source
 # - File: Document.h
-# - Line: 31
+# - Line: 33
 class Document(QObject):
     """The Document class encapsulates a Krita Document/Image. A Krita document is an Image with
     a filename. Libkis does not differentiate between a document and an image, like Krita does
     internally.
 
     @Implemented with: 4.0.0
-    @Updated with: 5.1.2
+    @Updated with: 5.2.0
     """
-    # Source location, line 93
+    # Source location, line 95
     def activeNode(self) -> Node:
         """@brief activeNode retrieve the node that is currently active in the currently active window
         @return the active node. If there is no active window, the first child node is returned.
@@ -372,7 +643,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 844
+    # Source location, line 864
     def animationLength(self) -> int:
         """@brief get total frame range for animation
         @return total frame range for animation
@@ -380,7 +651,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 893
+    # Source location, line 913
     def annotation(self, type: str) -> QByteArray:
         """@brief annotation the actual data for the annotation for this type. It's a simple
         QByteArray, what's in it depends on the type of the annotation
@@ -390,7 +661,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 885
+    # Source location, line 905
     def annotationDescription(self, type: str) -> str:
         """@brief annotationDescription gets the pretty description for the current annotation
         @param type the type of the annotation
@@ -399,7 +670,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 878
+    # Source location, line 898
     def annotationTypes(self) -> list[str]:
         """@brief annotationTypes returns the list of annotations present in the document.
         Each annotation type is unique.
@@ -407,7 +678,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 196
+    # Source location, line 198
     def backgroundColor(self) -> QColor:
         """@brief backgroundColor returns the current background color of the document. The color will
         also include the opacity.
@@ -417,7 +688,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 81
+    # Source location, line 83
     def batchmode(self) -> bool:
         """Batchmode means that no actions on the document should show dialogs or popups.
         @return true if the document is in batchmode.
@@ -425,7 +696,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 791
+    # Source location, line 811
     def bounds(self) -> QRect:
         """@brief bounds return the bounds of the image
         @return the bounds
@@ -433,7 +704,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 75
+    # Source location, line 77
     def clone(self):
         """@brief clone create a shallow clone of this document.
         @return a new Document that should be identical to this one in every respect.
@@ -441,7 +712,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 418
+    # Source location, line 420
     def close(self) -> bool:
         """@brief close Close the document: remove it from Krita's internal list of documents and
         close all views. If the document is modified, you should save it first. There will be
@@ -454,7 +725,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 131
+    # Source location, line 133
     def colorDepth(self) -> str:
         """colorDepth A string describing the color depth of the image:
         <ul>
@@ -468,7 +739,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 146
+    # Source location, line 148
     def colorModel(self) -> str:
         """@brief colorModel retrieve the current color model of this document:
         <ul>
@@ -485,14 +756,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 151
+    # Source location, line 153
     def colorProfile(self) -> str:
         """@return the name of the current color profile
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 637
+    # Source location, line 641
     def createCloneLayer(self, name: str, source: Node) -> CloneLayer:
         """@brief createCloneLayer
         @param name
@@ -502,19 +773,32 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 595
-    def createFileLayer(self, name: str, fileName: str, scalingMethod: str) -> FileLayer:
+    # Source location, line 701
+    def createColorizeMask(self, name: str) -> ColorizeMask:
+        """@brief createColorizeMask
+        Creates a colorize mask, which can be used to color fill via keystrokes.
+        @param name - the name of the layer.
+        @return a TransparencyMask
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 599
+    def createFileLayer(self, name: str, fileName: str, scalingMethod: str, scalingFilter: str = "Bicubic") -> FileLayer:
         """@brief createFileLayer returns a layer that shows an external image.
         @param name name of the file layer.
         @param fileName the absolute filename of the file referenced. Symlinks will be resolved.
         @param scalingMethod how the dimensions of the file are interpreted
                can be either "None", "ImageToSize" or "ImageToPPI"
+        @param scalingFilter filter used to scale the file
+               can be "Bicubic", "Hermite", "NearestNeighbor", "Bilinear", "Bell", "BSpline", "Lanczos3", "Mitchell"
         @return a FileLayer
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
-    # Source location, line 629
+    # Source location, line 633
     def createFillLayer(self, name: str, generatorName: str, configuration: InfoObject, selection: Selection) -> FillLayer:
         """@brief createFillLayer creates a fill layer object, which is a layer
         @param name
@@ -540,7 +824,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 605
+    # Source location, line 609
     def createFilterLayer(self, name: str, filter: Filter, selection: Selection) -> FilterLayer:
         """@brief createFilterLayer creates a filter layer, which is a layer that represents a filter
         applied non-destructively.
@@ -552,7 +836,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 665
+    # Source location, line 669
     def createFilterMask(self, name: str, filter: Filter, selection_source: Node) -> FilterMask:
         """@brief createFilterMask
         Creates a filter mask object that much like a filterlayer can apply a filter non-destructively.
@@ -561,11 +845,11 @@ class Document(QObject):
         @param selection_source a node from which the selection should be initialized
         @return a FilterMask
         @Implemented with: 4.0.0
-        @Last updated with: 5.1.6
+        @Last updated with: 5.2.0
         """
         pass
 
-    # Source location, line 586
+    # Source location, line 588
     def createGroupLayer(self, name: str) -> GroupLayer:
         """@brief createGroupLayer
         Returns a grouplayer object. Grouplayers are nodes that can have
@@ -576,7 +860,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 578
+    # Source location, line 580
     def createNode(self, name: str, nodeType: str) -> Node:
         """@brief createNode create a new node of the given type. The node is not added
         to the node hierarchy; you need to do that by finding the right parent node,
@@ -622,7 +906,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 673
+    # Source location, line 677
     def createSelectionMask(self, name: str) -> SelectionMask:
         """@brief createSelectionMask
         Creates a selection mask, which can be used to store selections.
@@ -632,7 +916,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 681
+    # Source location, line 693
     def createTransformMask(self, name: str) -> TransformMask:
         """@brief createTransformMask
         Creates a transform mask, which can be used to apply a transformation non-destructively.
@@ -642,7 +926,17 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 645
+    # Source location, line 685
+    def createTransparencyMask(self, name: str) -> TransparencyMask:
+        """@brief createTransparencyMask
+        Creates a transparency mask, which can be used to assign transparency to regions.
+        @param name - the name of the layer.
+        @return a TransparencyMask
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 649
     def createVectorLayer(self, name: str) -> VectorLayer:
         """@brief createVectorLayer
         Creates a vector layer that can contain vector shapes.
@@ -652,7 +946,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 428
+    # Source location, line 430
     def crop(self, x: int, y: int, w: int, h: int):
         """@brief crop the image to rectangle described by @p x, @p y,
         @p w and @p h
@@ -665,7 +959,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 867
+    # Source location, line 887
     def currentTime(self) -> int:
         """@brief get current frame selected of animation
         @return current frame selected of animation
@@ -673,7 +967,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 250
+    # Source location, line 252
     def documentInfo(self) -> str:
         """@brief documentInfo creates and XML document representing document and author information.
         @return a string containing a valid XML document with the right information about the document
@@ -719,7 +1013,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 469
+    # Source location, line 471
     def exportImage(self, filename: str, exportConfiguration: InfoObject) -> bool:
         """@brief exportImage export the image, without changing its URL to the given path.
         @param filename the full path to which the image is to be saved
@@ -762,21 +1056,21 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 264
+    # Source location, line 266
     def fileName(self) -> str:
         """@return the full path to the document, if it has been set.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 474
+    # Source location, line 476
     def flatten(self):
         """@brief flatten all layers in the image
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 810
+    # Source location, line 830
     def framesPerSecond(self) -> int:
         """@brief frames per second of document
         @return the fps of the document
@@ -784,7 +1078,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 838
+    # Source location, line 858
     def fullClipRangeEndTime(self) -> int:
         """@brief get the full clip range end time
         @return full clip range end time
@@ -792,7 +1086,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 826
+    # Source location, line 846
     def fullClipRangeStartTime(self) -> int:
         """@brief get the full clip range start time
         @return full clip range start time
@@ -800,7 +1094,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 67
+    # Source location, line 69
     def guidesLocked(self) -> bool:
         """@brief guidesLocked
         Returns guide lockedness.
@@ -809,7 +1103,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 61
+    # Source location, line 63
     def guidesVisible(self) -> bool:
         """@brief guidesVisible
         Returns guide visibility.
@@ -819,14 +1113,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 274
+    # Source location, line 276
     def height(self) -> int:
         """@return the height of the image in pixels
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 48
+    # Source location, line 50
     def horizontalGuides(self) -> list[float]:
         """@brief horizontalGuides
         The horizontal guides.
@@ -835,7 +1129,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 804
+    # Source location, line 824
     def importAnimation(self, files: list[str], firstFrame: int, step: int) -> bool:
         """@brief Import an image sequence of files from a directory. This will grab all
         images from the directory and import them with a potential offset (firstFrame)
@@ -853,7 +1147,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 716
+    # Source location, line 736
     def lock(self):
         """[low-level] Lock the image without waiting for all the internal job queues are processed
 
@@ -875,14 +1169,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 779
+    # Source location, line 799
     def modified(self) -> bool:
         """@brief modified returns true if the document has unsaved modifications.
         @Implemented with: 4.1.2
         """
         pass
 
-    # Source location, line 284
+    # Source location, line 286
     def name(self) -> str:
         """@return the name of the document. This is the title field in the @ref documentInfo
         @Implemented with: 4.0.0
@@ -890,7 +1184,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 111
+    # Source location, line 113
     def nodeByName(self, name: str) -> Node:
         """@brief nodeByName searches the node tree for a node with the given name and returns it
         @param name the name of the node
@@ -899,7 +1193,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 119
+    # Source location, line 121
     def nodeByUniqueID(self, id: QUuid) -> Node:
         """@brief nodeByUniqueID searches the node tree for a node with the given name and returns it.
         @param uuid the unique id of the node
@@ -908,7 +1202,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 407
+    # Source location, line 409
     def pixelData(self, x: int, y: int, w: int, h: int) -> QByteArray:
         """@brief pixelData reads the given rectangle from the image projection and returns it as a byte
         array. The pixel data starts top-left, and is ordered row-first.
@@ -944,7 +1238,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 861
+    # Source location, line 881
     def playBackEndTime(self) -> int:
         """@brief get end time of current playback
         @return end time of current playback
@@ -952,7 +1246,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 855
+    # Source location, line 875
     def playBackStartTime(self) -> int:
         """@brief get start time of current playback
         @return start time of current playback
@@ -960,7 +1254,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 687
+    # Source location, line 707
     def projection(self, x: int = 0, y: int = 0, w: int = 0, h: int = 0) -> QImage:
         """@brief projection creates a QImage from the rendered image or
         a cutout rectangle.
@@ -968,7 +1262,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 747
+    # Source location, line 767
     def refreshProjection(self):
         """Starts a synchronous recomposition of the projection: everything will
         wait until the image is fully recomputed.
@@ -976,7 +1270,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 907
+    # Source location, line 927
     def removeAnnotation(self, type: str):
         """@brief removeAnnotation remove the specified annotation from the image
         @param type the type defining the annotation
@@ -984,7 +1278,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 484
+    # Source location, line 486
     def resizeImage(self, x: int, y: int, w: int, h: int):
         """@brief resizeImage resizes the canvas to the given left edge, top edge, width and height.
         Note: This doesn't scale, use scale image for that.
@@ -996,14 +1290,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 294
+    # Source location, line 296
     def resolution(self) -> int:
         """@return the resolution in pixels per inch
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 306
+    # Source location, line 308
     def rootNode(self) -> Node:
         """@brief rootNode the root node is the invisible group layer that contains the entire node
         hierarchy.
@@ -1012,7 +1306,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 512
+    # Source location, line 514
     def rotateImage(self, radians: float):
         """@brief rotateImage
         Rotate the image by the given radians.
@@ -1021,7 +1315,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 526
+    # Source location, line 528
     def save(self) -> bool:
         """@brief save the image to its currently set path. The modified flag of the
         document will be reset
@@ -1030,7 +1324,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 534
+    # Source location, line 536
     def saveAs(self, filename: str) -> bool:
         """@brief saveAs save the document under the @p filename. The document's
         filename will be reset to @p filename.
@@ -1041,7 +1335,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 505
+    # Source location, line 507
     def scaleImage(self, w: int, h: int, xres: int, yres: int, strategy: str):
         """@brief scaleImage
         @param w the new width
@@ -1064,7 +1358,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 312
+    # Source location, line 314
     def selection(self) -> Selection:
         """@brief selection Create a Selection object around the global selection, if there is one.
         @return the global selection or None if there is no global selection.
@@ -1072,7 +1366,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 99
+    # Source location, line 101
     def setActiveNode(self, value: Node):
         """@brief setActiveNode make the given node active in the currently active view and window
         @param value the node to make active.
@@ -1080,7 +1374,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 901
+    # Source location, line 921
     def setAnnotation(self, type: str, description: str, annotation: QByteArray):
         """@brief setAnnotation Add the given annotation to the document
         @param type the unique type of the annotation
@@ -1101,7 +1395,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 205
+    # Source location, line 207
     def setBackgroundColor(self, color: QColor) -> bool:
         """@brief setBackgroundColor sets the background color of the document. It will trigger a projection
         update.
@@ -1112,7 +1406,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 87
+    # Source location, line 89
     def setBatchmode(self, value: bool):
         """Set batchmode to @p value. If batchmode is true, then there should be no popups
         or dialogs shown to the user.
@@ -1121,7 +1415,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 161
+    # Source location, line 163
     def setColorProfile(self, colorProfile: str) -> bool:
         """@brief setColorProfile set the color profile of the image to the given profile. The profile has to
         be registered with krita and be compatible with the current color model and depth; the image data
@@ -1133,7 +1427,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 188
+    # Source location, line 190
     def setColorSpace(self, colorModel: str, colorDepth: str, colorProfile: str) -> bool:
         """@brief setColorSpace convert the nodes and the image to the given colorspace. The conversion is
         done with Perceptual as intent, High Quality and No LCMS Optimizations as flags and no blackpoint
@@ -1162,14 +1456,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 872
+    # Source location, line 892
     def setCurrentTime(self, time: int):
         """@brief set current time of document's animation
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 259
+    # Source location, line 261
     def setDocumentInfo(self, document: str):
         """@brief setDocumentInfo set the Document information to the information contained in document
         @param document A string containing a valid XML document that conforms to the document-info DTD
@@ -1180,35 +1474,35 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 269
+    # Source location, line 271
     def setFileName(self, value: str):
         """@brief setFileName set the full path of the document to @param value
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 815
+    # Source location, line 835
     def setFramesPerSecond(self, fps: int):
         """@brief set frames per second of document
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 832
+    # Source location, line 852
     def setFullClipRangeEndTime(self, endTime: int):
         """@brief set full clip range end time
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 820
+    # Source location, line 840
     def setFullClipRangeStartTime(self, startTime: int):
         """@brief set start time of animation
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 774
+    # Source location, line 794
     def setGuidesLocked(self, locked: bool):
         """@brief setGuidesLocked
         set guides locked on this document
@@ -1217,7 +1511,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 767
+    # Source location, line 787
     def setGuidesVisible(self, visible: bool):
         """@brief setGuidesVisible
         set guides visible on this document.
@@ -1226,14 +1520,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 279
+    # Source location, line 281
     def setHeight(self, value: int):
         """@brief setHeight resize the document to @param value height. This is a canvas resize, not a scale.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 754
+    # Source location, line 774
     def setHorizontalGuides(self, lines: list[float]):
         """@brief setHorizontalGuides
         replace all existing horizontal guides with the entries in the list.
@@ -1243,7 +1537,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 785
+    # Source location, line 805
     def setModified(self, modified: bool):
         """@brief setModified sets the modified status of the document
         @param modified if true, the document is considered modified and closing it will ask for saving.
@@ -1251,7 +1545,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 289
+    # Source location, line 291
     def setName(self, value: str):
         """@brief setName sets the name of the document to @p value. This is the title field in the @ref documentInfo
         @Implemented with: 4.0.0
@@ -1259,14 +1553,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 849
+    # Source location, line 869
     def setPlayBackRange(self, start: int, stop: int):
         """@brief set temporary playback range of document
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 299
+    # Source location, line 301
     def setResolution(self, value: int):
         """@brief setResolution set the resolution of the image; this does not scale the image
         @param value the resolution in pixels per inch
@@ -1274,7 +1568,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 318
+    # Source location, line 320
     def setSelection(self, value: Selection):
         """@brief setSelection set or replace the global selection
         @param value a valid selection object.
@@ -1282,7 +1576,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 760
+    # Source location, line 780
     def setVerticalGuides(self, lines: list[float]):
         """@brief setVerticalGuides
         replace all existing horizontal guides with the entries in the list.
@@ -1292,14 +1586,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 328
+    # Source location, line 330
     def setWidth(self, value: int):
         """@brief setWidth resize the document to @param value width. This is a canvas resize, not a scale.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 338
+    # Source location, line 340
     def setXOffset(self, x: int):
         """@brief setXOffset sets the left edge of the canvas to @p x.
         @Implemented with: 4.0.0
@@ -1307,7 +1601,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 361
+    # Source location, line 363
     def setXRes(self, xRes: float):
         """@brief setXRes set the horizontal resolution of the image to
         xRes in pixels per inch
@@ -1316,7 +1610,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 348
+    # Source location, line 350
     def setYOffset(self, y: int):
         """@brief setYOffset sets the top edge of the canvas to @p y.
         @Implemented with: 4.0.0
@@ -1324,7 +1618,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 373
+    # Source location, line 375
     def setYRes(self, yRes: float):
         """@brief setYRes set the vertical resolution of the image to yRes
         in pixels per inch
@@ -1333,7 +1627,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 519
+    # Source location, line 521
     def shearImage(self, angleX: float, angleY: float):
         """@brief shearImage shear the whole image.
         @param angleX the X-angle in degrees to shear by
@@ -1342,7 +1636,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 696
+    # Source location, line 716
     def thumbnail(self, w: int, h: int) -> QImage:
         """@brief thumbnail create a thumbnail of the given dimensions.
 
@@ -1353,14 +1647,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 104
+    # Source location, line 106
     def topLevelNodes(self) -> list[Node]:
         """@brief toplevelNodes return a list with all top level nodes in the image graph
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 741
+    # Source location, line 761
     def tryBarrierLock(self) -> bool:
         """@brief Tries to lock the image without waiting for the jobs to finish
 
@@ -1374,7 +1668,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 723
+    # Source location, line 743
     def unlock(self):
         """Unlocks the image and starts/resumes all the pending internal jobs. If the image
         has been locked for a non-readOnly access, then all the internal caches of the image
@@ -1384,7 +1678,7 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 54
+    # Source location, line 56
     def verticalGuides(self) -> list[float]:
         """@brief verticalGuides
         The vertical guide lines.
@@ -1393,31 +1687,31 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 730
+    # Source location, line 750
     def waitForDone(self):
         """Wait for all the internal image jobs to complete and return without locking
-        the image. This function is handly for tests or other synchronous actions,
+        the image. This function is handy for tests or other synchronous actions,
         when one needs to wait for the result of his actions.
         @Implemented with: 4.0.0
-        @Last updated with: 4.3.0
+        @Last updated with: 5.2.0
         """
         pass
 
-    # Source location, line 323
+    # Source location, line 325
     def width(self) -> int:
         """@return the width of the image in pixels.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 333
+    # Source location, line 335
     def xOffset(self) -> int:
         """@return the left edge of the canvas in pixels.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 355
+    # Source location, line 357
     def xRes(self) -> float:
         """@return xRes the horizontal resolution of the image in pixels
         per inch
@@ -1426,14 +1720,14 @@ class Document(QObject):
         """
         pass
 
-    # Source location, line 343
+    # Source location, line 345
     def yOffset(self) -> int:
         """@return the top edge of the canvas in pixels.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 367
+    # Source location, line 369
     def yRes(self) -> float:
         """@return yRes the vertical resolution of the image in pixels per
         inch
@@ -1511,9 +1805,9 @@ class FileLayer(Node):
     file layer image as well.
 
     @Implemented with: 4.0.0
-    @Updated with: 4.1.2
+    @Updated with: 5.2.0
     """
-    # Source location, line 68
+    # Source location, line 71
     def path(self) -> str:
         """@brief path
         @return A QString with the full path of the referenced image.
@@ -1521,14 +1815,22 @@ class FileLayer(Node):
         """
         pass
 
-    # Source location, line 62
+    # Source location, line 65
     def resetCache(self):
         """@brief makes the file layer to reload the connected image from disk
         @Implemented with: 4.1.2
         """
         pass
 
-    # Source location, line 80
+    # Source location, line 89
+    def scalingFilter(self) -> str:
+        """@brief scalingFilter
+        returns the filter with which the file referenced is scaled.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 83
     def scalingMethod(self) -> str:
         """@brief scalingMethod
         returns how the file referenced is scaled.
@@ -1543,18 +1845,21 @@ class FileLayer(Node):
         """
         pass
 
-    # Source location, line 57
-    def setProperties(self, fileName: str, scalingMethod: str = "None"):
+    # Source location, line 60
+    def setProperties(self, fileName: str, scalingMethod: str = "None", scalingFilter: str = "Bicubic"):
         """@brief setProperties
         Change the properties of the file layer.
         @param fileName - A String containing the absolute file name.
         @param scalingMethod - a string with the scaling method, defaults to "None",
          other options are "ToImageSize" and "ToImagePPI"
+        @param scalingFilter - a string with the scaling filter, defaults to "Bicubic",
+         other options are "Hermite", "NearestNeighbor", "Bilinear", "Bell", "BSpline", "Lanczos3", "Mitchell"
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
-    # Source location, line 48
+    # Source location, line 49
     def type(self) -> str:
         """@brief type Krita has several types of nodes, split in layers and masks. Group
         layers can contain other layers, any layer can contain masks.
@@ -1715,7 +2020,7 @@ class Filter(QObject):
 class FilterLayer(Node):
     """@brief The FilterLayer class
     A filter layer will, when compositing, take the composited
-    image up to the point of the loction of the filter layer
+    image up to the point of the location of the filter layer
     in the stack, create a copy and apply a filter.
 
     This means you can use blending modes on the filter layers,
@@ -2314,7 +2619,7 @@ class Krita(QObject):
 class ManagedColor(QObject):
     """@brief The ManagedColor class is a class to handle colors that are color managed.
     A managed color is a color of which we know the model(RGB, LAB, CMYK, etc), the bitdepth and
-    the specific properties of its colorspace, such as the whitepoint, chromacities, trc, etc, as represented
+    the specific properties of its colorspace, such as the whitepoint, chromaticities, trc, etc, as represented
     by the color profile.
 
     Krita has two color management systems. LCMS and OCIO.
@@ -2516,9 +2821,9 @@ class Node(QObject):
 
 
     @Implemented with: 4.0.0
-    @Updated with: 5.0.0
+    @Updated with: 5.2.0
     """
-    # Source location, line 85
+    # Source location, line 97
     def addChildNode(self, child: Node, above: Node) -> bool:
         """@brief addChildNode adds the given node in the list of children.
         @param child the node to be added
@@ -2536,7 +2841,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 169
+    # Source location, line 181
     def animated(self) -> bool:
         """@brief Krita layers can be animated, i.e., have frames.
         @return return true if the layer has frames. Currently, the scripting framework
@@ -2552,7 +2857,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 440
+    # Source location, line 452
     def bounds(self) -> QRect:
         """@brief bounds return the exact bounds of the node's paint device
         @return the bounds, or an empty QRect if the node has no paint device or is empty.
@@ -2574,11 +2879,13 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 77
+    # Source location, line 78
     def childNodes(self) -> list[Node]:
-        """Return a list of child nodes of the current node. The nodes are ordered from the bottommost up.
+        """@brief childNodes
+        @return returns a list of child nodes of the current node. The nodes are ordered from the bottommost up.
         The function is not recursive.
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -2589,14 +2896,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 195
+    # Source location, line 207
     def collapsed(self) -> bool:
         """returns the collapsed state of this node
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 110
+    # Source location, line 122
     def colorDepth(self) -> str:
         """colorDepth A string describing the color depth of the image:
         <ul>
@@ -2610,7 +2917,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 202
+    # Source location, line 214
     def colorLabel(self) -> int:
         """Sets a color label index associated to the layer.  The actual
         color of the label and the number of available colors is
@@ -2619,7 +2926,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 125
+    # Source location, line 137
     def colorModel(self) -> str:
         """@brief colorModel retrieve the current color model of this document:
         <ul>
@@ -2636,14 +2943,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 130
+    # Source location, line 142
     def colorProfile(self) -> str:
         """@return the name of the current color profile
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 518
+    # Source location, line 530
     def cropNode(self, x: int, y: int, w: int, h: int):
         """@brief cropNode crop this layer.
         @param x the left edge of the cropping rectangle.
@@ -2654,7 +2961,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 464
+    # Source location, line 476
     def duplicate(self):
         """@brief duplicate returns a full copy of the current node. The node is not inserted in the graphic
         @return a valid Node object or 0 if the node couldn't be duplicated.
@@ -2663,14 +2970,27 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 174
+    # Source location, line 186
     def enableAnimation(self):
         """@brief enableAnimation make the current layer animated, so it can have frames.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 238
+    # Source location, line 89
+    def findChildNodes(self, name: str = "", recursive: bool = False, partialMatch: bool = False, type: str = "", colorLabelIndex: int = 0) -> list[Node]:
+        """@brief findChildNodes
+        @param name name of the child node to search for. Leaving this blank will return all nodes.
+        @param recursive whether or not to search recursively. Defaults to false.
+        @param partialMatch return if the name partially contains the string (case insensitive). Defaults to false.
+        @param type filter returned nodes based on type
+        @param colorLabelIndex filter returned nodes based on color label index
+        @return returns a list of child nodes and grand child nodes of the current node that match the search criteria.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 250
     def hasExtents(self) -> bool:
         """@brief does the node have any content in it?
         @return if node has any content in it
@@ -2678,14 +2998,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 305
+    # Source location, line 317
     def hasKeyframeAtTime(self, frameNumber: int) -> bool:
         """Check to see if frame number on layer is a keyframe
         @Implemented with: 4.2.0
         """
         pass
 
-    # Source location, line 295
+    # Source location, line 307
     def icon(self) -> QIcon:
         """@brief icon
         @return the icon associated with the layer.
@@ -2693,7 +3013,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 553
+    # Source location, line 565
     def index(self) -> int:
         """@brief index the index of the node inside the parent
         @return an integer representing the node's index inside the parent
@@ -2701,7 +3021,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 216
+    # Source location, line 228
     def inheritAlpha(self) -> bool:
         """@brief inheritAlpha checks whether this node has the inherits alpha flag set
         @return true if the Inherit Alpha is set
@@ -2709,22 +3029,23 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 185
+    # Source location, line 197
     def isPinnedToTimeline(self) -> bool:
         """@return Returns true if node is pinned to the Timeline Docker or false if it is not.
         @Implemented with: 5.0.0
         """
         pass
 
-    # Source location, line 540
+    # Source location, line 552
     def layerStyleToAsl(self) -> str:
-        """@brief layerStyleToAsl retreive the current layer's style in ASL format.
+        """@brief layerStyleToAsl retrieve the current layer's style in ASL format.
         @return a QString in ASL format representing the layer style.
         @Implemented with: 5.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
-    # Source location, line 227
+    # Source location, line 239
     def locked(self) -> bool:
         """@brief locked checks whether the Node is locked. A locked node cannot be changed.
         @return true if the Node is locked, false if it hasn't been locked.
@@ -2732,7 +3053,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 484
+    # Source location, line 496
     def mergeDown(self):
         """@brief mergeDown merges the given node with the first visible node underneath this node in the layerstack.
         This will drop all per-layer metadata.
@@ -2741,35 +3062,35 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 445
+    # Source location, line 457
     def move(self, x: int, y: int):
         """ move the pixels to the given x, y location in the image coordinate space.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 244
+    # Source location, line 256
     def name(self) -> str:
         """@return the user-visible name of this node.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 254
+    # Source location, line 266
     def opacity(self) -> int:
         """return the opacity of the Node. The opacity is a value between 0 and 255.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 264
+    # Source location, line 276
     def parentNode(self):
         """return the Node that is the parent of the current Node, or 0 if this is the root Node.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 354
+    # Source location, line 366
     def pixelData(self, x: int, y: int, w: int, h: int) -> QByteArray:
         """@brief pixelData reads the given rectangle from the Node's paintable pixels, if those
         exist, and returns it as a byte array. The pixel data starts top-left, and is ordered row-first.
@@ -2814,7 +3135,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 365
+    # Source location, line 377
     def pixelDataAtTime(self, x: int, y: int, w: int, h: int, time: int) -> QByteArray:
         """@brief pixelDataAtTime a basic function to get pixeldata from an animated node at a given time.
         @param x the position from the left to start reading.
@@ -2827,7 +3148,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 453
+    # Source location, line 465
     def position(self) -> QPoint:
         """@brief position returns the position of the paint device of this node. The position is
         always 0,0 unless the layer has been moved. If you want to know the topleft position of
@@ -2838,7 +3159,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 409
+    # Source location, line 421
     def projectionPixelData(self, x: int, y: int, w: int, h: int) -> QByteArray:
         """@brief projectionPixelData reads the given rectangle from the Node's projection (that is, what the node
         looks like after all sub-Nodes (like layers in a group or masks on a layer) have been applied,
@@ -2884,14 +3205,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 458
+    # Source location, line 470
     def remove(self) -> bool:
         """@brief remove removes this node from its parent image.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 91
+    # Source location, line 103
     def removeChildNode(self, child: Node) -> bool:
         """@brief removeChildNode removes the given node from the list of children.
         @param child the node to be removed
@@ -2899,7 +3220,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 509
+    # Source location, line 521
     def rotateNode(self, radians: float):
         """@brief rotateNode rotate this layer by the given radians.
         @param radians amount the layer should be rotated in, in radians.
@@ -2907,7 +3228,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 478
+    # Source location, line 490
     def save(self, filename: str, xRes: float, yRes: float, exportConfiguration: InfoObject, exportRect: QRect = QRect()) -> bool:
         """@brief save exports the given node with this filename. The extension of the filename determines the filetype.
         @param filename the filename including extension
@@ -2924,7 +3245,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 503
+    # Source location, line 515
     def scaleNode(self, origin: QPointF, width: int, height: int, strategy: str):
         """@brief scaleNode
         @param origin the origin point
@@ -2961,7 +3282,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 98
+    # Source location, line 110
     def setChildNodes(self, nodes: list[Node]):
         """@brief setChildNodes this replaces the existing set of child nodes with the new set.
         @param nodes The list of nodes that will become children, bottom-up -- the first node,
@@ -2970,14 +3291,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 190
+    # Source location, line 202
     def setCollapsed(self, collapsed: bool):
         """Sets the state of the node to the value of @param collapsed
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 210
+    # Source location, line 222
     def setColorLabel(self, index: int):
         """@brief setColorLabel sets a color label index associated to the layer.  The actual
         color of the label and the number of available colors is
@@ -2987,7 +3308,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 139
+    # Source location, line 151
     def setColorProfile(self, colorProfile: str) -> bool:
         """@brief setColorProfile set the color profile of the image to the given profile. The profile has to
         be registered with krita and be compatible with the current color model and depth; the image data
@@ -2999,7 +3320,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 162
+    # Source location, line 174
     def setColorSpace(self, colorModel: str, colorDepth: str, colorProfile: str) -> bool:
         """@brief setColorSpace convert the node to the given colorspace
         @param colorModel A string describing the color model of the node:
@@ -3024,14 +3345,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 221
+    # Source location, line 233
     def setInheritAlpha(self, value: bool):
         """set the Inherit Alpha flag to the given value
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 547
+    # Source location, line 559
     def setLayerStyleFromAsl(self, asl: str) -> bool:
         """@brief setLayerStyleFromAsl set a new layer style for this node.
         @param aslContent a string formatted in ASL format containing the layer style
@@ -3040,28 +3361,28 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 232
+    # Source location, line 244
     def setLocked(self, value: bool):
         """set the Locked flag to the give value
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 249
+    # Source location, line 261
     def setName(self, name: str):
         """rename the Node to the given name
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 259
+    # Source location, line 271
     def setOpacity(self, value: int):
         """set the opacity of the Node to the given value. The opacity is a value between 0 and 255.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 180
+    # Source location, line 192
     def setPinnedToTimeline(self, pinned: bool):
         """@brief Sets whether or not node should be pinned to the Timeline Docker,
         regardless of selection activity.
@@ -3069,7 +3390,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 434
+    # Source location, line 446
     def setPixelData(self, value: QByteArray, x: int, y: int, w: int, h: int) -> bool:
         """@brief setPixelData writes the given bytes, of which there must be enough, into the
         Node, if the Node has writable pixel data:
@@ -3105,14 +3426,14 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 310
+    # Source location, line 322
     def setVisible(self, visible: bool):
         """Set the visibility of the current node to @param visible
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 525
+    # Source location, line 537
     def shearNode(self, angleX: float, angleY: float):
         """@brief shearNode perform a shear operation on this node.
         @param angleX the X-angle in degrees to shear by
@@ -3128,7 +3449,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 534
+    # Source location, line 546
     def thumbnail(self, w: int, h: int) -> QImage:
         """@brief thumbnail create a thumbnail of the given dimensions. The thumbnail is sized according
         to the layer dimensions, not the image dimensions. If the requested size is too big a null
@@ -3139,7 +3460,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 289
+    # Source location, line 301
     def type(self) -> str:
         """@brief type Krita has several types of nodes, split in layers and masks. Group
         layers can contain other layers, any layer can contain masks.
@@ -3167,7 +3488,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 559
+    # Source location, line 571
     def uniqueId(self) -> QUuid:
         """@brief uniqueId uniqueId of the node
         @return a QUuid representing a unique id to identify the node
@@ -3176,7 +3497,7 @@ class Node(QObject):
         """
         pass
 
-    # Source location, line 300
+    # Source location, line 312
     def visible(self) -> bool:
         """Check whether the current Node is visible in the layer stack
         @Implemented with: 4.0.0
@@ -3297,22 +3618,24 @@ class Palette(QObject):
         pass
 
     # Source location, line 88
-    def addGroup(self, name: str) -> bool:
+    def addGroup(self, name: str):
         """@brief addGroup
         @param name of the new group
         @return whether adding the group was successful.
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
     # Source location, line 138
-    def changeGroupName(self, oldGroupName: str, newGroupName: str) -> bool:
+    def changeGroupName(self, oldGroupName: str, newGroupName: str):
         """@brief changeGroupName
         change the group name.
         @param oldGroupName the old groupname to change.
         @param newGroupName the new name to change it into.
         @return whether successful. Reasons for failure include not knowing have oldGroupName
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -3378,13 +3701,14 @@ class Palette(QObject):
         pass
 
     # Source location, line 146
-    def moveGroup(self, groupName: str, groupNameInsertBefore: str = "") -> bool:
+    def moveGroup(self, groupName: str, groupNameInsertBefore: str = ""):
         """@brief moveGroup
         move the group to before groupNameInsertBefore.
         @param groupName group to move.
         @param groupNameInsertBefore group to inset before.
         @return whether successful. Reasons for failure include either group not existing.
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -3406,12 +3730,13 @@ class Palette(QObject):
         pass
 
     # Source location, line 95
-    def removeGroup(self, name: str, keepColors: bool = True) -> bool:
+    def removeGroup(self, name: str, keepColors: bool = True):
         """@brief removeGroup
         @param name the name of the group to remove.
         @param keepColors whether or not to delete all the colors inside, or to move them to the default group.
         @return
         @Implemented with: 4.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -3521,6 +3846,50 @@ class PaletteView(QWidget):
 
 
 # Source
+# - File: Preset.h
+# - Line: 34
+class Preset(QObject):
+    """@brief The Preset class
+    Preset is a resource object that stores brush preset data.
+
+    An example for printing the current brush preset and all its settings:
+
+    @code
+    from krita import *
+
+    view = Krita.instance().activeWindow().activeView()
+    preset = Preset(view.currentBrushPreset())
+
+    print ( preset.toXML() )
+    @endcode
+
+    @Implemented with: 5.2.0
+    """
+    # Source location, line 37
+    def Preset(self, resource: Resource):
+        """@Implemented with: 5.2.0"""
+        pass
+
+    # Source location, line 52
+    def fromXML(self, xml: str):
+        """@brief fromXML
+        convert the preset settings into a preset formatted xml.
+        @param xml valid xml preset string.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 45
+    def toXML(self) -> str:
+        """@brief toXML
+        convert the preset settings into a preset formatted xml.
+        @return the xml in a string.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+
+# Source
 # - File: PresetChooser.h
 # - Line: 25
 class PresetChooser:
@@ -3575,7 +3944,7 @@ class Resource(QObject):
     # Source location, line 38
     def Resource(self, rhs: Resource):
         """@Implemented with: 5.0.0
-        @Last updated with: 5.1.6
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -3669,18 +4038,18 @@ class Scratchpad(QWidget):
 
     # Source location, line 39
     def clear(self):
-        """@brief Clears out scratchpad with color specfified set during setup
+        """@brief Clears out scratchpad with color specified set during setup
         @Implemented with: 4.4.0
-        @Last updated with: 5.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
     # Source location, line 77
     def copyScratchpadImageData(self) -> QImage:
         """@brief Take what is on the scratchpad area and grab image
-        @return the image data from the scratchpage
+        @return the image data from the scratchpad
         @Implemented with: 4.4.0
-        @Last updated with: 5.0.0
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -4052,9 +4421,17 @@ class Shape(QObject):
     @endcode
 
     @Implemented with: 4.0.0
-    @Updated with: 5.0.0
+    @Updated with: 5.2.0
     """
-    # Source location, line 117
+    # Source location, line 151
+    def absoluteTransformation(self) -> QTransform:
+        """@brief transformation the 2D transformation matrix of the shape including all grandparent transforms.
+        @return the 2D transformation matrix.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 121
     def boundingBox(self) -> QRectF:
         """@brief boundingBox the bounding box of the shape in points
         @return RectF containing the bounding box.
@@ -4062,14 +4439,14 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 177
+    # Source location, line 187
     def deselect(self):
         """@brief deselect deselects the shape.
         @Implemented with: 5.0.0
         """
         pass
 
-    # Source location, line 93
+    # Source location, line 97
     def geometryProtected(self) -> bool:
         """@brief geometryProtected
         @return whether the shape is protected from user changing the shape geometry.
@@ -4077,7 +4454,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 183
+    # Source location, line 193
     def isSelected(self) -> bool:
         """@brief isSelected
         @return whether the shape is selected.
@@ -4085,7 +4462,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 51
+    # Source location, line 55
     def name(self) -> str:
         """@brief name
         @return the name of the shape
@@ -4093,7 +4470,15 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 123
+    # Source location, line 199
+    def parentShape(self):
+        """@brief parentShape
+        @return the parent GroupShape of the current shape.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 127
     def position(self) -> QPointF:
         """@brief position the position of the shape in points.
         @return the position of the shape in points.
@@ -4101,21 +4486,21 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 146
+    # Source location, line 156
     def remove(self) -> bool:
         """@brief remove delete the shape.
         @Implemented with: 5.0.0
         """
         pass
 
-    # Source location, line 172
+    # Source location, line 182
     def select(self):
         """@brief select selects the shape.
         @Implemented with: 5.0.0
         """
         pass
 
-    # Source location, line 81
+    # Source location, line 85
     def selectable(self) -> bool:
         """@brief selectable
         @return whether the shape is user selectable.
@@ -4123,7 +4508,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 99
+    # Source location, line 103
     def setGeometryProtected(self, protect: bool):
         """@brief setGeometryProtected
         @param protect whether the shape should be geometry protected from the user.
@@ -4131,7 +4516,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 57
+    # Source location, line 61
     def setName(self, name: str):
         """@brief setName
         @param name which name the shape should have.
@@ -4139,7 +4524,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 129
+    # Source location, line 133
     def setPosition(self, point: QPointF):
         """@brief setPosition set the position of the shape.
         @param point the new position in points
@@ -4147,7 +4532,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 87
+    # Source location, line 91
     def setSelectable(self, selectable: bool):
         """@brief setSelectable
         @param selectable whether the shape should be user selectable.
@@ -4155,7 +4540,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 141
+    # Source location, line 145
     def setTransformation(self, matrix: QTransform):
         """@brief setTransformation set the 2D transformation matrix of the shape.
         @param matrix the new 2D transformation matrix.
@@ -4163,7 +4548,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 111
+    # Source location, line 115
     def setVisible(self, visible: bool):
         """@brief setVisible
         @param visible whether the shape should be visible.
@@ -4171,7 +4556,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 75
+    # Source location, line 79
     def setZIndex(self, zindex: int):
         """@brief setZIndex
         @param zindex set the shape zindex value.
@@ -4179,7 +4564,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 167
+    # Source location, line 177
     def toSvg(self, prependStyles: bool = False, stripTextMode: bool = True) -> str:
         """@brief toSvg
         convert the shape to svg, will not include style definitions.
@@ -4191,7 +4576,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 135
+    # Source location, line 139
     def transformation(self) -> QTransform:
         """@brief transformation the 2D transformation matrix of the shape.
         @return the 2D transformation matrix.
@@ -4199,7 +4584,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 63
+    # Source location, line 67
     def type(self) -> str:
         """@brief type
         @return the type of shape.
@@ -4208,14 +4593,14 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 151
+    # Source location, line 161
     def update(self):
         """@brief update queue the shape update.
         @Implemented with: 5.0.0
         """
         pass
 
-    # Source location, line 157
+    # Source location, line 167
     def updateAbsolute(self, box: QRectF):
         """@brief updateAbsolute queue the shape update in the specified rectangle.
         @param box the RectF rectangle to update.
@@ -4223,7 +4608,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 105
+    # Source location, line 109
     def visible(self) -> bool:
         """@brief visible
         @return whether the shape is visible.
@@ -4231,7 +4616,7 @@ class Shape(QObject):
         """
         pass
 
-    # Source location, line 69
+    # Source location, line 73
     def zIndex(self) -> int:
         """@brief zIndex
         @return the zindex of the shape.
@@ -4254,7 +4639,7 @@ class Swatch:
     # Source location, line 30
     def Swatch(self, rhs: Swatch):
         """@Implemented with: 4.2.0
-        @Last updated with: 5.1.6
+        @Last updated with: 5.2.0
         """
         pass
 
@@ -4325,10 +4710,59 @@ class TransformMask(Node):
     to store transformations.
 
     @Implemented with: 5.0.0
+    @Updated with: 5.2.0
     """
     # Source location, line 44
     def finalAffineTransform(self) -> QTransform:
         """@Implemented with: 5.0.0"""
+        pass
+
+    # Source location, line 88
+    def fromXML(self, xml: str) -> bool:
+        """@brief fromXML set the transform of the transform mask from XML formatted data.
+        The xml must have a valid id
+
+        dumbparams - placeholder for static transform masks
+        tooltransformparams - static transform mask
+        animatedtransformparams - animated transform mask
+
+        @code
+        <!DOCTYPE transform_params>
+        <transform_params>
+          <main id="tooltransformparams"/>
+          <data mode="0">
+           <free_transform>
+            <transformedCenter type="pointf" x="12.3102137276208" y="11.0727768562035"/>
+            <originalCenter type="pointf" x="20" y="20"/>
+            <rotationCenterOffset type="pointf" x="0" y="0"/>
+            <transformAroundRotationCenter value="0" type="value"/>
+            <aX value="0" type="value"/>
+            <aY value="0" type="value"/>
+            <aZ value="0" type="value"/>
+            <cameraPos z="1024" type="vector3d" x="0" y="0"/>
+            <scaleX value="1" type="value"/>
+            <scaleY value="1" type="value"/>
+            <shearX value="0" type="value"/>
+            <shearY value="0" type="value"/>
+            <keepAspectRatio value="0" type="value"/>
+            <flattenedPerspectiveTransform m23="0" m31="0" m32="0" type="transform" m33="1" m12="0" m13="0" m22="1" m11="1" m21="0"/>
+            <filterId value="Bicubic" type="value"/>
+           </free_transform>
+          </data>
+        </transform_params>
+        @endcode
+        @param xml a valid formated XML string with proper main and data elements.
+        @return a true response if successful, a false response if failed.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 50
+    def toXML(self) -> str:
+        """@brief toXML
+        @return a string containing XML formated transform parameters.
+        @Implemented with: 5.2.0
+        """
         pass
 
     # Source location, line 42
@@ -4347,6 +4781,42 @@ class TransformMask(Node):
 
 
 # Source
+# - File: TransparencyMask.h
+# - Line: 23
+class TransparencyMask(Node):
+    """@brief The TransparencyMask class
+    A transparency mask is a mask type node that can be used
+    to show and hide parts of a layer.
+
+
+    @Implemented with: 5.2.0
+    """
+    # Source location, line 45
+    def selection(self) -> Selection:
+        """@Implemented with: 5.2.0"""
+        pass
+
+    # Source location, line 47
+    def setSelection(self, selection: Selection):
+        """@Implemented with: 5.2.0"""
+        pass
+
+    # Source location, line 43
+    def type(self) -> str:
+        """@brief type Krita has several types of nodes, split in layers and masks. Group
+        layers can contain other layers, any layer can contain masks.
+
+        @return transparencymask
+
+        If the Node object isn't wrapping a valid Krita layer or mask object, and
+        empty string is returned.
+        @Virtual
+        @Implemented with: 5.2.0
+        """
+        pass
+
+
+# Source
 # - File: VectorLayer.h
 # - Line: 31
 class VectorLayer(Node):
@@ -4359,7 +4829,7 @@ class VectorLayer(Node):
     mind wen parsing the bounding box and position data.
 
     @Implemented with: 4.0.0
-    @Updated with: 5.0.0
+    @Updated with: 5.2.0
     """
     # Source location, line 69
     def addShapesFromSvg(self, svg: str) -> list[Shape]:
@@ -4371,11 +4841,44 @@ class VectorLayer(Node):
         """
         pass
 
+    # Source location, line 96
+    def createGroupShape(self, name: str, shapes: list[Shape]) -> Shape:
+        """@brief createGroupShape
+        combine a list of top level shapes into a group.
+        @param name the name of the shape.
+        @param shapes list of top level shapes.
+        @return if successful, a GroupShape object will be returned.
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 77
+    def shapeAtPosition(self, position: QPointF) -> Shape:
+        """@brief shapeAtPoint
+        check if the position is located within any non-group shape's boundingBox() on the current layer.
+        @param position a QPointF of the position.
+        @return the shape at the position, or None if no shape is found.
+        @Implemented with: 5.2.0
+        """
+        pass
+
     # Source location, line 54
     def shapes(self) -> list[Shape]:
         """@brief shapes
         @return the list of top-level shapes in this vector layer.
         @Implemented with: 4.0.0
+        """
+        pass
+
+    # Source location, line 87
+    def shapesInRect(self, rect: QRectF, omitHiddenShapes: bool = True, containedMode: bool = False) -> list[Shape]:
+        """@brief shapeInRect
+        get all non-group shapes that the shape's boundingBox() intersects or is contained within a given rectangle on the current layer.
+        @param rect a QRectF
+        @param omitHiddenShapes true if non-visible() shapes should be omitted, false if they should be included. \p omitHiddenShapes defaults to true.
+        @param containedMode false if only shapes that are within or intersect with the outline should be included, true if only shapes that are fully contained within the outline should be included. \p containedMode defaults to false
+        @return returns a list of shapes.
+        @Implemented with: 5.2.0
         """
         pass
 
@@ -4408,7 +4911,7 @@ class View(QObject):
     shown in more than one view at a time.
 
     @Implemented with: 4.0.0
-    @Updated with: 4.4.0
+    @Updated with: 5.2.0
     """
     # Source location, line 108
     def HDRExposure(self) -> float:
@@ -4475,6 +4978,33 @@ class View(QObject):
     def document(self) -> Document:
         """@return the document this view is showing.
         @Implemented with: 4.0.0
+        """
+        pass
+
+    # Source location, line 162
+    def flakeToCanvasTransform(self) -> QTransform:
+        """@brief flakeToCanvasTransform
+        The transformation of the canvas relative to the view without rotation and mirroring
+        @return QTransform
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 155
+    def flakeToDocumentTransform(self) -> QTransform:
+        """@brief flakeToDocumentTransform
+        The transformation of the document relative to the view without rotation and mirroring
+        @return QTransform
+        @Implemented with: 5.2.0
+        """
+        pass
+
+    # Source location, line 169
+    def flakeToImageTransform(self) -> QTransform:
+        """@brief flakeToImageTransform
+        The transformation of the image relative to the view without rotation and mirroring
+        @return QTransform
+        @Implemented with: 5.2.0
         """
         pass
 
@@ -4646,7 +5176,7 @@ class Window(QObject):
     of views open on any number of documents.
 
     @Implemented with: 4.0.0
-    @Updated with: 4.4.0
+    @Updated with: 5.2.0
     """
     # Emitted when the active view changes
     # @Implemented with: 4.4.0
@@ -4659,28 +5189,28 @@ class Window(QObject):
     # Emitted when the window is closed.
     # @Implemented with: 4.0.0
     windowClosed = pyqtSignal()
-    # Source location, line 66
+    # Source location, line 72
     def activate(self):
         """@brief activate activates this Window.
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 61
+    # Source location, line 67
     def activeView(self) -> View:
         """@return the currently active view or 0 if no view is active
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 49
+    # Source location, line 55
     def addView(self, document: Document) -> View:
         """Open a new view on the given document in this window
         @Implemented with: 4.0.0
         """
         pass
 
-    # Source location, line 73
+    # Source location, line 79
     def close(self):
         """@brief close the active window and all its Views. If there
         are no Views left for a given Document, that Document will
@@ -4689,7 +5219,7 @@ class Window(QObject):
         """
         pass
 
-    # Source location, line 86
+    # Source location, line 92
     def createAction(self, id: str, text: str = "", menuLocation: str = "tools/scripts") -> QAction:
         """@brief createAction creates a QAction object and adds it to the action
         manager for this Window.
@@ -4705,6 +5235,14 @@ class Window(QObject):
         """
         pass
 
+    # Source location, line 45
+    def dockers(self) -> list[QDockWidget]:
+        """@brief dockers
+        @return a list of all the dockers belonging to this window
+        @Implemented with: 5.2.0
+        """
+        pass
+
     # Source location, line 39
     def qwindow(self) -> QMainWindow:
         """Return a handle to the QMainWindow widget. This is useful
@@ -4713,7 +5251,7 @@ class Window(QObject):
         """
         pass
 
-    # Source location, line 55
+    # Source location, line 61
     def showView(self, view: View):
         """Make the given view active in this window. If the view
         does not belong to this window, nothing happens.
@@ -4721,7 +5259,7 @@ class Window(QObject):
         """
         pass
 
-    # Source location, line 44
+    # Source location, line 50
     def views(self) -> list[View]:
         """@return a list of open views in this window
         @Implemented with: 4.0.0
