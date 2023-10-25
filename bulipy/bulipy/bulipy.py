@@ -72,7 +72,7 @@ else:
 
 
 EXTENSION_ID = 'pykrita_bulipy'
-PLUGIN_VERSION = '0.1.0b'
+PLUGIN_VERSION = '0.1.1b'
 PLUGIN_MENU_ENTRY = 'BuliPy'
 
 REQUIRED_KRITA_VERSION = (5, 2, 0)

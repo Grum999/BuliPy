@@ -323,7 +323,7 @@ If your IDE support Python language and can interpret python files, you can down
 ## Download, Install & Execute
 
 ### Download
-+ **[ZIP ARCHIVE - v0.1.0b](https://github.com/Grum999/BuliPy/releases/download/0.1.0b/bulipy.zip)**
++ **[ZIP ARCHIVE - v0.1.1b](https://github.com/Grum999/BuliPy/releases/download/0.1.1b/bulipy.zip)**
 + **[SOURCE](https://github.com/Grum999/BuliPy)**
 
 ### Installation
@@ -348,6 +348,9 @@ Not tested on windows & MacOs
 ## Plugin's life
 
 ### What's new?
+
+_[2023-10-25] Version 0.1.1b_ *[Show detailed release content](./releases-notes/RELEASE-0.1.1b.md)*
+- Update Krita API documentation to 5.2.0
 
 _[2023-10-04] Version 0.1.0b_ *[Show detailed release content](./releases-notes/RELEASE-0.1.0b.md)*
 - First implemented/released version!
